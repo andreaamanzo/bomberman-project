@@ -8,10 +8,10 @@ namespace Nc
 {
   void init();
   void stop();
-  int getScreenWidth();
-  int getScreenHeight();
+  int getTerminalWidth();
+  int getTerminalHeight();
   Key getKeyPressed();
-  void sleepFor(std::chrono::milliseconds milliseconds);
+  void sleepFor(int milliseconds);
 }
 
 #endif

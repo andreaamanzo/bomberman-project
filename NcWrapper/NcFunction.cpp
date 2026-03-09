@@ -22,19 +22,19 @@ namespace Nc
     endwin();
   }
 
-  int getScreenWidth()
+  int getTerminalWidth()
   {
     return getmaxx(stdscr);
   }
 
-  int getScreenHeight()
+  int getTerminalHeight()
   {
     return getmaxy(stdscr);
   }
 
-  void sleepFor(std::chrono::milliseconds milliseconds)
+  void sleepFor(int milliseconds)
   {
-    std::this_thread::sleep_for(milliseconds);
+    std::this_thread::sleep_for(std::chrono::milliseconds{ milliseconds });
   }
   
   Key getKeyPressed()
