@@ -5,6 +5,7 @@ project(Game LANGUAGES CXX)
 # Imposta lo standard C++
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Richiedi il supporto wide-character per ncursesw
 set(CURSES_NEED_WIDE TRUE)
