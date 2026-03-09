@@ -1,7 +1,7 @@
 #include "NcFunctions.hpp"
 #include "NcTypes.hpp"
 #include "NcWrapper.hpp"
-#include <chrono>
+#include "Direction.hpp"
 
 int main() 
 {
@@ -22,7 +22,7 @@ int main()
   while (running)
   {
     Nc::Key key{ Nc::getKeyPressed() };
-
+    Direction dir;
     switch (key)
     {
       case Nc::Key::Escape: 
@@ -30,9 +30,17 @@ int main()
         running = false;
         break;
 
+      case Nc::Key::Up:
+        dir = Direction::Up;
       default:
         break;
     }
+
+    // player.move(dir);
+
+    // level.addBomb(player.placeBomb());
+
+    // level.d
 
     window.clear();
     window.draw(spriteExample, 10, 10);
