@@ -1,18 +1,27 @@
 #ifndef ITEM_HPP
 #define ITEM_HPP
 
-class Item
+#include "Entity.hpp"
+#include "NcWrapper.hpp"
+
+class Item : public Entity
 {
 public:
-  enum Type
+  enum class Type
   {
+    Null,
     IncrementBombRadius,
     IncrementSpeed,
-    
+    IncrementMaxBombs,
   };
 
-private:
+  Item(Type itemType, int x, int y);
 
+private:
+  inline const static Nc::Sprite2x3 s_spriteType1{ L"todo", L"todo", Nc::Color::Yellow };
+  inline const static Nc::Sprite2x3 s_spriteType2{ L"todo", L"todo", Nc::Color::Yellow };
+  // ...
+  
 };
 
 #endif

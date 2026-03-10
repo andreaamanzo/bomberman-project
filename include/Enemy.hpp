@@ -7,16 +7,12 @@
 class Enemy : public Entity 
 {
 public:
-  Enemy();
+  Enemy(const Nc::Sprite2x3& sprite, int x, int y);
   
-  void Kill_Enemy();
   void move();
 
 private:
-
-  bool alive;
-
-
+  
 };
 
 //possible enemy sprite : inline const static Nc::Sprite2x3 e_sprite{ L"°|°", L"/ \\ ", Nc::Color::Red };

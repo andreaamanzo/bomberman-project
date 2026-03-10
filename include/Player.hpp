@@ -10,11 +10,14 @@
 class Player : public Entity
 {
 public:
-  Player();
+  Player(int lives, int x, int y);
 
   void move(Direction dir);
+  void setPosition(int x, int y);
   Bomb placeBomb();
   void restoreBomb();
+  void decreaseLife();
+  void collectItem(const Item& item);
 
 private:
   inline const static Nc::Sprite2x3 s_sprite{ L"ʘ‿ʘ", L"╰╩╯", Nc::Color::Green };
@@ -24,7 +27,7 @@ private:
   int m_maxBombs{ 1 };
   int m_placedBombs{ 0 };
 
-  Item items[];
+  // List<Item> m_items
 
 };
 
