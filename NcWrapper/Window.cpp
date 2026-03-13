@@ -40,8 +40,8 @@ namespace Nc
     Color bgColor{ sprite.getBgColor() != Color::Default ? sprite.getBgColor() : m_bgColor };
     short id{ Nc::getColorPair(sprite.getColor(), bgColor) };
     wattron(m_window, COLOR_PAIR(id));
-    mvwaddwstr(m_window, y + 1, x + 1, sprite.getRow0());
-    mvwaddwstr(m_window, y + 2, x + 1, sprite.getRow1());
+    mvwaddstr(m_window, y + 1, x + 1, sprite.getRow0());
+    mvwaddstr(m_window, y + 2, x + 1, sprite.getRow1());
     wattroff(m_window, COLOR_PAIR(id));
   }
 

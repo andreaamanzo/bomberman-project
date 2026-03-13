@@ -9,11 +9,11 @@ class Wall : public Entity
 public:
   Wall(int x, int y, bool isBreakable);
 
-  bool isBreakable();
+  bool isBreakable() const;
 
 private:
-  inline const static Nc::Sprite2x3 s_breakableSprite{ L"▚▞▚", L"▚▞▚", Nc::Color::White };
-  inline const static Nc::Sprite2x3 s_unbreakableSprite{ L"███", L"███", Nc::Color::White };
+  inline const static Nc::Sprite2x3 s_breakableSprite{ "▚▞▚", "▚▞▚", Nc::Color::White };
+  inline const static Nc::Sprite2x3 s_unbreakableSprite{ "███", "███", Nc::Color::White };
   
   bool m_isBreakable{};
 };

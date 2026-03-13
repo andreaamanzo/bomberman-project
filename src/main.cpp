@@ -2,6 +2,7 @@
 #include "NcWrapper.hpp"
 #include "Direction.hpp"
 #include "Settings.hpp"
+#include "Wall.hpp"
 
 int main() 
 {
@@ -13,7 +14,9 @@ int main()
   Nc::Window window{ Settings::mapWidth, Settings::mapHeight, w_startx, w_starty };
   window.setTitle("Bomberman");
 
-  Player player{ 5, 3, 2 };
+  Player player{ 5, 6, 4 };
+  Wall testWall1{ 0, 0, false };
+  Wall testWall2{ 3, 0, true };
 
   bool running = true;
 
@@ -50,6 +53,8 @@ int main()
 
     window.clear();
     player.draw(window);
+    testWall1.draw(window);
+    testWall2.draw(window);
     window.display();
 
     Nc::sleepFor(20);

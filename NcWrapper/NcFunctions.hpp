@@ -2,7 +2,6 @@
 #define NC_HELPERS_H
 
 #include "NcTypes.hpp"
-#include <chrono>
 
 namespace Nc
 {

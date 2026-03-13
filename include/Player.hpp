@@ -19,7 +19,7 @@ public:
   void collectItem(const Item& item);
 
 private:
-  inline const static Nc::Sprite2x3 s_playerSprite{ L"ʘ‿ʘ", L"╰╩╯", Nc::Color::Green };
+  inline const static Nc::Sprite2x3 s_playerSprite{ "ʘ‿ʘ", "╰╩╯", Nc::Color::Green };
 
   int m_lives{};
   int m_bombRadius{ 1 };

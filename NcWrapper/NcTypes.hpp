@@ -1,8 +1,6 @@
 #ifndef NC_TYPES_H
 #define NC_TYPES_H
 
-#include <cwchar>
-
 namespace Nc
 {
   enum class Key 

@@ -2,6 +2,7 @@
 #include <ncurses.h>
 #include <clocale>
 #include <thread>
+#include <chrono>
 
 namespace Nc
 {

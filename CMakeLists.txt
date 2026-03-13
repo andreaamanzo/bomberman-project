@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(Game LANGUAGES CXX)
+project(Bomberman LANGUAGES CXX)
 
 # ------------------------------------------------------------------------------
 # Standard C++
@@ -13,8 +13,13 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # ------------------------------------------------------------------------------
-# ncurses
+# ncurses (portabile Mac/Linux)
 # ------------------------------------------------------------------------------
+
+# Aggiunge il prefix path di Homebrew su macOS automaticamente
+if(APPLE)
+    list(APPEND CMAKE_PREFIX_PATH "/opt/homebrew/opt/ncurses")
+endif()
 
 set(CURSES_NEED_WIDE TRUE)
 find_package(Curses REQUIRED)
@@ -23,7 +28,7 @@ find_package(Curses REQUIRED)
 # Sorgenti
 # ------------------------------------------------------------------------------
 
-file(GLOB_RECURSE GAME_SOURCES
+file(GLOB_RECURSE Bomberman_SOURCES
   CONFIGURE_DEPENDS
   src/*.cpp
 )
@@ -58,16 +63,16 @@ target_compile_features(NcWrapper PUBLIC cxx_std_20)
 # Eseguibile
 # ------------------------------------------------------------------------------
 
-add_executable(Game
-  ${GAME_SOURCES}
+add_executable(Bomberman
+  ${Bomberman_SOURCES}
 )
 
-target_include_directories(Game
+target_include_directories(Bomberman
   PRIVATE
     ${CMAKE_SOURCE_DIR}/include
 )
 
-target_link_libraries(Game
+target_link_libraries(Bomberman
   PRIVATE
     NcWrapper
 )
@@ -77,7 +82,7 @@ target_link_libraries(Game
 # ------------------------------------------------------------------------------
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
-  target_compile_options(Game PRIVATE
+  target_compile_options(Bomberman PRIVATE
     -Wall
     -Wextra
     -Wpedantic
@@ -95,7 +100,7 @@ endif()
 
 # Warning extra per GCC
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-  target_compile_options(Game PRIVATE
+  target_compile_options(Bomberman PRIVATE
     -Wuseless-cast
     -Wlogical-op
   )
