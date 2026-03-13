@@ -13,14 +13,13 @@ public:
   Player(int lives, int x, int y);
 
   void move(Direction dir);
-  void setPosition(int x, int y);
   Bomb placeBomb();
   void restoreBomb();
   void decreaseLife();
   void collectItem(const Item& item);
 
 private:
-  inline const static Nc::Sprite2x3 s_sprite{ L"ʘ‿ʘ", L"╰╩╯", Nc::Color::Green };
+  inline const static Nc::Sprite2x3 s_playerSprite{ L"ʘ‿ʘ", L"╰╩╯", Nc::Color::Green };
 
   int m_lives{};
   int m_bombRadius{ 1 };

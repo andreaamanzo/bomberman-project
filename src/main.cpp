@@ -1,21 +1,19 @@
-#include "NcFunctions.hpp"
-#include "NcTypes.hpp"
+#include "Player.hpp"
 #include "NcWrapper.hpp"
 #include "Direction.hpp"
+#include "Settings.hpp"
 
 int main() 
 {
   Nc::init();
 
-  int w_width  = Nc::getTerminalWidth() / 2;
-  int w_height = Nc::getTerminalHeight() / 2;
-  int w_startx = (Nc::getTerminalWidth() - w_width) / 2;
-  int w_starty = (Nc::getTerminalHeight() - w_height) / 2;
+  int w_startx = (Nc::getTerminalWidth()  - Settings::mapWidth) / 2;
+  int w_starty = (Nc::getTerminalHeight() - Settings::mapHeight) / 2;
 
-  Nc::Window window{ w_width, w_height, w_startx, w_starty };
+  Nc::Window window{ Settings::mapWidth, Settings::mapHeight, w_startx, w_starty };
   window.setTitle("Bomberman");
 
-  Nc::Sprite2x3 spriteExample{ L"ʘ‿ʘ", L"╰╩╯", Nc::Color::Green };
+  Player player{ 5, 3, 2 };
 
   bool running = true;
 
@@ -23,6 +21,7 @@ int main()
   {
     Nc::Key key{ Nc::getKeyPressed() };
     Direction dir;
+
     switch (key)
     {
       case Nc::Key::Escape: 
@@ -32,18 +31,25 @@ int main()
 
       case Nc::Key::Up:
         dir = Direction::Up;
+        break;
+      case Nc::Key::Down:
+        dir = Direction::Down;
+        break;
+      case Nc::Key::Right:
+        dir = Direction::Right;
+        break;
+      case Nc::Key::Left:
+        dir = Direction::Left;
+        break;
       default:
+        dir = Direction::None;
         break;
     }
 
-    // player.move(dir);
-
-    // level.addBomb(player.placeBomb());
-
-    // level.d
+    player.move(dir);
 
     window.clear();
-    window.draw(spriteExample, 10, 10);
+    player.draw(window);
     window.display();
 
     Nc::sleepFor(20);

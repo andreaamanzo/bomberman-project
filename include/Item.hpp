@@ -18,8 +18,8 @@ public:
   Item(Type itemType, int x, int y);
 
 private:
-  inline const static Nc::Sprite2x3 s_spriteType1{ L"todo", L"todo", Nc::Color::Yellow };
-  inline const static Nc::Sprite2x3 s_spriteType2{ L"todo", L"todo", Nc::Color::Yellow };
+  inline const static Nc::Sprite2x3 s_spriteType1{ L"nop", L"nop", Nc::Color::Yellow };
+  inline const static Nc::Sprite2x3 s_spriteType2{ L"nop", L"nop", Nc::Color::Yellow };
   // ...
   
 };

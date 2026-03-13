@@ -37,7 +37,7 @@ public:
 
 private:
   int m_levelNumber{};
-  Wall m_walls[Settings::levelRows][Settings::levelCols]; // dobbiamo decidere come gestire muri "vuoti"
+  Wall m_walls[Settings::mapRows][Settings::mapCols]; // dobbiamo decidere come gestire muri "vuoti"
   // List<Bomb> m_bombs;
   // List<Enemy> m_enemies;
   // List<Item> m_items;

@@ -4,43 +4,56 @@
 class List
 {
 public:
-  List() = default ;
+  // constructor di default
+  List() = default;
+
+  // delte del copy constructor per evitare warning del copilatore
+  List(const List&) = delete;
+
+  // distruttore (chiama clear)
+  ~List();
+
+  // delte del copy operator per evitare warning del copilatore
+  List& operator=(const List&) = delete;
 
   // funzione di inserimento in testa
-  void pushFront(int value) ;
+  void pushFront(int value);
 
   // funzione di inserimento in coda
-  void pushBack(int value) ;
+  void pushBack(int value);
 
   // funzione di rimozione in testa
-  void popFront() ;
+  void popFront();
 
   // funzione di rimozione in coda
-  void popBack() ;
+  void popBack();
 
   // funzione di rimozione dato un indice
-  void remove(int index) ;
+  void remove(int index);
 
-  // distruttore
-  void clear() ;
+  // svuota la lista
+  void clear();
 
-  int size() const ;
+  // return della size
+  int size() const;
 
-  int front(bool* success = nullptr) const ;
+  // return del valore in testa
+  int front(bool* success = nullptr) const;
 
-  int back(bool* success = nullptr) const ;
+  // return del valore in coda
+  int back(bool* success = nullptr) const;
 
 private:
   struct Node
   {
-    int val{} ;
-    Node* next{ nullptr } ;
-    Node* prev{ nullptr } ;
+    int val{};
+    Node* next{ nullptr };
+    Node* prev{ nullptr };
   };
 
-  Node* m_head{ nullptr } ;
-  Node* m_tail{ nullptr } ;
-  int m_size{ 0 } ;
+  Node* m_head{ nullptr };
+  Node* m_tail{ nullptr };
+  int m_size{ 0 };
 };
 
 #endif
