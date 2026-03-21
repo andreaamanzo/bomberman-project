@@ -14,7 +14,7 @@ int main()
   Nc::Window window{ Settings::mapWidth, Settings::mapHeight, w_startx, w_starty };
   window.setTitle("Bomberman");
 
-  Level testLevel{ 0, "path/to/file" };
+  Level testLevel{ 0, "levels/level_01.txt" };
 
   Player player{ 5, 6, 4 };
 
