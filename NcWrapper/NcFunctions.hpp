@@ -7,8 +7,10 @@ namespace Nc
 {
   void init();
   void stop();
+  void stopWithError(int exitCode, const char* msg);
   int getTerminalWidth();
   int getTerminalHeight();
+  void checkTerminalSize(int minWidth, int minHeight);
   Key getKeyPressed();
   void sleepFor(int milliseconds);
 }

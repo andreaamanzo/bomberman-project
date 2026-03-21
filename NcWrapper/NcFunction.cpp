@@ -3,6 +3,8 @@
 #include <clocale>
 #include <thread>
 #include <chrono>
+#include <cstdlib>
+#include <iostream>
 
 namespace Nc
 {
@@ -23,6 +25,13 @@ namespace Nc
     endwin();
   }
 
+  void stopWithError(int exitCode, const char* msg)
+  {
+    endwin();
+    std::cerr << "RUNTIME ERROR: " << msg << '\n';
+    std::exit(exitCode);
+  }
+
   int getTerminalWidth()
   {
     return getmaxx(stdscr);
@@ -31,6 +40,14 @@ namespace Nc
   int getTerminalHeight()
   {
     return getmaxy(stdscr);
+  }
+
+  void checkTerminalSize(int minWidth, int minHeight)
+  {
+    if (getTerminalHeight() < minHeight || getTerminalWidth() < minWidth)
+    {
+      stopWithError(1, "Terminal window is too small. Please resize it and try again.");
+    }
   }
 
   void sleepFor(int milliseconds)
