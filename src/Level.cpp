@@ -16,9 +16,7 @@ Level::Level(
   std::ifstream file(mapFilePath);
   // controllo se il file è stato aperto correttamente
   if (!file.is_open()) {
-    Nc::stop();
-    std::cerr << "Map file not found" << std::endl;
-    std::exit(1);
+    Nc::stopWithError(1, "Map file not found");
   }
   char c;
   int nrow = 0;
@@ -29,10 +27,7 @@ Level::Level(
       nrow++;
       nchar = 0;
       if (nrow > Settings::mapRows) {
-        Nc::stop();
-        std::cerr << "Invalid map" << std::endl;
-        std::exit(1);
-        continue;
+        Nc::stopWithError(1, "Invalid map");
       }
     } else {
       if (c == 'X')
@@ -44,9 +39,7 @@ Level::Level(
         m_map[nrow][nchar] = Tile::Empty;
       nchar++;
       if (Settings::mapCols > 30) {
-        Nc::stop();
-        std::cerr << "Invalid map" << std::endl;
-        std::exit(1);
+        Nc::stopWithError(1, "Invalid map");
       }
     }
   }

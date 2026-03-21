@@ -1,3 +1,4 @@
+#include "NcTypes.hpp"
 #include "Player.hpp"
 #include "NcWrapper.hpp"
 #include "Direction.hpp"
@@ -36,15 +37,19 @@ int main()
         break;
 
       case Nc::Key::Up:
+      case Nc::Key::W:
         dir = Direction::Up;
         break;
       case Nc::Key::Down:
+      case Nc::Key::S:
         dir = Direction::Down;
         break;
       case Nc::Key::Right:
+      case Nc::Key::D:
         dir = Direction::Right;
         break;
       case Nc::Key::Left:
+      case Nc::Key::A:
         dir = Direction::Left;
         break;
       default:
