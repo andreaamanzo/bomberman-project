@@ -5,7 +5,7 @@ Thumbs.db
 .cache
 
 # build / cmake
-/build/
+build/
 /**/build/
 CMakeFiles/
 CMakeCache.txt

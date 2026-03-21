@@ -47,5 +47,5 @@ cmake --build build
 ## Run
 
 ```bash
-./build/Game
+./build/Bomberman
 ```
