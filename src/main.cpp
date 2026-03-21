@@ -7,6 +7,9 @@
 int main() 
 {
   Nc::init();
+  
+  // la grandezza minima effettiva poi la decideremo
+  Nc::checkTerminalSize(Settings::mapWidth * 1.3, Settings::mapHeight * 1.3); 
 
   int w_startx = (Nc::getTerminalWidth()  - Settings::mapWidth) / 2;
   int w_starty = (Nc::getTerminalHeight() - Settings::mapHeight) / 2;
