@@ -1,5 +1,5 @@
-#ifndef PLAYER_HPP
-#define PLAYER_HPP
+#ifndef LIST_HPP
+#define LIST_HPP
 
 class List
 {
@@ -53,7 +53,7 @@ private:
 
   Node* m_head{ nullptr };
   Node* m_tail{ nullptr };
-  int m_size{ 0 };
+  int   m_size{ 0 };
 };
 
 #endif

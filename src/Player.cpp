@@ -1,4 +1,5 @@
 #include "Player.hpp"
+#include "Bomb.hpp"
 
 Player::Player(int lives, int x, int y)
   : Entity{ s_playerSprite, x, y }
@@ -24,4 +25,19 @@ void Player::move(Direction dir)
   default:
     break;
   }
+}
+
+Bomb* Player::placeBomb()
+{
+  if (m_placedBombs >= m_maxBombs) return nullptr;
+
+  m_placedBombs++;
+  
+  return new Bomb{ m_x, m_y, m_bombRadius };
+}
+
+void Player::restoreBomb()
+{
+  if (m_placedBombs > 0)
+    m_placedBombs--;
 }

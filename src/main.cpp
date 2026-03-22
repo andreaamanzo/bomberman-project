@@ -4,6 +4,7 @@
 #include "Direction.hpp"
 #include "Settings.hpp"
 #include "Level.hpp"
+#include "Bomb.hpp"
 
 int main() 
 {
@@ -21,6 +22,8 @@ int main()
   Level testLevel{ 0, "levels/level_01.txt" };
 
   Player player{ 5, 6, 4 };
+
+  Bomb* testBomb{ nullptr };
 
   bool running = true;
 
@@ -55,6 +58,11 @@ int main()
       case Nc::Key::A:
         dir = Direction::Left;
         break;
+
+      case Nc::Key::X:
+        delete testBomb;
+        testBomb = player.placeBomb();
+        break;
         
       default:
         dir = Direction::None;
@@ -68,6 +76,12 @@ int main()
     testLevel.drawWalls(window);
 
     player.draw(window);
+
+    if (testBomb)
+      testBomb->draw(window);
+
+    // per poter piazzare di nuvo la bomba: solo test
+    player.restoreBomb();
     
     window.display();
 

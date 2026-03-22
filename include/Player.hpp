@@ -13,7 +13,7 @@ public:
   Player(int lives, int x, int y);
 
   void move(Direction dir);
-  Bomb placeBomb();
+  Bomb* placeBomb();
   void restoreBomb();
   void decreaseLife();
   void collectItem(const Item& item);
