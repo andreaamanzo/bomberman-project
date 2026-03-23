@@ -8,10 +8,44 @@
 
 namespace Nc
 {
+  static void initDefaultColors()
+  {
+    if (!has_colors())
+      stopWithError(1, "Terminal does not support colors.");
+
+    start_color();
+    use_default_colors();
+
+    if (!can_change_color())
+      stopWithError(1, "Your terminal does not support custom colors required by the game.");
+
+    // base
+    init_color(COLOR_BLACK,   0,   0,   0);
+    init_color(COLOR_RED,     900, 100, 100);
+    init_color(COLOR_GREEN,   100, 900, 100);
+    init_color(COLOR_YELLOW,  900, 900, 200);
+    init_color(COLOR_BLUE,    100, 100, 900);
+    init_color(COLOR_MAGENTA, 900, 100, 900);
+    init_color(COLOR_CYAN,    100, 900, 900);
+    init_color(COLOR_WHITE,   900, 900, 900);
+
+    // custom palette
+    init_color(8,  1000, 450, 0);   // Orange
+    init_color(9,  300, 300, 300);  // DarkGray
+    init_color(10, 700, 700, 700);  // LightGray
+    init_color(11, 1000, 400, 700); // Pink
+    init_color(12, 500, 1000, 200); // Lime
+    init_color(13, 400, 700, 1000); // Sky
+    init_color(14, 600, 200, 900);  // Purple
+    init_color(15, 1000, 800, 200); // Gold
+    init_color(16, 1000, 300, 0);   // Fire
+  }
+
   void init()
   {
     std::setlocale(LC_ALL, "");
     initscr();
+    initDefaultColors();
     cbreak();
     noecho();
     start_color();

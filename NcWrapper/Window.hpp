@@ -24,7 +24,7 @@ namespace Nc
 
   private:
     WINDOW* m_window{};
-    Color m_bgColor{ Color::Black };
+    Color m_bgColor{ Color::Default };
     short m_bgColorPairId{};
     int m_width{};
     int m_height{};

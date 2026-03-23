@@ -31,7 +31,16 @@ namespace Nc
     Blue,
     Magenta,
     Cyan,
-    White
+    Orange,
+    White,
+    DarkGray,
+    LightGray,
+    Pink,
+    Lime,
+    Sky,
+    Purple,
+    Gold,
+    Fire
   };
 
   struct Point

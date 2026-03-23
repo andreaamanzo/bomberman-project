@@ -9,7 +9,7 @@ public:
   Bomb(int x, int y, int radius);
 
 private:
-  inline const static Nc::Sprite2x3 s_bombSprite{ " ╽ ", "(●)", Nc::Color::Yellow };
+  inline const static Nc::Sprite2x3 s_bombSprite{ " ╽ ", "(●)", Nc::Color::Orange };
 
   int m_radius{};
   
