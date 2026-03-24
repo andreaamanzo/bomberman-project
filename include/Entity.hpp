@@ -6,6 +6,7 @@
 class Entity
 {
 public:
+  Entity() = default;
   Entity(const Nc::Sprite2x3& sprite, int x = 0, int y = 0);
 
   void draw(Nc::Window& window) const;
@@ -15,7 +16,7 @@ public:
   bool collide(const Entity& other);
 
 protected:
-  Nc::Sprite2x3 m_sprite;
+  Nc::Sprite2x3 m_sprite{ "   ", "   ", Nc::Color::Default };
   int m_x{};
   int m_y{};
 };

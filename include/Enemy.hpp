@@ -7,6 +7,7 @@
 class Enemy : public Entity 
 {
 public:
+  Enemy() = default;
   Enemy(const Nc::Sprite2x3& sprite, int x, int y);
   
   void move();

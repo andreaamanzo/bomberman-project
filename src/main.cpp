@@ -17,11 +17,11 @@ int main()
   int w_starty = (Nc::getTerminalHeight() - Settings::mapHeight) / 2;
 
   Nc::Window window{ Settings::mapWidth, Settings::mapHeight, w_startx, w_starty };
-  window.setTitle("Bomberman");
+  window.setTitle("BOMBERMAN");
 
   Level testLevel{ 0, "levels/level_01.txt" };
 
-  Player player{ 5, 6, 4 };
+  Player player{ 5, 3, 2 };
 
   Bomb* testBomb{ nullptr };
 

@@ -5,7 +5,7 @@ namespace Settings
 {
   constexpr int entityHeight{ 2 };
   constexpr int entityWidth{ 3 };
-  constexpr int mapCols{ 30 };
+  constexpr int mapCols{ 40 };
   constexpr int mapRows{ 20 };
   constexpr int mapHeight{ entityHeight * mapRows };
   constexpr int mapWidth{ entityWidth * mapCols };

@@ -6,6 +6,7 @@
 #include "Bomb.hpp"
 #include "Player.hpp"
 #include "Item.hpp"
+#include "Enemy.hpp"
 
 class Level 
 {
@@ -45,11 +46,17 @@ private:
   inline const static Nc::Sprite2x3 s_wallSprite{ "███", "███", Nc::Color::White };
   inline const static Nc::Sprite2x3 s_breakableWallSprite{ "▚▞▚", "▚▞▚", Nc::Color::White };
 
+  inline constexpr static int s_maxLengthArrays{ 64 };
+
   int m_levelNumber{};
   Tile m_map[Settings::mapRows][Settings::mapCols];
-  // List<Bomb> m_bombs;
-  // List<Enemy> m_enemies;
-  // List<Item> m_items;
+
+  Bomb  m_bombs[s_maxLengthArrays]{};
+  int   m_bombsSize{ 0 };
+  Item  m_items[s_maxLengthArrays]{};
+  int   m_itemsSize{ 0 };
+  Enemy m_enemies[s_maxLengthArrays]{};
+  int   m_enemiesSize{ 0 };
 
   // Membri per la gestione del tempo (tempo inizile + tempo totale o tempo rimanente)
 };

@@ -6,6 +6,7 @@
 class Bomb : public Entity
 {
 public:
+  Bomb();
   Bomb(int x, int y, int radius);
 
 private:
