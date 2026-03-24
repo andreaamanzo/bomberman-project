@@ -59,7 +59,8 @@ int main()
         dir = Direction::Left;
         break;
 
-      case Nc::Key::X:
+      case Nc::Key::E:
+      case Nc::Key::Enter:
         delete testBomb;
         testBomb = player.placeBomb();
         break;

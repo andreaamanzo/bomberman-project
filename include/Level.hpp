@@ -59,6 +59,8 @@ private:
   int   m_enemiesSize{ 0 };
 
   // Membri per la gestione del tempo (tempo inizile + tempo totale o tempo rimanente)
+  int s_time;
+  int m_time;
 };
 
 #endif

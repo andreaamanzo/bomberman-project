@@ -7,13 +7,13 @@ public:
   // constructor di default
   List() = default;
 
-  // delte del copy constructor per evitare warning del copilatore
+  // delete del copy constructor per evitare warning del copilatore
   List(const List&) = delete;
 
   // distruttore (chiama clear)
   ~List();
 
-  // delte del copy operator per evitare warning del copilatore
+  // delete del copy operator per evitare warning del copilatore
   List& operator=(const List&) = delete;
 
   // funzione di inserimento in testa
