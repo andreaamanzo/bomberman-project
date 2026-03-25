@@ -7,6 +7,7 @@
 #include "Player.hpp"
 #include "Item.hpp"
 #include "Enemy.hpp"
+#include <chrono>
 
 class Level 
 {
@@ -15,18 +16,18 @@ public:
 
   void drawWalls(Nc::Window& window) const;
   void drawEnemies(Nc::Window& window) const;
-  void drawBombs(Nc::Window& window) const;
+  void drawBombs(Nc::Window& window);
   void drawItems(Nc::Window& window) const;
   bool checkWallCollision(const Entity& entity) const;
   
-  // Se il player si trova su un item, qusto viene returnato, sennò return item nullo
-  Item collectItem(const Player& player); 
+  // restituisce l'item alle coordinate passate, se non c'è nessun item return item nullo
+  Item getItem(int x, int y); 
 
   void moveEnemies();
-  void addBomb(const Bomb& bomb);
+  void addBomb(Bomb& bomb);
 
   // gestisce automaticamente esplosioni di muri e nemici, return true se colpisce il player
-  bool handleBombsExplosion(const Player& player); 
+  bool handleBombs(Player& player); 
 
   int  getLevelNumber() const;
 
@@ -36,6 +37,8 @@ public:
   void start(); // opposto a pause
 
 private:
+  using Clock = std::chrono::steady_clock;
+
   enum class Tile
   {
     Empty,
@@ -45,11 +48,15 @@ private:
 
   inline const static Nc::Sprite2x3 s_wallSprite{ "███", "███", Nc::Color::White };
   inline const static Nc::Sprite2x3 s_breakableWallSprite{ "▚▞▚", "▚▞▚", Nc::Color::White };
+  inline const static Nc::Sprite2x3 s_explosionSprite{ "███", "███", Nc::Color::Fire };
 
   inline constexpr static int s_maxLengthArrays{ 64 };
 
   int m_levelNumber{};
   Tile m_map[Settings::mapRows][Settings::mapCols];
+
+  // Membri per la gestione del tempo (tempo inizile + tempo totale o tempo rimanente)
+  Clock::time_point m_startTime{};
 
   Bomb  m_bombs[s_maxLengthArrays]{};
   int   m_bombsSize{ 0 };
@@ -58,9 +65,8 @@ private:
   Enemy m_enemies[s_maxLengthArrays]{};
   int   m_enemiesSize{ 0 };
 
-  // Membri per la gestione del tempo (tempo inizile + tempo totale o tempo rimanente)
-  int s_time;
-  int m_time;
+  void handleBombExplosion(const Bomb& bomb);
+  void drawBombExplosion(const Bomb& bomb, Nc::Window& window);
 };
 
 #endif

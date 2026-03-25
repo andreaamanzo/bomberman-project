@@ -27,13 +27,13 @@ void Player::move(Direction dir)
   }
 }
 
-Bomb* Player::placeBomb()
+Bomb Player::placeBomb()
 {
-  if (m_placedBombs >= m_maxBombs) return nullptr;
+  if (m_placedBombs >= m_maxBombs) return Bomb{};
 
   m_placedBombs++;
   
-  return new Bomb{ m_x, m_y, m_bombRadius };
+  return Bomb{ m_x, m_y, m_bombRadius };
 }
 
 void Player::restoreBomb()

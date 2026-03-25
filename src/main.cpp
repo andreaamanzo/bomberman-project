@@ -19,11 +19,9 @@ int main()
   Nc::Window window{ Settings::mapWidth, Settings::mapHeight, w_startx, w_starty };
   window.setTitle("BOMBERMAN");
 
-  Level testLevel{ 0, "levels/level_01.txt" };
+  Level currLevel{ 0, "levels/level_01.txt" };
 
   Player player{ 5, 3, 2 };
-
-  Bomb* testBomb{ nullptr };
 
   bool running = true;
 
@@ -61,28 +59,27 @@ int main()
 
       case Nc::Key::E:
       case Nc::Key::Enter:
-        delete testBomb;
-        testBomb = player.placeBomb();
+      {
+        Bomb bomb = player.placeBomb();
+        if (bomb.getStatus() != Bomb::Status::Finished)
+          currLevel.addBomb(bomb);
+
         break;
+      }
         
       default:
         dir = Direction::None;
         break;
     }
 
-    player.move(dir);
-
     window.clear();
 
-    testLevel.drawWalls(window);
+    player.move(dir);
+    currLevel.handleBombs(player);
 
+    currLevel.drawWalls(window);
     player.draw(window);
-
-    if (testBomb)
-      testBomb->draw(window);
-
-    // per poter piazzare di nuvo la bomba: solo test
-    player.restoreBomb();
+    currLevel.drawBombs(window);
     
     window.display();
 

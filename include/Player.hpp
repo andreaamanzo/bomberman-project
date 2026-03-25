@@ -13,7 +13,7 @@ public:
   Player(int lives, int x, int y);
 
   void move(Direction dir);
-  Bomb* placeBomb();
+  Bomb placeBomb();
   void restoreBomb();
   void decreaseLife();
   void collectItem(const Item& item);
@@ -22,8 +22,8 @@ private:
   inline const static Nc::Sprite2x3 s_playerSprite{ "ʘ‿ʘ", "╰╩╯", Nc::Color::Green };
 
   int m_lives{};
-  int m_bombRadius{ 1 };
-  int m_maxBombs{ 1 };
+  int m_bombRadius{ 2 };
+  int m_maxBombs{ 2 };
   int m_placedBombs{ 0 };
 
   // List<Item> m_items

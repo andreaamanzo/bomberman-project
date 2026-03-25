@@ -1,4 +1,5 @@
 #include "Level.hpp"
+#include "Bomb.hpp"
 #include "NcFunctions.hpp"
 #include "Settings.hpp"
 #include "Window.hpp"
@@ -75,4 +76,148 @@ void Level::drawWalls(Nc::Window &window) const
         window.draw(s_breakableWallSprite, drawX, drawY);
     }
   }
+}
+
+void Level::addBomb(Bomb& bomb)
+{
+  if (m_bombsSize >= s_maxLengthArrays)
+    Nc::stopWithError(1, "Bombs array capacity exceeded.");
+
+  while (bomb.getX() % Settings::entityWidth != 0)
+    bomb.setPos(bomb.getX() + 1, bomb.getY());
+
+  while (bomb.getY() % Settings::entityHeight != 0)
+    bomb.setPos(bomb.getX(), bomb.getY() + 1);
+
+  m_bombs[m_bombsSize++] = bomb;
+}
+
+void Level::handleBombExplosion(const Bomb& bomb)
+{
+  int r = bomb.getRadius();
+  int x = bomb.getX() / Settings::entityWidth;
+  int y = bomb.getY() / Settings::entityHeight;
+
+  const int dirs[4][2] {
+    { 1,  0 },   // right
+    {-1,  0 },   // left
+    { 0, -1 },   // up
+    { 0,  1 }    // down
+  };
+
+  for (int d = 0; d < 4; d++)
+  {
+    for (int j = 1; j <= r; j++)
+    {
+      int nx = x + dirs[d][0] * j;
+      int ny = y + dirs[d][1] * j;
+
+      Tile& tile = m_map[ny][nx];
+
+      if (tile == Tile::Wall)
+        break;
+
+      if (tile == Tile::BreakableWall)
+      {
+        tile = Tile::Empty;
+        break;
+      }
+    }
+  }
+}
+
+void Level::drawBombExplosion(const Bomb& bomb, Nc::Window& window)
+{
+  int r = bomb.getRadius();
+  int x = bomb.getX() / Settings::entityWidth;
+  int y = bomb.getY() / Settings::entityHeight;
+
+  const int dirs[4][2] {
+    { 1,  0 },   // right
+    {-1,  0 },   // left
+    { 0, -1 },   // up
+    { 0,  1 }    // down
+  };
+
+  window.draw(s_explosionSprite, x * Settings::entityWidth, y * Settings::entityHeight);
+
+  for (int d = 0; d < 4; d++)
+  {
+    for (int j = 1; j <= r; j++)
+    {
+      int nx = x + dirs[d][0] * j;
+      int ny = y + dirs[d][1] * j;
+
+      Tile& tile = m_map[ny][nx];
+
+      if (tile == Tile::Wall)
+        break;
+
+      if (tile == Tile::BreakableWall)
+      {
+        window.draw(s_explosionSprite, nx * Settings::entityWidth, ny * Settings::entityHeight);
+        break;
+      }
+
+      if (tile == Tile::Empty)
+        window.draw(s_explosionSprite, nx * Settings::entityWidth, ny * Settings::entityHeight);
+    }
+  }
+}
+
+bool Level::handleBombs(Player& player)
+{
+  // manca da controllare la collisone con il player
+  bool hitPlayer = false;
+
+  for (int i = 0; i < m_bombsSize; i++)
+  {
+    Bomb& bomb = m_bombs[i];
+    switch (bomb.getStatus())
+    {
+    case Bomb::Status::Placed:
+      break;
+
+    case Bomb::Status::Exploding:
+      break;
+
+    case Bomb::Status::Finished:
+      handleBombExplosion(bomb);
+
+      m_bombsSize--;
+      for (int j = i; j < m_bombsSize; j++)
+        m_bombs[j] = m_bombs[j+1];
+
+      player.restoreBomb();
+      break;      
+    }
+  }
+
+  return hitPlayer;
+} 
+
+void Level::drawBombs(Nc::Window& window)
+{
+  for (int i = 0; i < m_bombsSize; i++)
+  {
+    Bomb& bomb = m_bombs[i];
+    switch (bomb.getStatus())
+    {
+    case Bomb::Status::Placed:
+      bomb.draw(window);
+      break;
+
+    case Bomb::Status::Exploding:
+      drawBombExplosion(bomb, window);
+      break;
+
+    case Bomb::Status::Finished:
+      break;
+    }
+  }
+}
+
+int Level::getLevelNumber() const
+{
+  return m_levelNumber;
 }
