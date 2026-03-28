@@ -55,7 +55,7 @@ private:
   int m_levelNumber{};
   Tile m_map[Settings::mapRows][Settings::mapCols];
 
-  // Membri per la gestione del tempo (tempo inizile + tempo totale o tempo rimanente)
+  // Membri per la gestione del tempo (tempo iniziale + tempo totale o tempo rimanente)
   Clock::time_point m_startTime{};
 
   Bomb  m_bombs[s_maxLengthArrays]{};

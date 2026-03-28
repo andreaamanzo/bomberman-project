@@ -13,7 +13,7 @@ public:
   void move();
 
 private:
-  
+
 };
 
 //possible enemy sprite : inline const static Nc::Sprite2x3 e_sprite{ L"°|°", L"/ \\ ", Nc::Color::Red };

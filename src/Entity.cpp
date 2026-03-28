@@ -21,3 +21,12 @@ void Entity::setPos(int x, int y)
   m_x = x;
   m_y = y;
 }
+
+bool Entity::collide(const Entity& other)
+{
+  int width{ 3 };
+  int height{ 2 };
+  
+  return m_x + width > other.m_x && m_y + height > other.m_y &&
+         m_x < other.m_x + width && m_y < other.m_y + height;
+}
