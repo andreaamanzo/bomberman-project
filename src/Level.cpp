@@ -221,3 +221,9 @@ int Level::getLevelNumber() const
 {
   return m_levelNumber;
 }
+
+bool Level::checkWallCollision(const Entity& entity) const
+{
+  // TODO
+  return false;
+}

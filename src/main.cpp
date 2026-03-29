@@ -5,6 +5,7 @@
 #include "Settings.hpp"
 #include "Level.hpp"
 #include "Bomb.hpp"
+#include "Enemy.hpp"
 
 int main() 
 {
@@ -22,6 +23,7 @@ int main()
   Level currLevel{ 0, "levels/level_01.txt" };
 
   Player player{ 5, 3, 2 };
+  Enemy enemyTest{ 9, 14 };
 
   bool running = true;
 
@@ -75,10 +77,14 @@ int main()
     window.clear();
 
     player.move(dir);
+    if (player.collide(enemyTest))
+      player.move(getOppositeDir(dir));
+
     currLevel.handleBombs(player);
 
     currLevel.drawWalls(window);
     player.draw(window);
+    enemyTest.draw(window);
     currLevel.drawBombs(window);
     
     window.display();

@@ -13,7 +13,7 @@ public:
   int getX() const;
   int getY() const;
   void setPos(int x, int y);
-  bool collide(const Entity& other);
+  bool collide(const Entity& other) const;
 
 protected:
   Nc::Sprite2x3 m_sprite{ "   ", "   ", Nc::Color::Default };
