@@ -5,6 +5,7 @@
 #include "Settings.hpp"
 #include "Level.hpp"
 #include "Bomb.hpp"
+#include "Enemy.hpp"
 
 int main() 
 {
@@ -74,7 +75,7 @@ int main()
 
     window.clear();
 
-    player.move(dir);
+    currLevel.movePlayer(player, dir);
     currLevel.handleBombs(player);
 
     currLevel.drawWalls(window);

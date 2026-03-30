@@ -4,7 +4,7 @@
 #include "Level.hpp"
 #include "Sprite2x3.hpp"
 
-Enemy::Enemy(const Nc::Sprite2x3& s_enemySprite, int x, int y )
+Enemy::Enemy(int x, int y )
 : Entity{s_enemySprite, x, y}
 {}
 

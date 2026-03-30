@@ -1,5 +1,6 @@
 #include "Entity.hpp"
 #include "NcWrapper.hpp"
+#include "Settings.hpp"
 
 Entity::Entity(const Nc::Sprite2x3& sprite, int x, int y)
   : m_sprite{ sprite }
@@ -22,10 +23,10 @@ void Entity::setPos(int x, int y)
   m_y = y;
 }
 
-bool Entity::collide(const Entity& other)
+bool Entity::collide(const Entity& other) const
 {
-  int width{ 3 };
-  int height{ 2 };
+  int width{ Settings::entityWidth };
+  int height{ Settings::entityHeight };
   
   return m_x + width > other.m_x && m_y + height > other.m_y &&
          m_x < other.m_x + width && m_y < other.m_y + height;

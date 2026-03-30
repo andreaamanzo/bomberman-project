@@ -20,7 +20,7 @@ public:
   Status getStatus();
   int getRadius() const;
   
-  private:
+private:
   using Clock = std::chrono::steady_clock;
   
   inline const static Nc::Color s_color1{ Nc::Color::Orange };
