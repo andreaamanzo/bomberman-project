@@ -36,6 +36,7 @@ public:
   void pause(); // mette il livello in pausa
   void start(); // opposto a pause
 
+  void update(); //funzione per aggiornare condizioni del livello
 private:
   using Clock = std::chrono::steady_clock;
 
@@ -64,6 +65,7 @@ private:
   int   m_itemsSize{ 0 };
   Enemy m_enemies[s_maxLengthArrays]{};
   int   m_enemiesSize{ 0 };
+  Enemy m_enemy;
 
   void handleBombExplosion(const Bomb& bomb);
   void drawBombExplosion(const Bomb& bomb, Nc::Window& window);

@@ -1,5 +1,6 @@
 #include "Level.hpp"
 #include "Bomb.hpp"
+#include "Enemy.hpp"
 #include "NcFunctions.hpp"
 #include "Settings.hpp"
 #include "Window.hpp"
@@ -8,7 +9,7 @@
 
 // ALE: utilizzata ai per imparare utilizzo ifstram e capire utilizzo generale delle librerie
 Level::Level(int levelNumber, const char* mapFilePath) 
-  : m_levelNumber{ levelNumber } 
+  : m_levelNumber{ levelNumber } , m_enemy(Enemy::s_enemySprite, 100, 200)
 {
   // leggo il file con ifstram
   std::ifstream file{ mapFilePath };
@@ -220,4 +221,9 @@ void Level::drawBombs(Nc::Window& window)
 int Level::getLevelNumber() const
 {
   return m_levelNumber;
+}
+
+void Level::update() {
+  m_enemy.move();
+  (m_map[m_enemy.getY()][m_enemy.getX()] == Level::Tile::Wall
 }
