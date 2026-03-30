@@ -1,8 +1,8 @@
 #include "Level.hpp"
 #include "Bomb.hpp"
-#include "NcFunctions.hpp"
 #include "Settings.hpp"
-#include "Window.hpp"
+#include "NcWrapper.hpp"
+#include "Direction.hpp"
 #include <fstream>
 #include <iostream>
 
@@ -222,8 +222,39 @@ int Level::getLevelNumber() const
   return m_levelNumber;
 }
 
+bool Level::checkIsWall(int x, int y) const
+{
+  return m_map[y][x] == Tile::Wall || m_map[y][x] == Tile::BreakableWall;
+}
+
 bool Level::checkWallCollision(const Entity& entity) const
 {
-  // TODO
+  int width{ Settings::entityWidth };
+  int height{ Settings::entityHeight };
+
+  int x = entity.getX();
+  int y = entity.getY();
+
+  if (checkIsWall(x / width, y / height)) return true;
+
+  if (x % width != 0 && y % height != 0)
+    if (checkIsWall(x / width + 1, y / height + 1)) return true;
+
+  if (x % width != 0)
+    if (checkIsWall(x / width + 1, y / height)) return true;
+
+  if (y % height != 0)
+    if (checkIsWall(x / width, y / height + 1)) return true;
+  
   return false;
+}
+
+void Level::movePlayer(Player& player, Direction dir)
+{
+  player.move(dir);
+    
+  if (checkWallCollision(player))
+    player.move(getOppositeDir(dir));
+
+  // TODO controllare le collisioni con i nemici / bombe
 }

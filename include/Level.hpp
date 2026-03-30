@@ -7,6 +7,7 @@
 #include "Player.hpp"
 #include "Item.hpp"
 #include "Enemy.hpp"
+#include "Direction.hpp"
 #include <chrono>
 
 class Level 
@@ -24,6 +25,7 @@ public:
   Item getItem(int x, int y); 
 
   void moveEnemies();
+  void movePlayer(Player& player, Direction dir);
   void addBomb(Bomb& bomb);
 
   // gestisce automaticamente esplosioni di muri e nemici, return true se colpisce il player
@@ -67,6 +69,7 @@ private:
 
   void handleBombExplosion(const Bomb& bomb);
   void drawBombExplosion(const Bomb& bomb, Nc::Window& window);
+  bool checkIsWall(int x, int y) const;
 };
 
 #endif
