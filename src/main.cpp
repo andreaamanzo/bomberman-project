@@ -94,24 +94,6 @@ int main()
     currLevel->drawWalls(window);
     player.draw(window);
     currLevel->drawBombs(window);
-
-    // test levelList
-
-    if (player.getX() == 6)
-    {
-      levelList.goNext();
-      currLevel = levelList.getLevel();
-    }
-    else if (player.getX() == 9)
-    {
-      levelList.goBack();
-      currLevel = levelList.getLevel();
-    }
-    else if (player.getX() == 12)
-    {
-      levelList.removeCurrent();
-      currLevel = levelList.getLevel();
-    }
     
     window.display();
 
