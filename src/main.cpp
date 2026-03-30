@@ -3,9 +3,12 @@
 #include "NcWrapper.hpp"
 #include "Direction.hpp"
 #include "Settings.hpp"
+#include "LevelList.hpp"
 #include "Level.hpp"
 #include "Bomb.hpp"
 #include "Enemy.hpp"
+
+#include <iostream>
 
 int main() 
 {
@@ -20,7 +23,11 @@ int main()
   Nc::Window window{ Settings::mapWidth, Settings::mapHeight, w_startx, w_starty };
   window.setTitle("BOMBERMAN");
 
-  Level currLevel{ 0, "levels/level_01.txt" };
+  constexpr int numLevels{ 2 };
+  const char* paths[numLevels]{ "levels/level_01.txt", "levels/level_02.txt" };
+
+  LevelList levelList{ paths, numLevels };
+  Level* currLevel{ levelList.getLevel() };
 
   Player player{ 5, 3, 2 };
 
@@ -28,6 +35,12 @@ int main()
 
   while (running)
   {
+    if (!currLevel)
+    {
+      Nc::stopWithError(0, "No more levels");
+      continue; // non servirebbe ma per chiarezza
+    }
+
     Nc::Key key{ Nc::getKeyPressed() };
     Direction dir;
 
@@ -63,7 +76,7 @@ int main()
       {
         Bomb bomb = player.placeBomb();
         if (bomb.getStatus() != Bomb::Status::Finished)
-          currLevel.addBomb(bomb);
+          currLevel->addBomb(bomb);
 
         break;
       }
@@ -75,12 +88,30 @@ int main()
 
     window.clear();
 
-    currLevel.movePlayer(player, dir);
-    currLevel.handleBombs(player);
+    currLevel->movePlayer(player, dir);
+    currLevel->handleBombs(player);
 
-    currLevel.drawWalls(window);
+    currLevel->drawWalls(window);
     player.draw(window);
-    currLevel.drawBombs(window);
+    currLevel->drawBombs(window);
+
+    // test levelList
+
+    if (player.getX() == 6)
+    {
+      levelList.goNext();
+      currLevel = levelList.getLevel();
+    }
+    else if (player.getX() == 9)
+    {
+      levelList.goBack();
+      currLevel = levelList.getLevel();
+    }
+    else if (player.getX() == 12)
+    {
+      levelList.removeCurrent();
+      currLevel = levelList.getLevel();
+    }
     
     window.display();
 

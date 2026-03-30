@@ -1,4 +1,28 @@
-#include <LevelList.hpp>
+#include "LevelList.hpp"
+#include <iostream>
+
+LevelList::LevelList(const char* levelPaths[], int numLevels)
+{
+  if ( numLevels <= 0)
+  {
+    m_currentLevel = nullptr;
+    m_size = 0;
+
+    return;
+  }
+
+  Node* current{ new Node{Level(1, levelPaths[0]), nullptr, nullptr} };
+  m_currentLevel = current;
+
+  for (int i{ 1 } ; i < numLevels ; i++)
+  {
+    Node* next{ new Node{Level(i + 1, levelPaths[i]), current, nullptr} };
+    current -> next = next;
+    current = next;
+  }
+
+  m_size = numLevels;
+}
 
 LevelList::~LevelList()
 {
@@ -63,7 +87,12 @@ int LevelList::size() const
 
 Level* LevelList::getLevel()
 {
-  if (m_currentLevel == nullptr) return nullptr;
+  if (m_currentLevel == nullptr)
+  {
+    std::cerr << "null ptr\n";
+    return nullptr;
+  }
+  
 
   return &(m_currentLevel->val);
 }

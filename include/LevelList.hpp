@@ -7,7 +7,7 @@ class LevelList
 {
 public:
   // constructor di default
-  LevelList(char* levelPaths[], int numLevels);
+  LevelList(const char* levelPaths[], int numLevels);
 
   // delete del copy constructor per evitare warning del copilatore
   LevelList(const LevelList&) = delete;
@@ -39,8 +39,8 @@ private:
   struct Node
   {
     Level val;
-    Node* next{ nullptr };
     Node* prev{ nullptr };
+    Node* next{ nullptr };
   };
 
   Node* m_currentLevel{ nullptr };

@@ -8,21 +8,18 @@
 class Enemy : public Entity 
 {
 public:
-//TODO: copiare enum da item
-Enemy() = default;
-Enemy(int x, int y);
+  //TODO: copiare enum da item
+  Enemy() = default;
+  Enemy(int x, int y);
 
-void setDirection(int newDirection) {
-  m_direction = newDirection;
-}
-void move();
+  void setDirection(Direction newDirection); // ! ALEGODA !! cosa metti le funzioni nel .hpp you fucking retarded
+  void move();
 
 private:
   inline const static Nc::Sprite2x3 s_enemySprite{ "°|°", "/ \\ ", Nc::Color::Red };
-  int m_direction{0}; //0 lx, 1 up, 2 rx, 3 dw
+
+  Direction m_direction{ Direction::Left };
 
 };
-
-
 
 #endif
