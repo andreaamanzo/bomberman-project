@@ -20,7 +20,9 @@ public:
   void drawBombs(Nc::Window& window);
   void drawItems(Nc::Window& window) const;
   bool checkWallCollision(const Entity& entity) const;
-  
+  bool checkDoorNextCollision(const Entity& entity) const;
+  bool checkDoorPrevCollision(const Entity& entity) const;
+
   // restituisce l'item alle coordinate passate, se non c'è nessun item return item nullo
   Item getItem(int x, int y); 
 
@@ -47,11 +49,17 @@ private:
     Empty,
     Wall,
     BreakableWall,
+    DoorNext,
+    DoorPrev,
   };
 
   inline const static Nc::Sprite2x3 s_wallSprite{ "███", "███", Nc::Color::White };
   inline const static Nc::Sprite2x3 s_breakableWallSprite{ "▚▞▚", "▚▞▚", Nc::Color::White };
   inline const static Nc::Sprite2x3 s_explosionSprite{ "███", "███", Nc::Color::Fire };
+  inline const static Nc::Sprite2x3 s_doorNext{ " ⌼", " ⌼", Nc::Color::Orange };
+  inline const static Nc::Sprite2x3 s_doorPrev{ " ▣", " ▣", Nc::Color::Magenta };
+
+
 
   inline constexpr static int s_maxLengthArrays{ 64 };
 
@@ -72,6 +80,10 @@ private:
   void handleBombExplosion(const Bomb& bomb);
   void drawBombExplosion(const Bomb& bomb, Nc::Window& window);
   bool checkIsWall(int x, int y) const;
+  bool checkIsDoorNext(int x, int y) const;
+  bool checkIsDoorPrev(int x, int y) const;
+
 };
+
 
 #endif

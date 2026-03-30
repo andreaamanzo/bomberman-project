@@ -1,6 +1,8 @@
 #include "Level.hpp"
 #include "Bomb.hpp"
 #include "Enemy.hpp"
+#include "LevelList.hpp"
+#include "Player.hpp"
 #include "Settings.hpp"
 #include "NcWrapper.hpp"
 #include "Direction.hpp"
@@ -42,7 +44,10 @@ Level::Level(int levelNumber, const char* mapFilePath)
         m_map[nrow][nchar] = Tile::Wall;
       else if (c == '#')
         m_map[nrow][nchar] = Tile::BreakableWall;
-      // else if (c == 'O') m_map[nrow][nchar] = Tile::Door;
+      else if 
+        (c == 'O') m_map[nrow][nchar] = Tile::DoorNext;
+      else if 
+        (c == 'P') m_map[nrow][nchar] = Tile::DoorPrev;
       else
         m_map[nrow][nchar] = Tile::Empty;
 
@@ -72,6 +77,12 @@ void Level::drawWalls(Nc::Window &window) const
 
       if (m_map[y][x] == Tile::Wall)
         window.draw(s_wallSprite, drawX, drawY);
+
+      else if (m_map[y][x] == Tile::DoorNext)
+        window.draw(s_doorNext, drawX, drawY);
+      
+      else if (m_map[y][x] == Tile::DoorPrev)
+        window.draw(s_doorPrev, drawX, drawY);
 
       else if (m_map[y][x] == Tile::BreakableWall)
         window.draw(s_breakableWallSprite, drawX, drawY);
@@ -228,6 +239,16 @@ bool Level::checkIsWall(int x, int y) const
   return m_map[y][x] == Tile::Wall || m_map[y][x] == Tile::BreakableWall;
 }
 
+bool Level::checkIsDoorNext(int x, int y) const
+{
+  return m_map[y][x] == Tile::DoorNext;
+}
+
+bool Level::checkIsDoorPrev(int x, int y) const
+{
+  return m_map[y][x] == Tile::DoorPrev;
+}
+
 bool Level::checkWallCollision(const Entity& entity) const
 {
   int width{ Settings::entityWidth };
@@ -246,6 +267,50 @@ bool Level::checkWallCollision(const Entity& entity) const
 
   if (y % height != 0)
     if (checkIsWall(x / width, y / height + 1)) return true;
+  
+  return false;
+}
+
+bool Level::checkDoorNextCollision(const Entity& entity) const
+{
+  int width{ Settings::entityWidth };
+  int height{ Settings::entityHeight };
+
+  int x = entity.getX();
+  int y = entity.getY();
+
+  if (checkIsDoorNext(x / width, y / height)) return true;
+
+  if (x % width != 0 && y % height != 0)
+    if (checkIsDoorNext(x / width + 1, y / height + 1)) return true;
+
+  if (x % width != 0)
+    if (checkIsDoorNext(x / width + 1, y / height)) return true;
+
+  if (y % height != 0)
+    if (checkIsDoorNext(x / width, y / height + 1)) return true;
+  
+  return false;
+}
+
+bool Level::checkDoorPrevCollision(const Entity& entity) const
+{
+  int width{ Settings::entityWidth };
+  int height{ Settings::entityHeight };
+
+  int x = entity.getX();
+  int y = entity.getY();
+
+  if (checkIsDoorPrev(x / width, y / height)) return true;
+
+  if (x % width != 0 && y % height != 0)
+    if (checkIsDoorPrev(x / width + 1, y / height + 1)) return true;
+
+  if (x % width != 0)
+    if (checkIsDoorPrev(x / width + 1, y / height)) return true;
+
+  if (y % height != 0)
+    if (checkIsDoorPrev(x / width, y / height + 1)) return true;
   
   return false;
 }

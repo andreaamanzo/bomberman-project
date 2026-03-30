@@ -1,4 +1,5 @@
 #include "ColorPair.hpp"
+#include "NcTypes.hpp"
 
 namespace Nc
 {

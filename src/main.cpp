@@ -97,6 +97,21 @@ int main()
     
     window.display();
 
+    if (currLevel->checkDoorNextCollision(player) == true) {
+      levelList.goNext();
+      Level *preLevel = currLevel;
+      currLevel = levelList.getLevel();
+      if (currLevel != preLevel)
+       player.setPos(3, 2);
+    }
+
+    if (currLevel->checkDoorPrevCollision(player) == true) {
+      levelList.goBack();
+      currLevel = levelList.getLevel();
+      //implementare un metodo che prende l'ultima valida posizione (prima di entrare in una porta)
+      //da settare come posizione nella porta precedente
+    }
+
     Nc::sleepFor(20);
   }
 
