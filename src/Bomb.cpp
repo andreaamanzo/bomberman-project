@@ -62,3 +62,33 @@ int Bomb::getRadius() const
   return m_radius;
 }
 
+bool Bomb::hasExploded() const
+{
+  return m_hasExploded;
+}
+
+void Bomb::setExploded(bool set)
+{
+  m_hasExploded = set;
+}
+
+const Nc::Point* Bomb::getExplosionCells() const
+{
+  return m_explosionCells;
+}
+
+int Bomb::getExplosionCount() const
+{
+  return m_explosionCount;
+}
+
+void Bomb::setExplosionCells(const Nc::Point cells[], int count)
+{
+  if (count > s_maxExplosionCells)
+    count = s_maxExplosionCells; // sicurezza
+
+  m_explosionCount = count;
+
+  for (int i = 0; i < count; i++)
+    m_explosionCells[i] = cells[i];
+}

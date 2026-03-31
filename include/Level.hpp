@@ -34,8 +34,8 @@ public:
   void movePlayer(Player& player, Direction dir);
   void addBomb(Bomb& bomb);
 
-  // gestisce automaticamente esplosioni di muri e nemici, return true se colpisce il player
-  bool handleBombs(Player& player); 
+  // gestisce automaticamente esplosioni di muri e nemici, e hit player
+  void handleBombs(Player& player); 
 
   int  getLevelNumber() const;
 
@@ -62,9 +62,6 @@ private:
   inline const static Nc::Sprite2x3 s_explosionSprite{ "███", "███", Nc::Color::Fire };
   inline const static Nc::Sprite2x3 s_doorNextSprite{ "-⌼-", "-⌼-", Nc::Color::Sky, Nc::Color::Black };
   inline const static Nc::Sprite2x3 s_doorPrevSprite{ "-▣-", "-▣-", Nc::Color::Magenta, Nc::Color::Black };
-  inline const static Nc::Sprite2x3 s_enemy1{ "°|°", "/ \\ ", Nc::Color::Red };
-  inline const static Nc::Sprite2x3 s_enemy2{ "ò_ó", "###", Nc::Color::Red };
-
 
   inline constexpr static int s_maxLengthArrays{ 64 };
 
@@ -85,8 +82,9 @@ private:
   Enemy m_enemies[s_maxLengthArrays]{};
   int   m_enemiesSize{ 0 };
 
-  void handleBombExplosion(const Bomb& bomb);
-  void drawBombExplosion(const Bomb& bomb, Nc::Window& window);
+  void getExplosionCells(const Bomb& bomb, Nc::Point cells[], int& count) const;
+  void applyExplosion(const Nc::Point cells[], int count, Player& player);
+  void drawExplosion(const Nc::Point cells[], int count, Nc::Window& window);
   bool checkIsWall(int x, int y) const;
 };
 

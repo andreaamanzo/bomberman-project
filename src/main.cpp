@@ -1,12 +1,10 @@
-#include "NcTypes.hpp"
-#include "Player.hpp"
 #include "NcWrapper.hpp"
+#include "Player.hpp"
 #include "Direction.hpp"
 #include "Settings.hpp"
 #include "LevelList.hpp"
 #include "Level.hpp"
 #include "Bomb.hpp"
-#include "Enemy.hpp"
 
 #include <iostream>
 
@@ -38,6 +36,12 @@ int main()
     if (!currLevel)
     {
       Nc::stopWithError(0, "No more levels");
+      continue; // non servirebbe ma per chiarezza
+    }
+
+    if (!player.isAlive())
+    {
+      Nc::stopWithError(0, "Game over");
       continue; // non servirebbe ma per chiarezza
     }
 
@@ -92,10 +96,10 @@ int main()
     currLevel->moveEnemies();
     currLevel->handleBombs(player);
 
-    currLevel->drawWalls(window);
     player.draw(window);
-    currLevel->drawBombs(window);
     currLevel->drawEnemies(window);
+    currLevel->drawWalls(window);
+    currLevel->drawBombs(window);
     
     window.display();
 

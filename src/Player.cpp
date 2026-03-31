@@ -4,6 +4,7 @@
 Player::Player(int lives, int x, int y)
   : Entity{ s_playerSprite, x, y }
   , m_lives{ lives }
+  , m_respownPoint{ x, y }
 { }
 
 void Player::move(Direction dir)
@@ -40,4 +41,20 @@ void Player::restoreBomb()
 {
   if (m_placedBombs > 0)
     m_placedBombs--;
+}
+
+void Player::setRespownPoint(int x, int y)
+{
+  m_respownPoint = { x, y };
+}
+
+void Player::onHit()
+{
+  m_lives--;
+  setPos(m_respownPoint.x, m_respownPoint.y);
+}
+
+bool Player::isAlive() const 
+{
+  return m_lives > 0;
 }

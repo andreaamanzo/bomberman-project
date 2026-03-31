@@ -1,14 +1,14 @@
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 X                     X                X
 P                     XX               X
-X                                      X
+X         1                            X
 X####  ###X  X            XXXXX        X
 X                               X      X
 X     X  #    XX        1              O
 X X           #    ##       X      X   X
 X     X                         X      X
 XXXXXXX  XX                #XXX     XXXX
-X                                      X
+X         2                            X
 X             X     ##    #X    # ##   X
 X         X           XX           X   X
 X    X   X     #X              X       X
@@ -16,5 +16,5 @@ X         #                     X      X
 X        ##          ####  #           X
 X X   ###   #X  2             X   X    X
 X          #        #                  X
-X#       #                     X       X
+X#     2 #                     X       X
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
