@@ -8,6 +8,7 @@ class Entity
 public:
   Entity() = default;
   Entity(const Nc::Sprite2x3& sprite, int x = 0, int y = 0);
+  Entity(int x, int y);
 
   void draw(Nc::Window& window) const;
   int getX() const;

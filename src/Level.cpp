@@ -40,16 +40,26 @@ Level::Level(int levelNumber, const char* mapFilePath)
     } 
     else 
     {
-      if (c == 'X')
+      switch (c)
+      {
+      case 'X':
         m_map[nrow][nchar] = Tile::Wall;
-      else if (c == '#')
+        break;
+      case '#':
         m_map[nrow][nchar] = Tile::BreakableWall;
-      else if 
-        (c == 'O') m_map[nrow][nchar] = Tile::DoorNext;
-      else if 
-        (c == 'P') m_map[nrow][nchar] = Tile::DoorPrev;
-      else
+        break;
+      case 'O':
+        m_map[nrow][nchar] = Tile::DoorNext;
+        m_doorNextPos = { nchar * Settings::entityWidth, nrow * Settings::entityHeight };
+        break;
+      case 'P':
+        m_map[nrow][nchar] = Tile::DoorPrev;
+        m_doorPrevPos = { nchar * Settings::entityWidth, nrow * Settings::entityHeight };
+        break;
+      default:
         m_map[nrow][nchar] = Tile::Empty;
+        break;
+      }
 
       nchar++;
     }
@@ -79,10 +89,10 @@ void Level::drawWalls(Nc::Window &window) const
         window.draw(s_wallSprite, drawX, drawY);
 
       else if (m_map[y][x] == Tile::DoorNext)
-        window.draw(s_doorNext, drawX, drawY);
+        window.draw(s_doorNextSprite, drawX, drawY);
       
       else if (m_map[y][x] == Tile::DoorPrev)
-        window.draw(s_doorPrev, drawX, drawY);
+        window.draw(s_doorPrevSprite, drawX, drawY);
 
       else if (m_map[y][x] == Tile::BreakableWall)
         window.draw(s_breakableWallSprite, drawX, drawY);
@@ -234,19 +244,33 @@ int Level::getLevelNumber() const
   return m_levelNumber;
 }
 
+bool Level::shouldGoNextLevel() const
+{
+  return m_shouldGoNext;
+}
+
+bool Level::shouldGoPrevLevel() const
+{
+  return m_shouldGoPrev;
+}
+
+Nc::Point Level::getDoorPrevPos() const
+{
+  return m_doorPrevPos;
+}
+
+Nc::Point Level::getDoorNextPos () const
+{
+  return m_doorNextPos;
+}
+
 bool Level::checkIsWall(int x, int y) const
 {
-  return m_map[y][x] == Tile::Wall || m_map[y][x] == Tile::BreakableWall;
-}
-
-bool Level::checkIsDoorNext(int x, int y) const
-{
-  return m_map[y][x] == Tile::DoorNext;
-}
-
-bool Level::checkIsDoorPrev(int x, int y) const
-{
-  return m_map[y][x] == Tile::DoorPrev;
+  return 
+    m_map[y][x] == Tile::Wall || 
+    m_map[y][x] == Tile::BreakableWall ||
+    m_map[y][x] == Tile::DoorNext ||
+    m_map[y][x] == Tile::DoorPrev;
 }
 
 bool Level::checkWallCollision(const Entity& entity) const
@@ -273,54 +297,46 @@ bool Level::checkWallCollision(const Entity& entity) const
 
 bool Level::checkDoorNextCollision(const Entity& entity) const
 {
-  int width{ Settings::entityWidth };
-  int height{ Settings::entityHeight };
-
-  int x = entity.getX();
-  int y = entity.getY();
-
-  if (checkIsDoorNext(x / width, y / height)) return true;
-
-  if (x % width != 0 && y % height != 0)
-    if (checkIsDoorNext(x / width + 1, y / height + 1)) return true;
-
-  if (x % width != 0)
-    if (checkIsDoorNext(x / width + 1, y / height)) return true;
-
-  if (y % height != 0)
-    if (checkIsDoorNext(x / width, y / height + 1)) return true;
-  
-  return false;
+  Entity door{ m_doorNextPos.x, m_doorNextPos.y };
+  // std::cerr << door.getX() << " " << door.getY() << "\n";
+  return entity.collide(door);
 }
 
 bool Level::checkDoorPrevCollision(const Entity& entity) const
 {
-  int width{ Settings::entityWidth };
-  int height{ Settings::entityHeight };
-
-  int x = entity.getX();
-  int y = entity.getY();
-
-  if (checkIsDoorPrev(x / width, y / height)) return true;
-
-  if (x % width != 0 && y % height != 0)
-    if (checkIsDoorPrev(x / width + 1, y / height + 1)) return true;
-
-  if (x % width != 0)
-    if (checkIsDoorPrev(x / width + 1, y / height)) return true;
-
-  if (y % height != 0)
-    if (checkIsDoorPrev(x / width, y / height + 1)) return true;
-  
-  return false;
+  Entity door{ m_doorPrevPos.x, m_doorPrevPos.y };
+  return entity.collide(door);
 }
 
 void Level::movePlayer(Player& player, Direction dir)
 {
   player.move(dir);
     
+  if (checkDoorNextCollision(player))
+    m_shouldGoNext = true;
+  else 
+    m_shouldGoNext = false;
+
+  if (checkDoorPrevCollision(player))
+    m_shouldGoPrev = true;
+  else 
+    m_shouldGoPrev = false;
+
   if (checkWallCollision(player))
     player.move(getOppositeDir(dir));
 
   // TODO controllare le collisioni con i nemici / bombe
+}
+
+void Level::start()
+{
+  m_shouldGoNext = false;
+  m_shouldGoPrev = false;
+
+  // start tempo e altra roba (?)
+}
+
+void Level::pause()
+{
+  // stop del tempo
 }

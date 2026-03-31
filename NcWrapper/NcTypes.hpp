@@ -40,7 +40,9 @@ namespace Nc
     Sky,
     Purple,
     Gold,
-    Fire
+    Fire,
+    LightBrown,
+    Brick
   };
 
   struct Point

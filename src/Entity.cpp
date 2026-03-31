@@ -8,6 +8,11 @@ Entity::Entity(const Nc::Sprite2x3& sprite, int x, int y)
   , m_y{ y }
 { }
 
+Entity::Entity(int x, int y)
+  : m_x{ x }
+  , m_y{ y }
+{ }
+
 void Entity::draw(Nc::Window& window) const
 {
   window.draw(m_sprite, m_x, m_y);

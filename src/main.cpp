@@ -97,19 +97,30 @@ int main()
     
     window.display();
 
-    if (currLevel->checkDoorNextCollision(player) == true) {
+    if (currLevel->shouldGoNextLevel()) 
+    {
+      currLevel->pause();
       levelList.goNext();
-      Level *preLevel = currLevel;
       currLevel = levelList.getLevel();
-      if (currLevel != preLevel)
-       player.setPos(3, 2);
+      if (currLevel)
+      {
+        currLevel->start();
+        Nc::Point pos = currLevel->getDoorPrevPos();
+        player.setPos(pos.x + Settings::entityWidth, pos.y);
+      }
     }
 
-    if (currLevel->checkDoorPrevCollision(player) == true) {
+    if (currLevel->shouldGoPrevLevel()) 
+    {
+      currLevel->pause();
       levelList.goBack();
       currLevel = levelList.getLevel();
-      //implementare un metodo che prende l'ultima valida posizione (prima di entrare in una porta)
-      //da settare come posizione nella porta precedente
+      if (currLevel)
+      {
+        currLevel->start();
+        Nc::Point pos = currLevel->getDoorNextPos();
+        player.setPos(pos.x - Settings::entityWidth, pos.y);
+      }
     }
 
     Nc::sleepFor(20);

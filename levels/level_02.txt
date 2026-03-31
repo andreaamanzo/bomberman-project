@@ -4,7 +4,7 @@ P                     XX               X
 X                                      X
 X####  ###X  X            XXXXX        X
 X                               X      X
-X     X  #    XX                       X
+X     X  #    XX                       O
 X X           #    ##       X      X   X
 X     X                         X      X
 XXXXXXX  XX                #XXX     XXXX
@@ -17,4 +17,4 @@ X        ##          ####  #           X
 X X   ###   #X                X   X    X
 X          #        #                  X
 X#       #                     X       X
-XXXXXXXXXXXXXXXXXXXXXXXXXXOXXXXXXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX

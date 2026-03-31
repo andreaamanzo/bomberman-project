@@ -39,6 +39,8 @@ namespace Nc
     init_color(14, 600, 200, 900);  // Purple
     init_color(15, 1000, 800, 200); // Gold
     init_color(16, 1000, 300, 0);   // Fire
+    init_color(17,  800, 600, 300); // Light Brown
+    init_color(18,  650, 300, 150); // Brick
   }
 
   void init()
