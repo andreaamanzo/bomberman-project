@@ -6,6 +6,7 @@
 #include "Settings.hpp"
 #include "NcWrapper.hpp"
 #include "Direction.hpp"
+#include "Window.hpp"
 #include <fstream>
 #include <iostream>
 
@@ -56,6 +57,14 @@ Level::Level(int levelNumber, const char* mapFilePath)
         m_map[nrow][nchar] = Tile::DoorPrev;
         m_doorPrevPos = { nchar * Settings::entityWidth, nrow * Settings::entityHeight };
         break;
+      case '1':
+        m_enemies[m_enemiesSize++] = Enemy(Enemy::Type::First_Enemy, nchar * Settings::entityWidth, nrow * Settings::entityHeight);
+        m_map[nrow][nchar] = Tile::Empty;        
+        break;        
+      case '2':
+        m_enemies[m_enemiesSize++] = Enemy(Enemy::Type::Second_Enemy, nchar * Settings::entityWidth, nrow * Settings::entityHeight);
+        m_map[nrow][nchar] = Tile::Empty;
+        break;        
       default:
         m_map[nrow][nchar] = Tile::Empty;
         break;
@@ -95,7 +104,7 @@ void Level::drawWalls(Nc::Window &window) const
         window.draw(s_doorPrevSprite, drawX, drawY);
 
       else if (m_map[y][x] == Tile::BreakableWall)
-        window.draw(s_breakableWallSprite, drawX, drawY);
+        window.draw(s_breakableWallSprite, drawX, drawY);           
     }
   }
 }
@@ -339,4 +348,15 @@ void Level::start()
 void Level::pause()
 {
   // stop del tempo
+}
+
+void Level::drawEnemies(Nc::Window& window) const {
+  for (int i = 0; i < m_enemiesSize; i++)
+  {
+    const Enemy& enemy = m_enemies[i];  
+    enemy.draw(window);
+  }
+}
+
+void Level::moveEnemies(){
 }

@@ -89,11 +89,13 @@ int main()
     window.clear();
 
     currLevel->movePlayer(player, dir);
+    currLevel->moveEnemies();
     currLevel->handleBombs(player);
 
     currLevel->drawWalls(window);
     player.draw(window);
     currLevel->drawBombs(window);
+    currLevel->drawEnemies(window);
     
     window.display();
 
@@ -122,7 +124,7 @@ int main()
         player.setPos(pos.x - Settings::entityWidth, pos.y);
       }
     }
-
+    
     Nc::sleepFor(20);
   }
 

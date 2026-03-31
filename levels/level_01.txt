@@ -1,6 +1,6 @@
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 X                     X                X
-X                     XX               X
+X                     XX      1        X
 X                                      X
 X#########X  #  ###X  X            XXXXX
 X                               X      X
@@ -13,7 +13,7 @@ X             X     ##    #X    # ##   X
 X         ##  X           XX           X
 X    X   X     #X              X       O
 X         #                    XXXXX   X
-X        ###          ####  #  XXXXX   X
+X        ###     2    ####  #  XXXXX   X
 X X   ###   #X                 XXXXX   X
 X          #        #          XXXXX   X
 X#       #                     X       X

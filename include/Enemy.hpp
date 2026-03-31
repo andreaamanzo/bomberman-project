@@ -1,25 +1,31 @@
 #ifndef ENEMY_HPP
 #define ENEMY_HPP
 
+#include "Direction.hpp"
 #include "Entity.hpp"
 #include "NcWrapper.hpp"
-#include "Direction.hpp"
 
-class Enemy : public Entity 
-{
+class Enemy : public Entity {
 public:
-  //TODO: copiare enum da item
+  enum class Type{
+    Null,
+    First_Enemy,
+    Second_Enemy,
+  };
   Enemy() = default;
-  Enemy(int x, int y);
+  Enemy(Type enemyType, int x, int y);
 
-  void setDirection(Direction newDirection); // ! ALEGODA !! cosa metti le funzioni nel .hpp you fucking retarded
+  void setDirection(Direction newDirection);
   void move();
+  static const Nc::Sprite2x3& getSprite(Type enemyType);
+
 
 private:
-  inline const static Nc::Sprite2x3 s_enemySprite{ "°|°", "/ \\ ", Nc::Color::Red };
-
-  Direction m_direction{ Direction::Left };
-
+  Type m_type{Type::Null};
+  inline const static Nc::Sprite2x3 s_spriteTypeNull{ "   ", "   ", Nc::Color::Default };
+  inline const static Nc::Sprite2x3 s_enemy1{"°|°", "/ \\ ", Nc::Color::Red};
+  inline const static Nc::Sprite2x3 s_enemy2{"ò_ó", "###", Nc::Color::Red};
+  Direction m_direction{Direction::Left};
 };
 
 #endif

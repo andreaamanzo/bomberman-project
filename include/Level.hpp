@@ -62,6 +62,9 @@ private:
   inline const static Nc::Sprite2x3 s_explosionSprite{ "███", "███", Nc::Color::Fire };
   inline const static Nc::Sprite2x3 s_doorNextSprite{ "-⌼-", "-⌼-", Nc::Color::Sky, Nc::Color::Black };
   inline const static Nc::Sprite2x3 s_doorPrevSprite{ "-▣-", "-▣-", Nc::Color::Magenta, Nc::Color::Black };
+  inline const static Nc::Sprite2x3 s_enemy1{ "°|°", "/ \\ ", Nc::Color::Red };
+  inline const static Nc::Sprite2x3 s_enemy2{ "ò_ó", "###", Nc::Color::Red };
+
 
   inline constexpr static int s_maxLengthArrays{ 64 };
 
@@ -81,7 +84,6 @@ private:
   int   m_itemsSize{ 0 };
   Enemy m_enemies[s_maxLengthArrays]{};
   int   m_enemiesSize{ 0 };
-  Enemy m_enemy;
 
   void handleBombExplosion(const Bomb& bomb);
   void drawBombExplosion(const Bomb& bomb, Nc::Window& window);
