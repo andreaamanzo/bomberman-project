@@ -18,6 +18,7 @@ public:
   void setDirection(Direction newDirection);
   void move();
   static const Nc::Sprite2x3& getSprite(Type enemyType);
+  Direction getDirection() const { return m_direction; }
 
 
 private:

@@ -2,6 +2,7 @@
 #include "Bomb.hpp"
 #include "Enemy.hpp"
 #include "LevelList.hpp"
+#include "NcFunctions.hpp"
 #include "Player.hpp"
 #include "Settings.hpp"
 #include "NcWrapper.hpp"
@@ -9,6 +10,7 @@
 #include "Window.hpp"
 #include <fstream>
 #include <iostream>
+#include "Random.hpp"
 
 // ALE: utilizzata ai per imparare utilizzo ifstram e capire utilizzo generale delle librerie
 Level::Level(int levelNumber, const char* mapFilePath) 
@@ -359,4 +361,19 @@ void Level::drawEnemies(Nc::Window& window) const {
 }
 
 void Level::moveEnemies(){
+  for (int i = 0; i < m_enemiesSize; i++){
+    Enemy& enemy = m_enemies[i];  
+    enemy.move();
+    if (checkWallCollision(enemy)) {
+      Direction prevDir = enemy.getDirection();
+      enemy.setDirection(static_cast<Direction>(Random::get(1, 4)));
+      while (enemy.getDirection() == prevDir) {
+        enemy.setDirection(static_cast<Direction>(Random::get(1, 4)));
+      }
+    }
+    //Nc::sleepFor(30);
+    
+  }
+  
+
 }
