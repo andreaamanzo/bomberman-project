@@ -20,6 +20,9 @@ public:
   void collectItem(const Item& item);
   void setRespownPoint(int x, int y);
   bool isAlive() const;
+  void handleItems(); // TODO
+  const Item* getItemsList() const; // TODO
+  int getItemsListSize() const; // TODO
 
 private:
   inline const static Nc::Sprite2x3 s_playerSprite{ "ʘ‿ʘ", "╰╩╯", Nc::Color::Green };
@@ -33,6 +36,7 @@ private:
   Nc::Point m_respownPoint{ 0, 0 };
   Item  m_items[s_maxLengthArrays]{};
   int   m_itemsSize{ 0 };
+  bool m_isInvincible{ false };
 
 };
 

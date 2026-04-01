@@ -50,11 +50,43 @@ void Player::setRespownPoint(int x, int y)
 
 void Player::onHit()
 {
-  m_lives--;
-  setPos(m_respownPoint.x, m_respownPoint.y);
+  if (!m_isInvincible)
+  {
+    m_lives--;
+    setPos(m_respownPoint.x, m_respownPoint.y);
+  }
 }
 
 bool Player::isAlive() const 
 {
   return m_lives > 0;
+}
+
+void Player::collectItem(const Item& item)
+{
+  switch (item.getType())
+  {
+  case Item::Type::Null :
+    break;
+  
+  case Item::Type::IncrementBombRadius :
+    m_bombRadius++;
+    break;
+
+  case Item::Type::IncrementMaxBombs :
+    m_maxBombs++;
+    break;
+
+  case Item::Type::Invulnerability :
+    // TODO
+    break;
+
+  case Item::Type::TimedIncrementBombRadius :
+    // TODO
+    break;
+
+  case Item::Type::IncrementSpeed :
+    // TODO: quando viene gestita la velocità
+    break;
+  }
 }

@@ -13,10 +13,18 @@ public:
     IncrementBombRadius,
     IncrementSpeed,
     IncrementMaxBombs,
+    Invulnerability,
+    TimedIncrementBombRadius,
   };
 
   Item();
   Item(Type itemType, int x, int y);
+
+  Item::Type getType() const;
+
+  bool isTimed() const;
+
+  // TODO: metodi per gestitre items a tempo
 
 private:
   inline const static Nc::Sprite2x3 s_spriteTypeNull{ "   ", "   ", Nc::Color::Default };

@@ -28,7 +28,7 @@ public:
   Nc::Point getDoorNextPos () const;
 
   // restituisce l'item alle coordinate passate, se non c'è nessun item return item nullo
-  Item getItem(int x, int y); 
+  Item getItem(const Entity& entity); 
 
   void moveEnemies();
   void movePlayer(Player& player, Direction dir);

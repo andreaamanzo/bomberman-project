@@ -25,3 +25,13 @@ const Nc::Sprite2x3& Item::getSprite(Type type)
 
   return s_spriteTypeNull;
 }
+
+Item::Type Item::getType() const
+{
+  return m_type;
+}
+
+bool Item::isTimed() const
+{
+  return (m_type == Type::Invulnerability || m_type == Type::TimedIncrementBombRadius);
+}

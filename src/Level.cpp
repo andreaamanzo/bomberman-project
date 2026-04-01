@@ -395,3 +395,18 @@ void Level::moveEnemies()
   }
 
 }
+
+Item Level::getItem(const Entity& entity)
+{
+  for (int i{ 0 } ; i < m_itemsSize ; i++)
+  {
+    Item& item{ m_items[i] };
+
+    if (entity.collide(item))
+    {
+      return item;
+    }
+  }
+
+  return Item{}; // restituisce item nullo
+}
