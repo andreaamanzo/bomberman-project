@@ -35,3 +35,19 @@ bool Item::isTimed() const
 {
   return (m_type == Type::Invulnerability || m_type == Type::TimedIncrementBombRadius);
 }
+
+void Item::activate()
+{
+  auto m_expiration = std::chrono::steady_clock::now() + m_powerDuration;
+}
+
+/*
+bool Item::isActive()
+{
+  // ** tipo esplicito: std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
+  auto start = std::chrono::steady_clock::now();
+  auto expiration = start + m_powerDuration;
+
+  return (start <= end);
+}
+*/

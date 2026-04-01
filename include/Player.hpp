@@ -37,7 +37,7 @@ private:
   Nc::Point m_respownPoint{ 0, 0 };
   Item  m_items[s_maxLengthArrays]{};
   int   m_itemsSize{ 0 };
-  bool m_isInvincible{ false };
+  bool  m_isInvincible{ false };
 
 };
 
