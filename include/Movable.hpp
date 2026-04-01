@@ -1,0 +1,26 @@
+#ifndef MOVABLE_H
+#define MOVABLE_H
+
+#include "Entity.hpp"
+#include "Direction.hpp"
+#include <chrono>
+
+class Movable : public Entity
+{
+public:
+  Movable() = default;
+  Movable(const Nc::Sprite2x3& sprite, int x = 0, int y = 0, int delaySpeedMillisecods = 20);
+
+  void move(Direction dir, int velocity);
+  bool shouldMove();
+  void setDelaySpeed(int milliseconds);
+
+private:
+  using Clock = std::chrono::steady_clock;
+  using Milliseconds = std::chrono::milliseconds;
+
+  Milliseconds m_delaySpeed{ 20 };
+  Clock::time_point m_lastMoveTime{};
+};
+
+#endif

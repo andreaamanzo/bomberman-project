@@ -1,13 +1,13 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
-#include "Entity.hpp"
+#include "Movable.hpp"
 #include "NcWrapper.hpp"
 #include "Direction.hpp"
 #include "Item.hpp"
 #include "Bomb.hpp"
 
-class Player : public Entity
+class Player : public Movable
 {
 public:
   Player(int lives, int x, int y);
@@ -33,6 +33,7 @@ private:
   int m_bombRadius{ 2 };
   int m_maxBombs{ 1 };
   int m_placedBombs{ 0 };
+  int m_velocity{ 1 };
   Nc::Point m_respownPoint{ 0, 0 };
   Item  m_items[s_maxLengthArrays]{};
   int   m_itemsSize{ 0 };

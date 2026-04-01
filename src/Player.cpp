@@ -2,30 +2,14 @@
 #include "Bomb.hpp"
 
 Player::Player(int lives, int x, int y)
-  : Entity{ s_playerSprite, x, y }
+  : Movable{ s_playerSprite, x, y, 0 }
   , m_lives{ lives }
   , m_respownPoint{ x, y }
 { }
 
 void Player::move(Direction dir)
 {
-  switch (dir)
-  {
-  case Direction::Up:
-    m_y -= 1;
-    break;
-  case Direction::Down:
-    m_y += 1;
-    break;
-  case Direction::Right:
-    m_x += 1;
-    break;
-  case Direction::Left:
-    m_x -= 1;
-    break;
-  default:
-    break;
-  }
+  Movable::move(dir, m_velocity);
 }
 
 Bomb Player::placeBomb()

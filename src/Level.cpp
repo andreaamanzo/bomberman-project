@@ -334,6 +334,7 @@ bool Level::checkDoorPrevCollision(const Entity& entity) const
 
 void Level::movePlayer(Player& player, Direction dir)
 {
+  // Non controlliamo player.shouldMove() perché il suo delay deve essere sempre 0  
   player.move(dir);
     
   if (checkDoorNextCollision(player))
@@ -346,8 +347,9 @@ void Level::movePlayer(Player& player, Direction dir)
   else 
     m_shouldGoPrev = false;
 
-  if (checkWallCollision(player))
-    player.move(getOppositeDir(dir));
+  // muovo di 1, per poter sempre arrivare al bordo del muro indipendentemente dalla velocità
+  while (checkWallCollision(player))
+    player.Movable::move(getOppositeDir(dir), 1);
 }
 
 void Level::start()
@@ -377,6 +379,10 @@ void Level::moveEnemies()
   for (int i = 0; i < m_enemiesSize; i++)
   {
     Enemy& enemy = m_enemies[i];  
+
+    // Se il nemico non si deve muover passa all'iterazione successiva (prossimo nemico)
+    if (!enemy.shouldMove()) continue;
+    
     enemy.move();
 
     // Per Ale: aggiungi controllo anche per la collisione con le bombe non esplose (da trattare come muri)

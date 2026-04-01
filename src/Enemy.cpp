@@ -1,32 +1,17 @@
 #include "Enemy.hpp"
-#include "Bomb.hpp"
-#include "Entity.hpp"
-#include "Level.hpp"
-#include "Sprite2x3.hpp"
+#include "Movable.hpp"
+#include "NcWrapper.hpp"
+#include "Direction.hpp"
 
+// PER ALE: ho harcodato la "velocità" a 50, puoi fare una funzione che a seconda del nemico imposta una certa velocità
 Enemy::Enemy(Type enemyType, int x, int y )
-  : Entity{ getSprite(enemyType), x, y }, m_type{ enemyType }
+  : Movable{ getSprite(enemyType), x, y, 60 } 
+  , m_type{ enemyType }
 {}
 
 void Enemy::move() 
 {
-  switch (m_direction)
-  {
-  case Direction::Up:
-    m_y -= 1;
-    break;
-  case Direction::Down:
-    m_y += 1;
-    break;
-  case Direction::Right:
-    m_x += 1;
-    break;
-  case Direction::Left:
-    m_x -= 1;
-    break;
-  default:
-    break;
-  }    
+  Movable::move(m_direction, 1);
 }
 
 void Enemy::setDirection(Direction newDirection) 

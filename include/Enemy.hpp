@@ -2,12 +2,14 @@
 #define ENEMY_HPP
 
 #include "Direction.hpp"
-#include "Entity.hpp"
+#include "Movable.hpp"
 #include "NcWrapper.hpp"
 
-class Enemy : public Entity {
+class Enemy : public Movable 
+{
 public:
-  enum class Type{
+  enum class Type
+  {
     Null,
     First_Enemy,
     Second_Enemy,

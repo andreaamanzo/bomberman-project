@@ -129,7 +129,7 @@ int main()
       }
     }
     
-    Nc::sleepFor(20);
+    Nc::sleepFor(10);
   }
 
   Nc::stop();
