@@ -49,7 +49,7 @@ public:
   void start(); // opposto a pause
   void updateTime();
   bool checkTimeFinished();
-  void getTimeLeftStr(char* str) const;
+  int getTimeLeftSec() const;
 
 private:
   using Clock = std::chrono::steady_clock;
@@ -91,9 +91,9 @@ private:
   Enemy m_enemies[s_maxLengthArrays]{};
   int   m_enemiesSize{ 0 };
 
-  void getExplosionCells(const Bomb& bomb, Nc::Point cells[], int& count) const;
-  void applyExplosion(const Nc::Point cells[], int count, Player& player);
-  void drawExplosion(const Nc::Point cells[], int count, Nc::Window& window);
+  void setExplosionCells(Bomb& bomb) const;
+  void applyExplosion(const Bomb& bomb, Player &player) ;
+  void drawExplosion(const Bomb& bomb, Nc::Window& window);
   bool checkIsWall(int x, int y) const;
 };
 

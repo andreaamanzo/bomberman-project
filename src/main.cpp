@@ -6,6 +6,7 @@
 #include "Level.hpp"
 #include "Bomb.hpp"
 #include <stdio.h>
+#include <iostream>
 
 int main() 
 {
@@ -143,7 +144,12 @@ int main()
     rightMenu.writeInt(currLevel->getLevelNumber(), 9, 5);
 
     char time[64];
-    currLevel->getTimeLeftStr(time);
+    int secs = currLevel->getTimeLeftSec();
+    if (secs % 60 >= 10)
+      sprintf(time, "Time Left: %d:%d", secs/60, secs%60);
+    else
+      sprintf(time, "Time Left: %d:0%d", secs/60, secs%60);
+
     rightMenu.write(time, 2, 7);
 
     window.display();
@@ -152,11 +158,18 @@ int main()
 
     if (currLevel->isFinished())
     {
-      player.addPoints(1000); // punti per il completamento del livello
+      // punti per il completamento del livello
+      player.addPoints(500 + currLevel->getTimeLeftSec() * 10); 
+
+      // restore delle bombe del player
+      while (player.getPlacedBombs() > 0) player.restoreBomb();
+
       levelList.removeCurrent();
       currLevel = levelList.getLevel();
       if (currLevel)
       {
+        // TODO: rimuovere le porte che non servono più (es se il livello finito era primo/ultimo)
+        
         currLevel->start();
         Nc::Point pos = currLevel->getDoorPrevPos();
         player.setPos(pos.x + Settings::entityWidth, pos.y);

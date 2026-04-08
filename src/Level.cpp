@@ -11,10 +11,11 @@
 
 // ALE: utilizzata ai per imparare utilizzo ifstram e capire utilizzo generale
 // delle librerie
-Level::Level(int levelNumber, const char *mapFilePath)
-    : m_levelNumber{levelNumber} {
+Level::Level(int levelNumber, const char* mapFilePath)
+  : m_levelNumber{levelNumber} 
+{
   // leggo il file con ifstram
-  std::ifstream file{mapFilePath};
+  std::ifstream file{ mapFilePath };
 
   // controllo se il file è stato aperto correttamente, sennò exit
   if (!file.is_open())
@@ -29,14 +30,18 @@ Level::Level(int levelNumber, const char *mapFilePath)
     if (nrow >= Settings::mapRows || nchar > Settings::mapCols)
       Nc::stopWithError(1, "Invalid map: exceeds maximum allowed size.");
 
-    if (c == '\n') {
+    if (c == '\n') 
+    {
       if (nchar < Settings::mapCols)
         Nc::stopWithError(1, "Invalid map: incorrect number of columns.");
 
       nrow++;
       nchar = 0;
-    } else {
-      switch (c) {
+    } 
+    else 
+    {
+      switch (c) 
+      {
       case 'X':
         m_map[nrow][nchar] = Tile::Wall;
         break;
@@ -56,24 +61,20 @@ Level::Level(int levelNumber, const char *mapFilePath)
       }
       case 'O':
         m_map[nrow][nchar] = Tile::DoorNext;
-        m_doorNextPos = {nchar * Settings::entityWidth,
-                         nrow * Settings::entityHeight};
+        m_doorNextPos = { nchar * Settings::entityWidth, nrow * Settings::entityHeight };
         break;
       case 'P':
         m_map[nrow][nchar] = Tile::DoorPrev;
-        m_doorPrevPos = {nchar * Settings::entityWidth,
-                         nrow * Settings::entityHeight};
+        m_doorPrevPos = { nchar * Settings::entityWidth, nrow * Settings::entityHeight };
         break;
       case '1':
         m_enemies[m_enemiesSize++] =
-            Enemy(Enemy::Type::First_Enemy, nchar * Settings::entityWidth,
-                  nrow * Settings::entityHeight);
+            Enemy{ Enemy::Type::First_Enemy, nchar * Settings::entityWidth, nrow * Settings::entityHeight };
         m_map[nrow][nchar] = Tile::Empty;
         break;
       case '2':
         m_enemies[m_enemiesSize++] =
-            Enemy(Enemy::Type::Second_Enemy, nchar * Settings::entityWidth,
-                  nrow * Settings::entityHeight);
+            Enemy{ Enemy::Type::Second_Enemy, nchar * Settings::entityWidth, nrow * Settings::entityHeight };
         m_map[nrow][nchar] = Tile::Empty;
         break;
       default:
@@ -96,9 +97,12 @@ Level::Level(int levelNumber, const char *mapFilePath)
   file.close();
 }
 
-void Level::drawWalls(Nc::Window &window) const {
-  for (int y = 0; y < Settings::mapRows; y++) {
-    for (int x = 0; x < Settings::mapCols; x++) {
+void Level::drawWalls(Nc::Window& window) const 
+{
+  for (int y = 0; y < Settings::mapRows; y++) 
+  {
+    for (int x = 0; x < Settings::mapCols; x++) 
+    {
       int drawX = x * Settings::entityWidth;
       int drawY = y * Settings::entityHeight;
 
@@ -117,7 +121,8 @@ void Level::drawWalls(Nc::Window &window) const {
   }
 }
 
-void Level::addBomb(Bomb &bomb) {
+void Level::addBomb(Bomb& bomb) 
+{
   if (m_bombsSize >= s_maxLengthArrays)
     Nc::stopWithError(1, "Bombs array capacity exceeded.");
 
@@ -130,27 +135,29 @@ void Level::addBomb(Bomb &bomb) {
   m_bombs[m_bombsSize++] = bomb;
 }
 
-void Level::getExplosionCells(const Bomb &bomb, Nc::Point cells[],
-                              int &count) const {
-  count = 0;
+void Level::setExplosionCells(Bomb& bomb) const 
+{
+  int count = 0;
+  Nc::Point cells[Bomb::s_maxExplosionCells]{};
 
   int r = bomb.getRadius();
   int x = bomb.getX() / Settings::entityWidth;
   int y = bomb.getY() / Settings::entityHeight;
 
-  const int dirs[4][2]{{1, 0}, {-1, 0}, {0, -1}, {0, 1}};
+  const int dirs[4][2]{ { 1, 0 }, { -1, 0 }, { 0, -1 }, { 0, 1 } };
 
   // centro
-  cells[count++] = {x, y};
+  cells[count++] = { x, y };
 
-  for (int d = 0; d < 4; d++) {
-    for (int k = 1; k <= r; k++) {
+  for (int d = 0; d < 4; d++) 
+  {
+    for (int k = 1; k <= r; k++) 
+    {
       int nx = x + dirs[d][0] * k;
       int ny = y + dirs[d][1] * k;
 
       // bounds check
-      if (nx < 0 || nx >= Settings::mapCols || ny < 0 ||
-          ny >= Settings::mapRows)
+      if (nx < 0 || nx >= Settings::mapCols || ny < 0 || ny >= Settings::mapRows)
         break;
 
       Tile tile = m_map[ny][nx];
@@ -158,35 +165,41 @@ void Level::getExplosionCells(const Bomb &bomb, Nc::Point cells[],
       if (tile == Tile::Wall)
         break;
 
-      if (tile == Tile::BreakableWall) {
-        if (bomb.hasExploded())
-          break;
-        else {
-          cells[count++] = {nx, ny};
-          break;
-        }
+      if (tile == Tile::BreakableWall) 
+      {
+        cells[count++] = { nx, ny };
+        break;
       }
 
-      cells[count++] = {nx, ny};
+      cells[count++] = { nx, ny };
     }
   }
+
+  bomb.setExplosionCells(cells, count);
 }
 
-void Level::applyExplosion(const Nc::Point cells[], int count, Player &player) {
-  for (int i = 0; i < count; i++) {
+void Level::applyExplosion(const Bomb& bomb, Player& player) 
+{
+  const Nc::Point* cells = bomb.getExplosionCells();
+  int count = bomb.getExplosionCount();
+
+  for (int i = 0; i < count; i++) 
+  {
     int x = cells[i].x;
     int y = cells[i].y;
 
     Tile &tile = m_map[y][x];
 
-    if (tile == Tile::BreakableWall)
+    // applicato solo la prima colta (prima di hasExploded = true)
+    if (!bomb.hasExploded() && tile == Tile::BreakableWall)
       tile = Tile::Empty;
 
     for (int j = m_enemiesSize - 1; j >= 0; j--) {
-      Entity explosion{x * Settings::entityWidth, y * Settings::entityHeight};
+      Entity explosion{ x * Settings::entityWidth, y * Settings::entityHeight };
 
       // se devo togliere un nemico lo posiziono in fondo e decremento la size
-      if (explosion.collide(m_enemies[j])) {
+      if (explosion.collide(m_enemies[j])) 
+      {
         m_enemiesSize--;
         m_enemies[j] = m_enemies[m_enemiesSize];
 
@@ -195,36 +208,42 @@ void Level::applyExplosion(const Nc::Point cells[], int count, Player &player) {
     }
 
     // player
-    Entity explosion{x * Settings::entityWidth, y * Settings::entityHeight};
+    Entity explosion{ x * Settings::entityWidth, y * Settings::entityHeight };
     if (explosion.collide(player))
       player.onHit();
   }
 }
 
-void Level::drawExplosion(const Nc::Point cells[], int count,
-                          Nc::Window &window) {
-  for (int i = 0; i < count; i++) {
-    window.draw(s_explosionSprite, cells[i].x * Settings::entityWidth,
-                cells[i].y * Settings::entityHeight);
-  }
+void Level::drawExplosion(const Bomb& bomb, Nc::Window& window) 
+{
+  const Nc::Point* cells = bomb.getExplosionCells();
+  int count = bomb.getExplosionCount();
+
+  for (int i = 0; i < count; i++) 
+    window.draw(s_explosionSprite, cells[i].x * Settings::entityWidth, cells[i].y * Settings::entityHeight);
 }
 
-void Level::handleBombs(Player &player) {
-  for (int i = 0; i < m_bombsSize; i++) {
-    Bomb &bomb = m_bombs[i];
+void Level::handleBombs(Player& player) 
+{
+  for (int i = 0; i < m_bombsSize; i++) 
+  {
+    Bomb& bomb = m_bombs[i];
 
-    if (bomb.getStatus() == Bomb::Status::Exploding) {
-      if (bomb.hasExploded())
-        continue;
-
-      Nc::Point cells[Bomb::s_maxExplosionCells];
-      int count;
-
-      getExplosionCells(bomb, cells, count);
-      bomb.setExplosionCells(cells, count);
-      applyExplosion(cells, count, player);
-      bomb.setExploded(true);
-    } else if (bomb.getStatus() == Bomb::Status::Finished) {
+    if (bomb.getStatus() == Bomb::Status::Exploding) 
+    {
+      if (!bomb.hasExploded())
+      {
+        setExplosionCells(bomb);
+        applyExplosion(bomb, player);
+        bomb.setExploded(true);
+      }
+      else
+      {
+        applyExplosion(bomb, player);
+      }
+    } 
+    else if (bomb.getStatus() == Bomb::Status::Finished) 
+    {
       // porto la bomba da rimuovere in fondo per eliminarla
       m_bombsSize--;
       m_bombs[i] = m_bombs[m_bombsSize];
@@ -236,21 +255,21 @@ void Level::handleBombs(Player &player) {
   }
 }
 
-void Level::drawBombs(Nc::Window &window) 
+void Level::drawBombs(Nc::Window& window) 
 {
   // disegno prima le placed e poi le exploding, così l'esplosione copre sempre le altre bombe
   for (int i = 0; i < m_bombsSize; i++) 
   {
-    Bomb &bomb = m_bombs[i];
+    Bomb& bomb = m_bombs[i];
     if (bomb.getStatus() == Bomb::Status::Placed)
       bomb.draw(window);
   }
 
   for (int i = 0; i < m_bombsSize; i++) 
   {
-    Bomb &bomb = m_bombs[i];
+    Bomb& bomb = m_bombs[i];
     if (bomb.getStatus() == Bomb::Status::Exploding)
-      drawExplosion(bomb.getExplosionCells(), bomb.getExplosionCount(), window);
+      drawExplosion(bomb, window);
   }
 }
 
@@ -264,14 +283,16 @@ Nc::Point Level::getDoorPrevPos() const { return m_doorPrevPos; }
 
 Nc::Point Level::getDoorNextPos() const { return m_doorNextPos; }
 
-bool Level::checkIsWall(int x, int y) const {
+bool Level::checkIsWall(int x, int y) const 
+{
   return m_map[y][x] == Tile::Wall || m_map[y][x] == Tile::BreakableWall ||
          m_map[y][x] == Tile::DoorNext || m_map[y][x] == Tile::DoorPrev;
 }
 
-bool Level::checkWallCollision(const Entity &entity) const {
-  int width{Settings::entityWidth};
-  int height{Settings::entityHeight};
+bool Level::checkWallCollision(const Entity& entity) const 
+{
+  int width{ Settings::entityWidth };
+  int height{ Settings::entityHeight };
 
   int x = entity.getX();
   int y = entity.getY();
@@ -294,19 +315,21 @@ bool Level::checkWallCollision(const Entity &entity) const {
   return false;
 }
 
-bool Level::checkDoorNextCollision(const Entity &entity) const {
-  Entity door{m_doorNextPos.x, m_doorNextPos.y};
+bool Level::checkDoorNextCollision(const Entity& entity) const 
+{
+  Entity door{ m_doorNextPos.x, m_doorNextPos.y };
   return entity.collide(door);
 }
 
-bool Level::checkDoorPrevCollision(const Entity &entity) const {
-  Entity door{m_doorPrevPos.x, m_doorPrevPos.y};
+bool Level::checkDoorPrevCollision(const Entity& entity) const 
+{
+  Entity door{ m_doorPrevPos.x, m_doorPrevPos.y };
   return entity.collide(door);
 }
 
-void Level::movePlayer(Player &player, Direction dir) {
-  // Non controlliamo player.shouldMove() perché il suo delay deve essere sempre
-  // 0
+void Level::movePlayer(Player &player, Direction dir) 
+{
+  // Non controlliamo player.shouldMove() perché il suo delay deve essere sempre 0
   player.move(dir);
 
   if (checkDoorNextCollision(player))
@@ -355,12 +378,10 @@ bool Level::checkTimeFinished()
   return m_timeLeft <= Mills{ 0 };
 }
 
-void Level::getTimeLeftStr(char* str) const
+int Level::getTimeLeftSec() const
 {
   float floatSec = std::chrono::duration<float>(m_timeLeft).count();
-  int minutes = static_cast<int>(floatSec / 60.0f);
-  int seconds = static_cast<int>(floatSec) - (minutes * 60);
-  sprintf(str, "Time Left: %d:%d", minutes, seconds);
+  return static_cast<int>(floatSec);
 }
 
 void Level::drawItems(Nc::Window& window) const
@@ -372,19 +393,22 @@ void Level::drawItems(Nc::Window& window) const
   }
 }
 
-void Level::drawEnemies(Nc::Window &window) const {
-  for (int i = 0; i < m_enemiesSize; i++) {
-    const Enemy &enemy = m_enemies[i];
+void Level::drawEnemies(Nc::Window& window) const 
+{
+  for (int i = 0; i < m_enemiesSize; i++) 
+  {
+    const Enemy& enemy = m_enemies[i];
     enemy.draw(window);
   }
 }
 
-void Level::moveEnemies() {
-  for (int i = 0; i < m_enemiesSize; i++) {
-    Enemy &enemy = m_enemies[i];
+void Level::moveEnemies() 
+{
+  for (int i = 0; i < m_enemiesSize; i++) 
+  {
+    Enemy& enemy = m_enemies[i];
 
-    // Se il nemico non si deve muover passa all'iterazione successiva (prossimo
-    // nemico)
+    // Se il nemico non si deve muover passa all'iterazione successiva (prossimo nemico)
     if (!enemy.shouldMove())
       continue;
 
@@ -392,12 +416,14 @@ void Level::moveEnemies() {
 
     //booleano per controllare se la bomba collide con enemy
     bool bombCollide = false;
-    for (int k = 0; k< m_bombsSize && !bombCollide; k++){
-      Bomb &bomb = m_bombs[k];
+    for (int k = 0; k< m_bombsSize && !bombCollide; k++)
+    {
+      Bomb& bomb = m_bombs[k];
       if (bomb.getStatus() == Bomb::Status::Placed && bomb.collide(enemy)) 
         bombCollide = true;
     }
-    if (checkWallCollision(enemy) || bombCollide == true) {
+    if (checkWallCollision(enemy) || bombCollide == true) 
+    {
       Direction prevDir = enemy.getDirection();
       enemy.setDirection(getOppositeDir(prevDir));
       enemy.move();
@@ -409,19 +435,22 @@ void Level::moveEnemies() {
   }
 }
 
-void Level::handleEnemies(Player &player) {
-  for (int i = 0; i < m_enemiesSize; i++) {
-    Enemy &enemy = m_enemies[i];
+void Level::handleEnemies(Player& player) 
+{
+  for (int i = 0; i < m_enemiesSize; i++) 
+  {
+    Enemy& enemy = m_enemies[i];
 
-    if (player.collide(enemy)) {
+    if (player.collide(enemy))
       player.onHit();
-    }
   }
 }
 
-Item Level::getItem(const Entity &entity) {
-  for (int i{0}; i < m_itemsSize; i++) {
-    Item item{m_items[i]};
+Item Level::getItem(const Entity& entity) 
+{
+  for (int i{ 0 }; i < m_itemsSize; i++) 
+  {
+    Item item{ m_items[i] };
 
     if (entity.collide(item)) 
     {
