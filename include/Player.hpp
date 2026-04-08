@@ -21,6 +21,9 @@ public:
   void setRespownPoint(int x, int y);
   bool isAlive() const;
   int getLives() const;
+  int getBombRadius() const;
+  int getPlacedBombs() const;
+  int getMaxBombs() const;
   void handleItems();
   const Item* getItemsList() const;
   int getItemsListSize() const;
@@ -37,7 +40,6 @@ private:
   int m_bombRadius{ 2 };
   int m_maxBombs{ 1 };
   int m_placedBombs{ 0 };
-  int m_velocity{ 1 };
   int m_itemsSize{ 0 };
   int m_points{ 0 };
   Item m_items[s_maxLengthArrays]{ };

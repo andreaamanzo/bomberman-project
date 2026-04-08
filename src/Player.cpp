@@ -9,7 +9,7 @@ Player::Player(int lives, int x, int y)
 
 void Player::move(Direction dir)
 {
-  Movable::move(dir, m_velocity);
+  Movable::move(dir, 1);
 }
 
 Bomb Player::placeBomb()
@@ -70,8 +70,9 @@ void Player::collectItem(const Item& item)
     m_isInvincible = true;
     break;
 
-  case Item::Type::TimedIncrementBombRadius :
+  case Item::Type::TimedIncrementBombPower :
     m_bombRadius += 3;
+    m_maxBombs   += 2;
     break;
 
   case Item::Type::OneUp :
@@ -90,15 +91,15 @@ void Player::addPoints(int points)
   m_points += points;
 }
 
-int Player::getPoints() const
-{
-  return m_points;
-}
+int Player::getPoints() const { return m_points; }
+  
+int Player::getLives() const { return m_lives; }
 
-int Player::getLives() const
-{
-  return m_lives;
-}
+int Player::getBombRadius() const { return m_bombRadius; }
+
+int Player::getMaxBombs() const { return m_maxBombs; }
+
+int Player::getPlacedBombs() const { return m_placedBombs; }
 
 const Item* Player::getItemsList() const
 {
@@ -119,8 +120,9 @@ void Player::handleItems()
     {
       switch (m_items[i].getType())
       {
-      case Item::Type::TimedIncrementBombRadius :
+      case Item::Type::TimedIncrementBombPower :
         m_bombRadius -= 3;
+        m_maxBombs   -= 2;
         break;
       
       case Item::Type::Invulnerability :

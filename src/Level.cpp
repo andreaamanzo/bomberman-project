@@ -236,14 +236,21 @@ void Level::handleBombs(Player &player) {
   }
 }
 
-void Level::drawBombs(Nc::Window &window) {
-  for (int i = 0; i < m_bombsSize; i++) {
+void Level::drawBombs(Nc::Window &window) 
+{
+  // disegno prima le placed e poi le exploding, così l'esplosione copre sempre le altre bombe
+  for (int i = 0; i < m_bombsSize; i++) 
+  {
     Bomb &bomb = m_bombs[i];
-    if (bomb.getStatus() == Bomb::Status::Placed) {
+    if (bomb.getStatus() == Bomb::Status::Placed)
       bomb.draw(window);
-    } else if (bomb.getStatus() == Bomb::Status::Exploding) {
+  }
+
+  for (int i = 0; i < m_bombsSize; i++) 
+  {
+    Bomb &bomb = m_bombs[i];
+    if (bomb.getStatus() == Bomb::Status::Exploding)
       drawExplosion(bomb.getExplosionCells(), bomb.getExplosionCount(), window);
-    }
   }
 }
 
@@ -312,17 +319,12 @@ void Level::movePlayer(Player &player, Direction dir) {
   else
     m_shouldGoPrev = false;
 
-    
-    // muovo di 1, per poter sempre arrivare al bordo del muro indipendentemente
-    // dalla velocità
-  while (checkWallCollision(player))
-    player.Movable::move(getOppositeDir(dir), 1);
+  if (checkWallCollision(player))
+    player.move(getOppositeDir(dir));
 
   Item item = getItem(player);
   if (item.getType() != Item::Type::Null)
-  {
     player.collectItem(item);
-  }
 }
 
 void Level::start() {

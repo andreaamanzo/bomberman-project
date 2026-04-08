@@ -115,13 +115,19 @@ int main()
     currLevel->drawWalls(window);
     currLevel->drawBombs(window);
   
-    
     leftMenu.write("Lives: ", 2, 5);
     for (int i = 0; i < player.getLives(); i++)
       leftMenu.write("♥ ", 9 + i*2, 5);
 
     leftMenu.write("Points: ", 2, 7);
     leftMenu.writeInt(player.getPoints(), 10, 7);
+
+    leftMenu.write("Bomb Radius: ", 2, 9);
+    leftMenu.writeInt(player.getBombRadius(), 15, 9);
+
+    char str[64];
+    sprintf(str, "Bombs: %d/%d", player.getMaxBombs() - player.getPlacedBombs(), player.getMaxBombs());
+    leftMenu.write(str, 2, 11);
 
     rightMenu.write("Level: ", 2, 5);
     rightMenu.writeInt(currLevel->getLevelNumber(), 9, 5);

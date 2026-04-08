@@ -24,8 +24,8 @@ const Nc::Sprite2x3& Item::getSprite(Type type)
     return s_spriteTypeOneUp;
   case Type::Invulnerability:
     return s_spriteTypeInvulnerability;
-  case Type::TimedIncrementBombRadius:
-    return s_spriteTypeTimedIncrementBombRadius;
+  case Type::TimedIncrementBombPower:
+    return s_spriteTypeTimedIncrementBombPower;
   }
 
   return s_spriteTypeNull;
@@ -38,7 +38,7 @@ Item::Type Item::getType() const
 
 bool Item::isTimed() const
 {
-  return (m_type == Type::Invulnerability || m_type == Type::TimedIncrementBombRadius);
+  return (m_type == Type::Invulnerability || m_type == Type::TimedIncrementBombPower);
 }
 
 void Item::setPowerDuration(int secDuration)
