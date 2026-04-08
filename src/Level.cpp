@@ -41,8 +41,19 @@ Level::Level(int levelNumber, const char *mapFilePath)
         m_map[nrow][nchar] = Tile::Wall;
         break;
       case '#':
+      {
         m_map[nrow][nchar] = Tile::BreakableWall;
+        int i{ Random::get(1, 5) };
+        if (i == 1)
+        {
+          Item item{ static_cast<Item::Type>(Random::get(1, 5)),
+                     nchar * Settings::entityWidth,
+                     nrow * Settings::entityHeight };
+
+          m_items[m_itemsSize++] = item;
+        }
         break;
+      }
       case 'O':
         m_map[nrow][nchar] = Tile::DoorNext;
         m_doorNextPos = {nchar * Settings::entityWidth,
@@ -301,10 +312,17 @@ void Level::movePlayer(Player &player, Direction dir) {
   else
     m_shouldGoPrev = false;
 
-  // muovo di 1, per poter sempre arrivare al bordo del muro indipendentemente
-  // dalla velocità
+    
+    // muovo di 1, per poter sempre arrivare al bordo del muro indipendentemente
+    // dalla velocità
   while (checkWallCollision(player))
     player.Movable::move(getOppositeDir(dir), 1);
+
+  Item item = getItem(player);
+  if (item.getType() != Item::Type::Null)
+  {
+    player.collectItem(item);
+  }
 }
 
 void Level::start() {
@@ -316,6 +334,15 @@ void Level::start() {
 
 void Level::pause() {
   // stop del tempo
+}
+
+void Level::drawItems(Nc::Window& window) const
+{
+  for (int i{ 0 } ; i < m_itemsSize ; i++)
+  {
+    const Item& item = m_items[i];
+    item.draw(window);
+  }
 }
 
 void Level::drawEnemies(Nc::Window &window) const {
@@ -367,9 +394,12 @@ void Level::handleEnemies(Player &player) {
 
 Item Level::getItem(const Entity &entity) {
   for (int i{0}; i < m_itemsSize; i++) {
-    Item &item{m_items[i]};
+    Item item{m_items[i]};
 
-    if (entity.collide(item)) {
+    if (entity.collide(item)) 
+    {
+      m_itemsSize--;
+      m_items[i] = m_items[m_itemsSize];
       return item;
     }
   }

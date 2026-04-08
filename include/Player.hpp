@@ -21,9 +21,9 @@ public:
   void setRespownPoint(int x, int y);
   bool isAlive() const;
   int getLives() const;
-  void handleItems(); // TODO
-  const Item* getItemsList() const; // TODO
-  int getItemsListSize() const; // TODO
+  void handleItems();
+  const Item* getItemsList() const;
+  int getItemsListSize() const;
   void addPoints(int points);
   int getPoints() const;
 
@@ -32,17 +32,16 @@ private:
 
   inline constexpr static int s_maxLengthArrays{ 64 };
 
+  Nc::Point m_respawnPoint{ 0, 0 };
   int m_lives{ 1 };
   int m_bombRadius{ 2 };
   int m_maxBombs{ 1 };
   int m_placedBombs{ 0 };
   int m_velocity{ 1 };
-  Nc::Point m_respownPoint{ 0, 0 };
-  Item  m_items[s_maxLengthArrays]{};
-  int   m_itemsSize{ 0 };
-  bool  m_isInvincible{ false };
+  int m_itemsSize{ 0 };
   int m_points{ 0 };
-
+  Item m_items[s_maxLengthArrays]{ };
+  bool m_isInvincible{ false };
 
 };
 

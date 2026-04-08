@@ -107,8 +107,10 @@ int main()
     currLevel->moveEnemies();
     currLevel->handleBombs(player);
     currLevel->handleEnemies(player);
+    player.handleItems();
 
     player.draw(window);
+    currLevel->drawItems(window);
     currLevel->drawEnemies(window);
     currLevel->drawWalls(window);
     currLevel->drawBombs(window);

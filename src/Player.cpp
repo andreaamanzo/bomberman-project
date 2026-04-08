@@ -3,8 +3,8 @@
 
 Player::Player(int lives, int x, int y)
   : Movable{ s_playerSprite, x, y, 0 }
+  , m_respawnPoint{ x, y }
   , m_lives{ lives }
-  , m_respownPoint{ x, y }
 { }
 
 void Player::move(Direction dir)
@@ -29,7 +29,7 @@ void Player::restoreBomb()
 
 void Player::setRespownPoint(int x, int y)
 {
-  m_respownPoint = { x, y };
+  m_respawnPoint = { x, y };
 }
 
 void Player::onHit()
@@ -37,7 +37,11 @@ void Player::onHit()
   if (!m_isInvincible)
   {
     m_lives--;
-    setPos(m_respownPoint.x, m_respownPoint.y);
+    setPos(m_respawnPoint.x, m_respawnPoint.y);
+
+    Item respawnInvulnerability{ Item::Type::Invulnerability, 0, 0};
+    respawnInvulnerability.setPowerDuration(3);
+    collectItem(respawnInvulnerability);
   }
 }
 
@@ -51,7 +55,7 @@ void Player::collectItem(const Item& item)
   switch (item.getType())
   {
   case Item::Type::Null :
-    break;
+    return;
   
   case Item::Type::IncrementBombRadius :
     m_bombRadius++;
@@ -62,22 +66,28 @@ void Player::collectItem(const Item& item)
     break;
 
   case Item::Type::Invulnerability :
-    // TODO
+    m_sprite.setColor(Nc::Color::Purple);
+    m_isInvincible = true;
     break;
 
   case Item::Type::TimedIncrementBombRadius :
-    // TODO
+    m_bombRadius += 3;
     break;
 
-  case Item::Type::IncrementSpeed :
-    // TODO: quando viene gestita la velocità
+  case Item::Type::OneUp :
+    m_lives++;
     break;
   }
+
+  // lo aggiungo alla lista di item del player
+  m_items[m_itemsSize] = item;
+  if (m_items[m_itemsSize].isTimed()) m_items[m_itemsSize].activate();
+  m_itemsSize++;
 }
 
 void Player::addPoints(int points) 
 {
-  m_points =  points;
+  m_points += points;
 }
 
 int Player::getPoints() const
@@ -88,4 +98,45 @@ int Player::getPoints() const
 int Player::getLives() const
 {
   return m_lives;
+}
+
+const Item* Player::getItemsList() const
+{
+  return m_items;
+}
+
+int Player::getItemsListSize() const
+{
+  return m_itemsSize;
+}
+
+void Player::handleItems()
+{
+  for (int i{ 0 } ; i < m_itemsSize ; i++)
+  {
+    // annullo l'effetto dell'item
+    if (!m_items[i].isActive())
+    {
+      switch (m_items[i].getType())
+      {
+      case Item::Type::TimedIncrementBombRadius :
+        m_bombRadius -= 3;
+        break;
+      
+      case Item::Type::Invulnerability :
+        m_isInvincible = false;
+        m_sprite.setColor(Nc::Color::Green);
+        break;
+      
+      default : break;
+      }
+
+      // sovrascrivo item da eliminare con ultimo item e decremento la size
+      m_itemsSize--;
+      m_items[i] = m_items[m_itemsSize];
+
+      // decremento la i per controllare l'elemento appena inserito
+      i--;
+    }
+  }
 }
