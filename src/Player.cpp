@@ -80,6 +80,11 @@ void Player::addPoints(int points)
   m_points =  points;
 }
 
+int Player::getPoints() const
+{
+  return m_points;
+}
+
 int Player::getLives() const
 {
   return m_lives;

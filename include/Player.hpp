@@ -25,6 +25,7 @@ public:
   const Item* getItemsList() const; // TODO
   int getItemsListSize() const; // TODO
   void addPoints(int points);
+  int getPoints() const;
 
 private:
   inline const static Nc::Sprite2x3 s_playerSprite{ "ʘ‿ʘ", "╰╩╯", Nc::Color::Green };

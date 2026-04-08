@@ -12,7 +12,7 @@ int main()
   Nc::init();
   
   // la grandezza minima effettiva poi la decideremo
-  Nc::checkTerminalSize(Settings::mapWidth + Settings::menuWidth*2, Settings::mapHeight); 
+  Nc::checkTerminalSize(Settings::mapWidth + Settings::menuWidth*2 + 6, Settings::mapHeight); 
 
   int w_startx = (Nc::getTerminalWidth()  - Settings::mapWidth) / 2;
   int w_starty = (Nc::getTerminalHeight() - Settings::mapHeight) / 2;
@@ -55,7 +55,7 @@ int main()
     }
 
     Nc::Key key{ Nc::getKeyPressed() };
-    Direction dir;
+    Direction dir{ Direction::None };
 
     switch (key)
     {
@@ -117,6 +117,12 @@ int main()
     leftMenu.write("Lives: ", 2, 5);
     for (int i = 0; i < player.getLives(); i++)
       leftMenu.write("♥ ", 9 + i*2, 5);
+
+    leftMenu.write("Points: ", 2, 7);
+    leftMenu.writeInt(player.getPoints(), 10, 7);
+
+    rightMenu.write("Level: ", 2, 5);
+    rightMenu.writeInt(currLevel->getLevelNumber(), 9, 5);
 
     window.display();
     leftMenu.display();

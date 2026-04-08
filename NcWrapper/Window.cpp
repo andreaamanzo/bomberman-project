@@ -27,7 +27,7 @@ namespace Nc
     m_bgColorPairId = id;
   }
   
-  void Window::setTitle(const char* title) const
+  void Window::setTitle(const char* title)
   {
     int start{ (m_width + 2 - (static_cast<int>(strlen(title)) + 2)) / 2 };
   
@@ -35,7 +35,7 @@ namespace Nc
     wrefresh(m_window);
   }
 
-  void Window::draw(const Sprite2x3& sprite, int x, int y) const
+  void Window::draw(const Sprite2x3& sprite, int x, int y)
   {
     Color bgColor{ sprite.getBgColor() != Color::Default ? sprite.getBgColor() : m_bgColor };
     short id{ Nc::getColorPair(sprite.getColor(), bgColor) };
@@ -45,20 +45,28 @@ namespace Nc
     wattroff(m_window, COLOR_PAIR(id));
   }
 
-  void Window::write(const char* string, int x, int y, Color color) const
+  void Window::write(const char* string, int x, int y, Color color)
   {
     short id{ Nc::getColorPair(color, m_bgColor) };
     wattron(m_window, COLOR_PAIR(id));
     mvwaddstr(m_window, y + 1, x + 1, string);
     wattroff(m_window, COLOR_PAIR(id));
   }
+
+  void Window::writeInt(int n, int x, int y, Color color)
+  {
+    short id{ Nc::getColorPair(color, m_bgColor) };
+    wattron(m_window, COLOR_PAIR(id));
+    mvwprintw(m_window, y + 1, x + 1, "%d", n);
+    wattroff(m_window, COLOR_PAIR(id));
+  }
   
-  void Window::display() const
+  void Window::display()
   {
     wrefresh(m_window);
   }
   
-  void Window::clear() const
+  void Window::clear()
   {
     wattron(m_window, COLOR_PAIR(m_bgColorPairId));
     for (int y = 1; y <= m_height; y++)
