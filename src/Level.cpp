@@ -327,15 +327,40 @@ void Level::movePlayer(Player &player, Direction dir) {
     player.collectItem(item);
 }
 
-void Level::start() {
+void Level::start() 
+{
   m_shouldGoNext = false;
   m_shouldGoPrev = false;
-
-  // start tempo e altra roba (?)
+  m_isPaused = false;
+  m_lastUpdate = Clock::now();
 }
 
-void Level::pause() {
-  // stop del tempo
+void Level::pause() 
+{
+  m_isPaused = true;
+}
+
+void Level::updateTime()
+{
+  if (m_isPaused) return;
+
+  m_timeLeft -= std::chrono::duration_cast<Mills>(Clock::now() - m_lastUpdate);
+  m_lastUpdate = Clock::now();
+}
+
+bool Level::checkTimeFinished()
+{
+  if (m_isPaused) return false;
+
+  return m_timeLeft <= Mills{ 0 };
+}
+
+void Level::getTimeLeftStr(char* str) const
+{
+  float floatSec = std::chrono::duration<float>(m_timeLeft).count();
+  int minutes = static_cast<int>(floatSec / 60.0f);
+  int seconds = static_cast<int>(floatSec) - (minutes * 60);
+  sprintf(str, "Time Left: %d:%d", minutes, seconds);
 }
 
 void Level::drawItems(Nc::Window& window) const

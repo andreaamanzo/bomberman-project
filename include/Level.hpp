@@ -47,9 +47,13 @@ public:
   //...
   void pause(); // mette il livello in pausa
   void start(); // opposto a pause
+  void updateTime();
+  bool checkTimeFinished();
+  void getTimeLeftStr(char* str) const;
 
 private:
   using Clock = std::chrono::steady_clock;
+  using Mills = std::chrono::milliseconds;
 
   enum class Tile
   {
@@ -74,9 +78,11 @@ private:
   Nc::Point m_doorNextPos;
   bool m_shouldGoNext{ false };
   bool m_shouldGoPrev{ false };
+  bool m_isPaused{ true };
 
   // Membri per la gestione del tempo (tempo iniziale + tempo totale o tempo rimanente)
-  Clock::time_point m_startTime{};
+  Mills m_timeLeft{ 180 * 1000 };
+  Clock::time_point m_lastUpdate{};
 
   Bomb  m_bombs[s_maxLengthArrays]{};
   int   m_bombsSize{ 0 };

@@ -35,6 +35,7 @@ int main()
 
   LevelList levelList{ paths, numLevels };
   Level* currLevel{ levelList.getLevel() };
+  currLevel->start();
 
   Player player{ 5, 3, 2 };
 
@@ -51,7 +52,15 @@ int main()
 
     if (!player.isAlive())
     {
-      Nc::stopWithError(0, "Game over");
+      Nc::stopWithError(0, "Game over (lives finished)");
+      continue; // non servirebbe ma per chiarezza
+    }
+
+    currLevel->updateTime();
+
+    if (currLevel->checkTimeFinished())
+    {
+      Nc::stopWithError(0, "Game over (time finished)");
       continue; // non servirebbe ma per chiarezza
     }
 
@@ -133,6 +142,10 @@ int main()
     rightMenu.write("Level: ", 2, 5);
     rightMenu.writeInt(currLevel->getLevelNumber(), 9, 5);
 
+    char time[64];
+    currLevel->getTimeLeftStr(time);
+    rightMenu.write(time, 2, 7);
+
     window.display();
     leftMenu.display();
     rightMenu.display();
@@ -148,10 +161,12 @@ int main()
         Nc::Point pos = currLevel->getDoorPrevPos();
         player.setPos(pos.x + Settings::entityWidth, pos.y);
       }
-      else continue;
+      else
+      {
+        // win
+      }
     }
-
-    if (currLevel->shouldGoNextLevel()) 
+    else if (currLevel->shouldGoNextLevel()) 
     {
       currLevel->pause();
       levelList.goNext();
@@ -162,10 +177,8 @@ int main()
         Nc::Point pos = currLevel->getDoorPrevPos();
         player.setPos(pos.x + Settings::entityWidth, pos.y);
       }
-      else continue;
     }
-
-    if (currLevel->shouldGoPrevLevel()) 
+    else if (currLevel->shouldGoPrevLevel()) 
     {
       currLevel->pause();
       levelList.goBack();
@@ -176,7 +189,6 @@ int main()
         Nc::Point pos = currLevel->getDoorNextPos();
         player.setPos(pos.x - Settings::entityWidth, pos.y);
       }
-      else continue;
     }
     
     Nc::sleepFor(10);
