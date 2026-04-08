@@ -5,21 +5,30 @@
 #include "LevelList.hpp"
 #include "Level.hpp"
 #include "Bomb.hpp"
-
-#include <iostream>
+#include <stdio.h>
 
 int main() 
 {
   Nc::init();
   
   // la grandezza minima effettiva poi la decideremo
-  Nc::checkTerminalSize(Settings::mapWidth * 1.3, Settings::mapHeight * 1.3); 
+  Nc::checkTerminalSize(Settings::mapWidth + Settings::menuWidth*2, Settings::mapHeight); 
 
   int w_startx = (Nc::getTerminalWidth()  - Settings::mapWidth) / 2;
   int w_starty = (Nc::getTerminalHeight() - Settings::mapHeight) / 2;
-
+  
   Nc::Window window{ Settings::mapWidth, Settings::mapHeight, w_startx, w_starty };
   window.setTitle("BOMBERMAN");
+
+  int leftMenuStartX = (window.getPos().x - Settings::menuWidth - 3);
+  Nc::Window leftMenu{ Settings::menuWidth, Settings::mapHeight, leftMenuStartX, w_starty };
+  leftMenu.setTitle("PLAYER STATS");
+
+
+  int rightMenuStartX = (window.getPos().x + window.getWidth() + 3);
+  Nc::Window rightMenu{ Settings::menuWidth, Settings::mapHeight, rightMenuStartX, w_starty };
+  rightMenu.setTitle("LEVEL STATS");
+  
 
   constexpr int numLevels{ 2 };
   const char* paths[numLevels]{ "levels/level_01.txt", "levels/level_02.txt" };
@@ -91,17 +100,27 @@ int main()
     }
 
     window.clear();
+    leftMenu.clear();
+    rightMenu.clear();
 
     currLevel->movePlayer(player, dir);
     currLevel->moveEnemies();
     currLevel->handleBombs(player);
+    currLevel->handleEnemies(player);
 
     player.draw(window);
     currLevel->drawEnemies(window);
     currLevel->drawWalls(window);
     currLevel->drawBombs(window);
+  
     
+    leftMenu.write("Lives: ", 2, 5);
+    for (int i = 0; i < player.getLives(); i++)
+      leftMenu.write("♥ ", 9 + i*2, 5);
+
     window.display();
+    leftMenu.display();
+    rightMenu.display();
 
     if (currLevel->shouldGoNextLevel()) 
     {

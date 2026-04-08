@@ -36,6 +36,7 @@ public:
 
   // gestisce automaticamente esplosioni di muri e nemici, e hit player
   void handleBombs(Player& player); 
+  void handleEnemies(Player &player);
 
   int  getLevelNumber() const;
 

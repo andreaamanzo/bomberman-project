@@ -9,6 +9,7 @@ namespace Settings
   constexpr int mapRows{ 20 };
   constexpr int mapHeight{ entityHeight * mapRows };
   constexpr int mapWidth{ entityWidth * mapCols };
+  constexpr int menuWidth{ mapWidth/4};
 }
 
 #endif

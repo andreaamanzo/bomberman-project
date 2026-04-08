@@ -7,6 +7,7 @@
 Enemy::Enemy(Type enemyType, int x, int y )
   : Movable{ getSprite(enemyType), x, y, 60 } 
   , m_type{ enemyType }
+  , m_points{getPoints(enemyType)}
 {}
 
 void Enemy::move() 
@@ -33,3 +34,14 @@ const Nc::Sprite2x3& Enemy::getSprite(Type enemyType)
 
   return s_spriteTypeNull;
 }
+
+int Enemy::getPoints(Type enemyType) {
+  if (enemyType == Type::First_Enemy) return 100;
+  else if (enemyType == Type::Second_Enemy) return 250;
+  return 0;
+}
+
+int Enemy::getEnemyPoints(){
+  return m_points;
+}
+

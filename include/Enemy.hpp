@@ -19,16 +19,19 @@ public:
 
   void setDirection(Direction newDirection);
   void move();
-  static const Nc::Sprite2x3& getSprite(Type enemyType);
   Direction getDirection() const { return m_direction; }
-
-
-private:
+  int getEnemyPoints();
+  
+  
+  private:
   Type m_type{Type::Null};
+  static const Nc::Sprite2x3& getSprite(Type enemyType);
   inline const static Nc::Sprite2x3 s_spriteTypeNull{ "   ", "   ", Nc::Color::Default };
   inline const static Nc::Sprite2x3 s_enemy1{"°|°", "/ \\ ", Nc::Color::Red};
   inline const static Nc::Sprite2x3 s_enemy2{"ò_ó", "###", Nc::Color::Red};
   Direction m_direction{Direction::Left};
+  int m_points;
+  int getPoints(Type enemyType);
 };
 
 #endif
