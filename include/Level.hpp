@@ -32,11 +32,14 @@ public:
 
   void moveEnemies();
   void movePlayer(Player& player, Direction dir);
+
   void addBomb(Bomb& bomb);
 
   // gestisce automaticamente esplosioni di muri e nemici, e hit player
   void handleBombs(Player& player); 
   void handleEnemies(Player &player);
+
+  bool isFinished() const;
 
   int  getLevelNumber() const;
 
@@ -45,7 +48,6 @@ public:
   void pause(); // mette il livello in pausa
   void start(); // opposto a pause
 
-  void update(); //funzione per aggiornare condizioni del livello
 private:
   using Clock = std::chrono::steady_clock;
 

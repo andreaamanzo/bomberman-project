@@ -409,3 +409,8 @@ Item Level::getItem(const Entity &entity) {
   return Item{}; // restituisce item nullo
 }
 
+bool Level::isFinished() const
+{
+  return m_enemiesSize == 0;
+}
+

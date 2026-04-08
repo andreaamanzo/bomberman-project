@@ -40,6 +40,7 @@ int main()
 
   bool running = true;
 
+
   while (running)
   {
     if (!currLevel)
@@ -136,6 +137,20 @@ int main()
     leftMenu.display();
     rightMenu.display();
 
+    if (currLevel->isFinished())
+    {
+      player.addPoints(1000); // punti per il completamento del livello
+      levelList.removeCurrent();
+      currLevel = levelList.getLevel();
+      if (currLevel)
+      {
+        currLevel->start();
+        Nc::Point pos = currLevel->getDoorPrevPos();
+        player.setPos(pos.x + Settings::entityWidth, pos.y);
+      }
+      else continue;
+    }
+
     if (currLevel->shouldGoNextLevel()) 
     {
       currLevel->pause();
@@ -147,6 +162,7 @@ int main()
         Nc::Point pos = currLevel->getDoorPrevPos();
         player.setPos(pos.x + Settings::entityWidth, pos.y);
       }
+      else continue;
     }
 
     if (currLevel->shouldGoPrevLevel()) 
@@ -160,6 +176,7 @@ int main()
         Nc::Point pos = currLevel->getDoorNextPos();
         player.setPos(pos.x - Settings::entityWidth, pos.y);
       }
+      else continue;
     }
     
     Nc::sleepFor(10);

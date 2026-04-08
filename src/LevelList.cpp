@@ -52,14 +52,12 @@ void LevelList::removeCurrent()
   if (m_currentLevel -> prev == nullptr)
   {
     deleter = m_currentLevel;
-    deleter -> next = nullptr;
     m_currentLevel = m_currentLevel -> next;
     if(m_currentLevel != nullptr) m_currentLevel -> prev = nullptr;
   }
   else if (m_currentLevel -> next == nullptr)
   {
     deleter = m_currentLevel;
-    deleter -> prev = nullptr;
     m_currentLevel = m_currentLevel -> prev;
     if(m_currentLevel != nullptr) m_currentLevel -> next = nullptr;
   }
