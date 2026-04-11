@@ -1,3 +1,4 @@
+#include "Enemy.hpp"
 #include "NcWrapper.hpp"
 #include "Player.hpp"
 #include "Direction.hpp"
@@ -135,6 +136,9 @@ int main()
 
     leftMenu.write("Bomb Radius: ", 2, 9);
     leftMenu.writeInt(player.getBombRadius(), 15, 9);
+
+    //leftMenu.write("Enemies Speed: ", 2, 11);
+    //leftMenu.writeInt(Enemy.getEnemySpeed, 15, 11);
 
     char str[64];
     sprintf(str, "Bombs: %d/%d", player.getMaxBombs() - player.getPlacedBombs(), player.getMaxBombs());

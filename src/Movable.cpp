@@ -1,5 +1,7 @@
 #include "Movable.hpp"
 #include "Entity.hpp"
+#include <chrono>
+#include <ncurses.h>
 
 Movable::Movable(const Nc::Sprite2x3& sprite, int x, int y, int delaySpeedMillisecods)
   : Entity{ sprite, x, y }
@@ -40,4 +42,8 @@ bool Movable::shouldMove()
 
   return now - m_lastMoveTime >= m_delaySpeed;
 }
+
+/*std::chrono::milliseconds Movable::getSpeed(){
+  return m_delaySpeed;
+}*/
 

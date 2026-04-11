@@ -14,6 +14,7 @@ public:
   void move(Direction dir, int velocity);
   bool shouldMove();
   void setDelaySpeed(int milliseconds);
+  //std::chrono::milliseconds getSpeed();
 
 private:
   using Clock = std::chrono::steady_clock;

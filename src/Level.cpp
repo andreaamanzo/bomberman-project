@@ -77,6 +77,11 @@ Level::Level(int levelNumber, const char* mapFilePath)
             Enemy{ Enemy::Type::Second_Enemy, nchar * Settings::entityWidth, nrow * Settings::entityHeight };
         m_map[nrow][nchar] = Tile::Empty;
         break;
+      case '3':
+        m_enemies[m_enemiesSize++] =
+            Enemy{ Enemy::Type::Third_Enemy, nchar * Settings::entityWidth, nrow * Settings::entityHeight };
+        m_map[nrow][nchar] = Tile::Empty;
+        break;
       default:
         m_map[nrow][nchar] = Tile::Empty;
         break;
