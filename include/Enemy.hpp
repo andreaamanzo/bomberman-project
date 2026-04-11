@@ -5,12 +5,10 @@
 #include "Movable.hpp"
 #include "NcWrapper.hpp"
 
-class LevelList;
 
 class Enemy : public Movable 
 {
 public:
-  LevelList* currentLevel;
   enum class Type
   {
     Null,
