@@ -31,9 +31,8 @@ int main()
   Nc::Window rightMenu{ Settings::menuWidth, Settings::mapHeight, rightMenuStartX, w_starty };
   rightMenu.setTitle("LEVEL STATS");
   
-
-  constexpr int numLevels{ 2 };
-  const char* paths[numLevels]{ "levels/level_01.txt", "levels/level_02.txt" };
+  constexpr int numLevels{ 3 };
+  const char* paths[numLevels]{ "levels/level_01.txt", "levels/level_02.txt", "levels/level_03.txt" };
 
   LevelList levelList{ paths, numLevels };
   Level* currLevel{ levelList.getLevel() };
@@ -165,18 +164,26 @@ int main()
       // punti per il completamento del livello
       player.addPoints(500 + currLevel->getTimeLeftSec() * 10); 
 
-      // restore delle bombe del player
-      while (player.getPlacedBombs() > 0) player.restoreBomb();
+      player.restoreAllBombs();
+      currLevel->removeAllBombs();
 
       levelList.removeCurrent();
       currLevel = levelList.getLevel();
       if (currLevel)
       {
-        // TODO: rimuovere le porte che non servono più (es se il livello finito era primo/ultimo)
+        window.clear();
+        window.write("LEVEL COMPLETED!", window.getWidth() / 2 - 8, window.getHeight() / 2, Nc::Color::Gold);
+        window.display();
+        Nc::sleepFor(1500);
+
+        if (levelList.isCurrFirst())
+          currLevel->removePrevDoor();
+        
+        if (levelList.isCurrLast())
+          currLevel->removeNextDoor();
         
         currLevel->start();
-        Nc::Point pos = currLevel->getDoorPrevPos();
-        player.setPos(pos.x + Settings::entityWidth, pos.y);
+        player.atRespown();
       }
       else
       {
@@ -186,6 +193,8 @@ int main()
     else if (currLevel->shouldGoNextLevel()) 
     {
       currLevel->pause();
+      player.restoreAllBombs();
+      currLevel->removeAllBombs();
       levelList.goNext();
       currLevel = levelList.getLevel();
       if (currLevel)
@@ -198,6 +207,8 @@ int main()
     else if (currLevel->shouldGoPrevLevel()) 
     {
       currLevel->pause();
+      player.restoreAllBombs();
+      currLevel->removeAllBombs();
       levelList.goBack();
       currLevel = levelList.getLevel();
       if (currLevel)

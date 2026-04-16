@@ -1,18 +1,18 @@
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-X                     X                X
+X                     X               1X
 P                     XX               X
-X         1                            X
+X                                      X
 X####  ###X  X            XXXXX        X
 X                               X      X
 X     X  #    XX        1              O
-X X           #    ##       X      X   X
-X     X                         X      X
-XXXXXXX  XX                #XXX     XXXX
-X                                      X
+X X           #    ##  #    X      X   X
+X     X                #        X      X
+XXXXXXX  XX            X   #XXX     XXXX
+X  2                                   X
 X             X     ##    #X    # ##   X
 X         X           XX           X   X
-X    X   X     #X              X       X
-X         #                     X      X
+X    X   X     #X      X       X       X
+X         #            X        X      X
 X        ##          ####  #           X
 X X   ###   #X  3             X   X    X
 X          #        #                  X

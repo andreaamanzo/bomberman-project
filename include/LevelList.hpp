@@ -35,6 +35,9 @@ public:
   // return della size
   int size() const;
 
+  bool isCurrFirst() const;
+  bool isCurrLast()  const;
+
 private:
   struct Node
   {

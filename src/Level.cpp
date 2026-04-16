@@ -140,6 +140,11 @@ void Level::addBomb(Bomb& bomb)
   m_bombs[m_bombsSize++] = bomb;
 }
 
+void Level::removeAllBombs()
+{
+  m_bombsSize = 0;
+}
+
 void Level::setExplosionCells(Bomb& bomb) const 
 {
   int count = 0;
@@ -287,6 +292,28 @@ bool Level::shouldGoPrevLevel() const { return m_shouldGoPrev; }
 Nc::Point Level::getDoorPrevPos() const { return m_doorPrevPos; }
 
 Nc::Point Level::getDoorNextPos() const { return m_doorNextPos; }
+
+void Level::removePrevDoor()
+{
+  int x = m_doorPrevPos.x / Settings::entityWidth;
+  int y = m_doorPrevPos.y / Settings::entityHeight;
+
+  if (x < 0 || x >= Settings::mapCols || y < 0 || y >= Settings::mapRows) return;
+
+  m_map[y][x] = Tile::Wall;
+  m_doorPrevPos = { -1, -1 };
+}
+
+void Level::removeNextDoor()
+{
+  int x = m_doorNextPos.x / Settings::entityWidth;
+  int y = m_doorNextPos.y / Settings::entityHeight;
+
+  if (x < 0 || x >= Settings::mapCols || y < 0 || y >= Settings::mapRows) return;
+  
+  m_map[y][x] = Tile::Wall;
+  m_doorNextPos = { -1, -1 };
+}
 
 bool Level::checkIsWall(int x, int y) const 
 {

@@ -22,6 +22,8 @@ public:
   bool checkWallCollision(const Entity& entity) const;
   bool checkDoorNextCollision(const Entity& entity) const;
   bool checkDoorPrevCollision(const Entity& entity) const;
+  void removePrevDoor();
+  void removeNextDoor();
   bool shouldGoNextLevel() const;
   bool shouldGoPrevLevel() const;
   Nc::Point getDoorPrevPos() const;
@@ -34,8 +36,9 @@ public:
   void movePlayer(Player& player, Direction dir);
 
   void addBomb(Bomb& bomb);
+  void removeAllBombs();
 
-  // gestisce automaticamente esplosioni di muri e nemici, e hit player
+  // gestisce esplosioni di muri e nemici, e hit player
   void handleBombs(Player& player); 
   void handleEnemies(Player &player);
 

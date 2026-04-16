@@ -94,7 +94,16 @@ Level* LevelList::getLevel()
     std::cerr << "null ptr\n";
     return nullptr;
   }
-  
 
   return &(m_currentLevel->val);
+}
+
+bool LevelList::isCurrFirst() const
+{
+  return m_currentLevel->prev == nullptr;
+}
+
+bool LevelList::isCurrLast()  const
+{
+  return m_currentLevel->next == nullptr;
 }

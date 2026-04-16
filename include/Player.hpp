@@ -15,10 +15,12 @@ public:
   void move(Direction dir);
   Bomb placeBomb();
   void restoreBomb();
+  void restoreAllBombs();
   // gestisce la perdita della vita e fa respownare il player nella poszione giusta
   void onHit();
   void collectItem(const Item& item);
   void setRespownPoint(int x, int y);
+  void atRespown();
   bool isAlive() const;
   int getLives() const;
   int getBombRadius() const;

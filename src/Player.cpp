@@ -27,9 +27,19 @@ void Player::restoreBomb()
     m_placedBombs--;
 }
 
+void Player::restoreAllBombs()
+{
+  m_placedBombs = 0;
+}
+
 void Player::setRespownPoint(int x, int y)
 {
   m_respawnPoint = { x, y };
+}
+
+void Player::atRespown()
+{
+  setPos(m_respawnPoint.x, m_respawnPoint.y);
 }
 
 void Player::onHit()
@@ -37,7 +47,7 @@ void Player::onHit()
   if (!m_isInvincible)
   {
     m_lives--;
-    setPos(m_respawnPoint.x, m_respawnPoint.y);
+    atRespown();
 
     Item respawnInvulnerability{ Item::Type::Invulnerability, 0, 0};
     respawnInvulnerability.setPowerDuration(3);
