@@ -1,20 +1,34 @@
 #include "Enemy.hpp"
 #include "Direction.hpp"
-#include "LevelList.hpp"
 #include "Movable.hpp"
 #include "NcWrapper.hpp"
 #include <chrono>
 
 
 Enemy::Enemy(Type enemyType, int x, int y)
-    : Movable{getSprite(enemyType), x, y, setSpeed(enemyType)},
-      m_type{enemyType}, m_points{setPoints(enemyType)} {}
+  : Movable{ getSprite(enemyType), x, y, getSpeed(enemyType) }
+  , m_type{ enemyType }
+  , m_points{ getPoints(enemyType) } 
+{ }
 
-void Enemy::move() { Movable::move(m_direction, 1); }
+void Enemy::move() 
+{ 
+  Movable::move(m_direction, 1); 
+}
 
-void Enemy::setDirection(Direction newDirection) { m_direction = newDirection; }
+void Enemy::setDirection(Direction newDirection) 
+{ 
+  m_direction = newDirection; 
+}
 
-const Nc::Sprite2x3 &Enemy::getSprite(Type enemyType) {
+Enemy::Type Enemy::getType() const { return m_type; }
+
+int Enemy::getPoints() const { return m_points; }
+
+Direction Enemy::getDirection() const { return m_direction; }
+
+const Nc::Sprite2x3 &Enemy::getSprite(Type enemyType) 
+{
   switch (enemyType) {
   case Type::Null:
     return s_spriteTypeNull;
@@ -29,17 +43,20 @@ const Nc::Sprite2x3 &Enemy::getSprite(Type enemyType) {
   return s_spriteTypeNull;
 }
 
-int Enemy::setPoints(Type enemyType) {
+int Enemy::getPoints(Type enemyType) 
+{
   if (enemyType == Type::First_Enemy)
     return 100;
   else if (enemyType == Type::Second_Enemy)
     return 250;
+  else if (enemyType == Type::Third_Enemy)
+    return 300;
+
   return 0;
 }
 
-int Enemy::getEnemyPoints() { return m_points; }
-
-int Enemy::setSpeed(Type enemyType) {
+int Enemy::getSpeed(Type enemyType) 
+{
   if (enemyType == Type::First_Enemy)
     return 40;
   else if (enemyType == Type::Second_Enemy)
@@ -47,8 +64,4 @@ int Enemy::setSpeed(Type enemyType) {
   else if (enemyType == Type::Third_Enemy)
     return 60;
   return 0;
-}
-
-Enemy::Type Enemy::getType() const{
-  return m_type;
 }

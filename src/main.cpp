@@ -13,7 +13,7 @@ int main()
 {
   Nc::init();
   
-  // la grandezza minima effettiva poi la decideremo
+  // grandezza minima
   Nc::checkTerminalSize(Settings::mapWidth + Settings::menuWidth*2 + 6, Settings::mapHeight); 
 
   int w_startx = (Nc::getTerminalWidth()  - Settings::mapWidth) / 2;
@@ -116,9 +116,9 @@ int main()
 
     currLevel->movePlayer(player, dir);
     currLevel->moveEnemies();
+
     currLevel->handleBombs(player);
     currLevel->handleEnemies(player);
-    currLevel->handleEnemiesBombs(player);
     player.handleItems();
 
     player.draw(window);
@@ -136,9 +136,6 @@ int main()
 
     leftMenu.write("Bomb Radius: ", 2, 9);
     leftMenu.writeInt(player.getBombRadius(), 15, 9);
-
-    //leftMenu.write("Enemies Speed: ", 2, 11);
-    //leftMenu.writeInt(Enemy.getEnemySpeed, 15, 11);
 
     char str[64];
     sprintf(str, "Bombs: %d/%d", player.getMaxBombs() - player.getPlacedBombs(), player.getMaxBombs());
@@ -160,7 +157,7 @@ int main()
     leftMenu.display();
     rightMenu.display();
 
-    if (currLevel->isFinished())
+    if (currLevel->isCompleted())
     {
       // punti per il completamento del livello
       player.addPoints(500 + currLevel->getTimeLeftSec() * 10); 

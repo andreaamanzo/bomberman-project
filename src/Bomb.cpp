@@ -5,13 +5,13 @@ Bomb::Bomb()
   : Entity{ s_bombSprite }
 { }
 
-Bomb::Bomb(int x, int y, int radius, bool isEnemy)
-  : Entity{ isEnemy ? s_enemyBombSprite : s_bombSprite, x, y } // '?' se true valuta la prima se no la seconda
+Bomb::Bomb(int x, int y, int radius, Type type)
+  : Entity{ type == Type::Enemy ? s_enemyBombSprite : s_bombSprite, x, y } // '?' se true valuta la prima se no la seconda
   , m_radius{ radius }
+  , m_type{ type }
   , m_status{ Status::Placed }
   , m_startTime{ Clock::now() }
   , m_lastColorSwitch{ Clock::now() }
-  , m_isEnemy{ isEnemy }
 { }
 
 void Bomb::update()
@@ -23,20 +23,13 @@ void Bomb::update()
     m_useFirstColor = !m_useFirstColor;
     m_lastColorSwitch = now;
 
-if (m_isEnemy)
-{
-  if (m_useFirstColor)
-    m_sprite.setColor(s_ecolor1);
-  else
-    m_sprite.setColor(s_ecolor2);
-}
-else
-{
-  if (m_useFirstColor)
-    m_sprite.setColor(s_color1);
-  else
-    m_sprite.setColor(s_color2);
-}
+    Nc::Color c1 = m_type == Type::Player ? s_color1 : s_enemyColor1;
+    Nc::Color c2 = m_type == Type::Player ? s_color2 : s_enemyColor2;
+
+    if (m_useFirstColor)
+      m_sprite.setColor(c1);
+    else
+      m_sprite.setColor(c2);
   }
 
   switch (m_status)
@@ -66,6 +59,11 @@ Bomb::Status Bomb::getStatus()
   update();
 
   return m_status;
+}
+
+Bomb::Type Bomb::getType() const
+{
+  return m_type;
 }
 
 int Bomb::getRadius() const
@@ -104,6 +102,10 @@ void Bomb::setExplosionCells(const Nc::Point cells[], int count)
     m_explosionCells[i] = cells[i];
 }
 
-bool Bomb::isEnemy() const {
-  return m_isEnemy;
+const Nc::Sprite2x3& Bomb::getExplosionSprite() const
+{
+  if (m_type == Type::Player)
+    return s_explosionSprite;
+  else
+    return s_enemyExplosionSprite;
 }

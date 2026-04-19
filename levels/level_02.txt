@@ -1,20 +1,20 @@
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-X                     X               1X
-P                     XX               X
-X                                      X
-X####  ###X  X            XXXXX        X
-X                               X      X
+X                     X              3 X
+P             XX  #   XX          X    X
+X                 X               X    X
+X####  ###X  X    X       XXXXX   #    X
+X                 #             X #    X
 X     X  #    XX        1              O
 X X           #    ##  #    X      X   X
 X     X                #        X      X
-XXXXXXX  XX            X   #XXX     XXXX
+XXXXXXX  XX   XX##     X   #XXX     XXXX
 X  2                                   X
-X             X     ##    #X    # ##   X
+X         #   X     ##    #X    # ##   X
 X         X           XX           X   X
-X    X   X     #X      X       X       X
-X         #            X        X      X
-X        ##          ####  #           X
-X X   ###   #X  3             X   X    X
-X          #        #                  X
-X#     2 #                     X       X
+X####X   #X    #X      X       X       X
+X         # X   X      X        X      X
+X           X   X    ####  #           X
+X X   ###   #X  3       X     X   X    X
+X          #        #   #              X
+X#     2 #              X      X   2   X
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX

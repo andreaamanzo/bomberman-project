@@ -111,15 +111,9 @@ int Player::getMaxBombs() const { return m_maxBombs; }
 
 int Player::getPlacedBombs() const { return m_placedBombs; }
 
-const Item* Player::getItemsList() const
-{
-  return m_items;
-}
+const Item* Player::getItemsList() const { return m_items; }
 
-int Player::getItemsListSize() const
-{
-  return m_itemsSize;
-}
+int Player::getItemsListSize() const { return m_itemsSize; }
 
 void Player::handleItems()
 {
@@ -133,6 +127,8 @@ void Player::handleItems()
       case Item::Type::TimedIncrementBombPower :
         m_bombRadius -= 3;
         m_maxBombs   -= 2;
+        restoreBomb();
+        restoreBomb();
         break;
       
       case Item::Type::Invulnerability :

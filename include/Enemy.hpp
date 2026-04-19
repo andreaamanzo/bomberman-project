@@ -5,7 +5,6 @@
 #include "Movable.hpp"
 #include "NcWrapper.hpp"
 
-
 class Enemy : public Movable 
 {
 public:
@@ -21,25 +20,26 @@ public:
 
   void setDirection(Direction newDirection);
   void move();
-  Direction getDirection() const { return m_direction; }
-  int getEnemySpeed();
-  int getEnemyPoints();
+  Direction getDirection() const;
+  int getSpeed();
+  int getPoints() const;
   Type getType() const;
   
-  
-  private:
-  Type m_type{Type::Null};
-  static const Nc::Sprite2x3& getSprite(Type enemyType);
+private:
   inline const static Nc::Sprite2x3 s_spriteTypeNull{ "   ", "   ", Nc::Color::Default };
   inline const static Nc::Sprite2x3 s_enemy1{"°|°", "/ \\ ", Nc::Color::Red};
   inline const static Nc::Sprite2x3 s_enemy2{"ò_ó", "###", Nc::Color::Red};
   inline const static Nc::Sprite2x3 s_enemy3{"⋋▃⋌", "╱║╲", Nc::Color::Red};
-  Direction m_direction{Direction::Left};
-  int setPoints(Type enemyType);
+
+  Type m_type{ Type::Null };
+  Direction m_direction{ Direction::Left };
   int m_points;
-  int setSpeed(Type enemyType);
-  std::chrono::steady_clock::time_point lastActionTime;
-  std::chrono::milliseconds actionInterval{3000};
+  std::chrono::steady_clock::time_point m_lastActionTime;
+  std::chrono::milliseconds m_actionInterval{ 3000 };
+
+  static const Nc::Sprite2x3& getSprite(Type enemyType);
+  static int getPoints(Type enemyType);
+  static int getSpeed(Type enemyType);
 };
 
 #endif

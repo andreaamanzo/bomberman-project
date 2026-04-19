@@ -36,26 +36,21 @@ public:
   void movePlayer(Player& player, Direction dir);
 
   void addBomb(Bomb& bomb);
-  void addEnemyBomb(Bomb &bomb);
   void removeAllBombs();
-  void removeAllEnemyBombs();
 
   // gestisce esplosioni di muri e nemici, e hit player
   void handleBombs(Player& player); 
-  void handleEnemiesBombs(Player& player);
   void handleEnemies(Player &player);
 
-  bool isFinished() const;
-
+  bool isCompleted() const;
   int  getLevelNumber() const;
 
   // Funzioni per la gestione del tempo
-  //...
   void pause(); // mette il livello in pausa
   void start(); // opposto a pause
   void updateTime();
   bool checkTimeFinished();
-  int getTimeLeftSec() const;
+  int  getTimeLeftSec() const;
 
 private:
   using Clock = std::chrono::steady_clock;
@@ -72,7 +67,6 @@ private:
 
   inline const static Nc::Sprite2x3 s_wallSprite{ "███", "███", Nc::Color::White };
   inline const static Nc::Sprite2x3 s_breakableWallSprite{ "▚▞▚", "▚▞▚", Nc::Color::White };
-  inline const static Nc::Sprite2x3 s_explosionSprite{ "███", "███", Nc::Color::Fire };
   inline const static Nc::Sprite2x3 s_doorNextSprite{ "-⌼-", "-⌼-", Nc::Color::Sky, Nc::Color::Black };
   inline const static Nc::Sprite2x3 s_doorPrevSprite{ "-▣-", "-▣-", Nc::Color::Magenta, Nc::Color::Black };
 
@@ -86,7 +80,7 @@ private:
   bool m_shouldGoPrev{ false };
   bool m_isPaused{ true };
 
-  // Membri per la gestione del tempo (tempo iniziale + tempo totale o tempo rimanente)
+  // Membri per la gestione del tempo 
   Mills m_timeLeft{ 180 * 1000 };
   Clock::time_point m_lastUpdate{};
 
@@ -96,15 +90,11 @@ private:
   int   m_itemsSize{ 0 };
   Enemy m_enemies[s_maxLengthArrays]{};
   int   m_enemiesSize{ 0 };
-  Bomb  m_enemyBombs[s_maxLengthArrays]{};
-  int   m_enemyBombsSize{ 0 };
 
   void setExplosionCells(Bomb& bomb) const;
   void applyExplosion(const Bomb& bomb, Player &player) ;
-  void applyEnemyExplosion(const Bomb& bomb, Player& player);
   void drawExplosion(const Bomb& bomb, Nc::Window& window);
   bool checkIsWall(int x, int y) const;
-  void specialAbility(Enemy& enemy);
 };
 
 

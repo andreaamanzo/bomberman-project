@@ -140,28 +140,9 @@ void Level::addBomb(Bomb& bomb)
   m_bombs[m_bombsSize++] = bomb;
 }
 
-void Level::addEnemyBomb(Bomb& bomb) 
-{
-  if (m_enemyBombsSize >= s_maxLengthArrays)
-    Nc::stopWithError(1, "Bombs array capacity exceeded.");
-
-  while (bomb.getX() % Settings::entityWidth != 0)
-    bomb.setPos(bomb.getX() + 1, bomb.getY());
-
-  while (bomb.getY() % Settings::entityHeight != 0)
-    bomb.setPos(bomb.getX(), bomb.getY() + 1);
-
-  m_enemyBombs[m_enemyBombsSize++] = bomb;
-}
-
 void Level::removeAllBombs()
 {
   m_bombsSize = 0;
-}
-
-void Level::removeAllEnemyBombs()
-{
-  m_enemyBombsSize = 0;
 }
 
 void Level::setExplosionCells(Bomb& bomb) const 
@@ -217,47 +198,31 @@ void Level::applyExplosion(const Bomb& bomb, Player& player)
     int x = cells[i].x;
     int y = cells[i].y;
 
-    Tile &tile = m_map[y][x];
+    Tile& tile = m_map[y][x];
 
     // applicato solo la prima volta (prima di hasExploded = true)
     if (!bomb.hasExploded() && tile == Tile::BreakableWall)
       tile = Tile::Empty;
 
-    for (int j = m_enemiesSize - 1; j >= 0; j--) {
-      Entity explosion{ x * Settings::entityWidth, y * Settings::entityHeight };
+    Entity explosion{ x * Settings::entityWidth, y * Settings::entityHeight };
 
+    if (explosion.collide(player))
+      player.onHit();
+
+    // se è una bomba-nemico non deve collidere con i nemici
+    if (bomb.getType() == Bomb::Type::Enemy) continue;
+
+    for (int j = m_enemiesSize - 1; j >= 0; j--) 
+    {
       // se devo togliere un nemico lo posiziono in fondo e decremento la size
       if (explosion.collide(m_enemies[j])) 
       {
+        player.addPoints(m_enemies[j].getPoints());
+
         m_enemiesSize--;
         m_enemies[j] = m_enemies[m_enemiesSize];
-
-        player.addPoints(m_enemies[j].getEnemyPoints());
       }
     }
-  }
-}
-
-void Level::applyEnemyExplosion(const Bomb& bomb, Player& player) 
-{
-  const Nc::Point* cells = bomb.getExplosionCells();
-  int count = bomb.getExplosionCount();
-
-  for (int i = 0; i < count; i++) 
-  {
-    int x = cells[i].x;
-    int y = cells[i].y;
-
-    Tile &tile = m_map[y][x];
-
-    // applicato solo la prima volta (prima di hasExploded = true)
-    if (!bomb.hasExploded() && tile == Tile::BreakableWall)
-      tile = Tile::Empty;
-
-    // player
-    Entity explosion{ x * Settings::entityWidth, y * Settings::entityHeight };
-    if (explosion.collide(player))
-      player.onHit();
   }
 }
 
@@ -267,7 +232,7 @@ void Level::drawExplosion(const Bomb& bomb, Nc::Window& window)
   int count = bomb.getExplosionCount();
 
   for (int i = 0; i < count; i++) 
-    window.draw(s_explosionSprite, cells[i].x * Settings::entityWidth, cells[i].y * Settings::entityHeight);
+    window.draw(bomb.getExplosionSprite(), cells[i].x * Settings::entityWidth, cells[i].y * Settings::entityHeight);
 }
 
 void Level::handleBombs(Player& player) 
@@ -291,41 +256,12 @@ void Level::handleBombs(Player& player)
     } 
     else if (bomb.getStatus() == Bomb::Status::Finished) 
     {
+      if (bomb.getType() == Bomb::Type::Player)
+        player.restoreBomb();
+
       // porto la bomba da rimuovere in fondo per eliminarla
       m_bombsSize--;
       m_bombs[i] = m_bombs[m_bombsSize];
-      // ora nella posizione i-esima ho la prossima bomba da controllare
-      i--;
-
-      player.restoreBomb();
-    }
-  }
-}
-
-void Level::handleEnemiesBombs(Player& player) 
-{
-  for (int i = 0; i < m_enemyBombsSize; i++) 
-  {
-    Bomb& bomb = m_enemyBombs[i];
-
-    if (bomb.getStatus() == Bomb::Status::Exploding) 
-    {
-      if (!bomb.hasExploded())
-      {
-        setExplosionCells(bomb);
-        applyEnemyExplosion(bomb, player);
-        bomb.setExploded(true);
-      }
-      else
-      {
-        applyEnemyExplosion(bomb, player);
-      }
-    } 
-    else if (bomb.getStatus() == Bomb::Status::Finished) 
-    {
-      // porto la bomba da rimuovere in fondo per eliminarla
-      m_enemyBombsSize--;
-      m_enemyBombs[i] = m_enemyBombs[m_enemyBombsSize];
       // ora nella posizione i-esima ho la prossima bomba da controllare
       i--;
     }
@@ -348,23 +284,7 @@ void Level::drawBombs(Nc::Window& window)
     if (bomb.getStatus() == Bomb::Status::Exploding)
       drawExplosion(bomb, window);
   }
-
-    for (int i = 0; i < m_enemyBombsSize; i++) 
-  {
-    Bomb& bomb = m_enemyBombs[i];
-    if (bomb.getStatus() == Bomb::Status::Placed)
-      bomb.draw(window);
-  }
-
-  for (int i = 0; i < m_enemyBombsSize; i++) 
-  {
-    Bomb& bomb = m_enemyBombs[i];
-    if (bomb.getStatus() == Bomb::Status::Exploding)
-      drawExplosion(bomb, window);
-  }
 }
-
-
 
 int Level::getLevelNumber() const { return m_levelNumber; }
 
@@ -531,9 +451,10 @@ void Level::moveEnemies()
 
     //booleano per controllare se la bomba collide con enemy
     bool bombCollide = false;
-    for (int k = 0; k< m_bombsSize && !bombCollide; k++)
+    for (int k = 0; k < m_bombsSize && !bombCollide; k++)
     {
       Bomb& bomb = m_bombs[k];
+      if (bomb.getType() == Bomb::Type::Enemy) continue;
       if (bomb.getStatus() == Bomb::Status::Placed && bomb.collide(enemy)) 
         bombCollide = true;
     }
@@ -547,12 +468,6 @@ void Level::moveEnemies()
         enemy.setDirection(static_cast<Direction>(Random::get(1, 4)));
       } while (enemy.getDirection() == prevDir);
     }
-    if (enemy.getType() == Enemy::Type::Third_Enemy){
-      if (rand()%30 == 0) {
-        Bomb bomb(enemy.getX(), enemy.getY(), 2, true);
-        addEnemyBomb(bomb);
-      }
-    }
   }
 }
 
@@ -564,6 +479,15 @@ void Level::handleEnemies(Player& player)
 
     if (player.collide(enemy))
       player.onHit();
+
+    if (enemy.getType() == Enemy::Type::Third_Enemy)
+    {
+      if (Random::get(1, 800) == 800) 
+      {
+        Bomb bomb{ enemy.getX(), enemy.getY(), 2, Bomb::Type::Enemy };
+        addBomb(bomb);
+      }
+    }
   }
 }
 
@@ -584,10 +508,7 @@ Item Level::getItem(const Entity& entity)
   return Item{}; // restituisce item nullo
 }
 
-bool Level::isFinished() const
+bool Level::isCompleted() const
 {
   return m_enemiesSize == 0;
 }
-
-
-
