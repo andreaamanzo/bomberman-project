@@ -24,7 +24,7 @@ public:
   Direction getDirection() const { return m_direction; }
   int getEnemySpeed();
   int getEnemyPoints();
-  void specialAbility(Type enemyType);
+  void specialAbilityThirdEnemy();
   
   
   private:

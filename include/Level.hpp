@@ -40,6 +40,7 @@ public:
 
   // gestisce esplosioni di muri e nemici, e hit player
   void handleBombs(Player& player); 
+  void handleEnemiesBombs(Player& player);
   void handleEnemies(Player &player);
 
   bool isFinished() const;
@@ -93,11 +94,15 @@ private:
   int   m_itemsSize{ 0 };
   Enemy m_enemies[s_maxLengthArrays]{};
   int   m_enemiesSize{ 0 };
+  Bomb  m_enemyBombs[s_maxLengthArrays]{};
+  int   m_enemyBombsSize{ 0 };
 
   void setExplosionCells(Bomb& bomb) const;
   void applyExplosion(const Bomb& bomb, Player &player) ;
+  void applyEnemyExplosion(const Bomb& bomb, Player& player);
   void drawExplosion(const Bomb& bomb, Nc::Window& window);
   bool checkIsWall(int x, int y) const;
+  void specialAbility(Enemy& enemy);
 };
 
 

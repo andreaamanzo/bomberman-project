@@ -200,7 +200,7 @@ void Level::applyExplosion(const Bomb& bomb, Player& player)
 
     Tile &tile = m_map[y][x];
 
-    // applicato solo la prima colta (prima di hasExploded = true)
+    // applicato solo la prima volta (prima di hasExploded = true)
     if (!bomb.hasExploded() && tile == Tile::BreakableWall)
       tile = Tile::Empty;
 
@@ -216,6 +216,24 @@ void Level::applyExplosion(const Bomb& bomb, Player& player)
         player.addPoints(m_enemies[j].getEnemyPoints());
       }
     }
+  }
+}
+
+void Level::applyEnemyExplosion(const Bomb& bomb, Player& player) 
+{
+  const Nc::Point* cells = bomb.getExplosionCells();
+  int count = bomb.getExplosionCount();
+
+  for (int i = 0; i < count; i++) 
+  {
+    int x = cells[i].x;
+    int y = cells[i].y;
+
+    Tile &tile = m_map[y][x];
+
+    // applicato solo la prima volta (prima di hasExploded = true)
+    if (!bomb.hasExploded() && tile == Tile::BreakableWall)
+      tile = Tile::Empty;
 
     // player
     Entity explosion{ x * Settings::entityWidth, y * Settings::entityHeight };
@@ -265,6 +283,36 @@ void Level::handleBombs(Player& player)
   }
 }
 
+void Level::handleEnemiesBombs(Player& player) 
+{
+  for (int i = 0; i < m_enemyBombsSize; i++) 
+  {
+    Bomb& bomb = m_bombs[i];
+
+    if (bomb.getStatus() == Bomb::Status::Exploding) 
+    {
+      if (!bomb.hasExploded())
+      {
+        setExplosionCells(bomb);
+        applyEnemyExplosion(bomb, player);
+        bomb.setExploded(true);
+      }
+      else
+      {
+        applyEnemyExplosion(bomb, player);
+      }
+    } 
+    else if (bomb.getStatus() == Bomb::Status::Finished) 
+    {
+      // porto la bomba da rimuovere in fondo per eliminarla
+      m_bombsSize--;
+      m_bombs[i] = m_bombs[m_bombsSize];
+      // ora nella posizione i-esima ho la prossima bomba da controllare
+      i--;
+    }
+  }
+}
+
 void Level::drawBombs(Nc::Window& window) 
 {
   // disegno prima le placed e poi le exploding, così l'esplosione copre sempre le altre bombe
@@ -281,7 +329,23 @@ void Level::drawBombs(Nc::Window& window)
     if (bomb.getStatus() == Bomb::Status::Exploding)
       drawExplosion(bomb, window);
   }
+
+    for (int i = 0; i < m_enemyBombsSize; i++) 
+  {
+    Bomb& bomb = m_bombs[i];
+    if (bomb.getStatus() == Bomb::Status::Placed)
+      bomb.draw(window);
+  }
+
+  for (int i = 0; i < m_enemyBombsSize; i++) 
+  {
+    Bomb& bomb = m_bombs[i];
+    if (bomb.getStatus() == Bomb::Status::Exploding)
+      drawExplosion(bomb, window);
+  }
 }
+
+
 
 int Level::getLevelNumber() const { return m_levelNumber; }
 
@@ -499,4 +563,6 @@ bool Level::isFinished() const
 {
   return m_enemiesSize == 0;
 }
+
+
 

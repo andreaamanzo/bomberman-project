@@ -118,6 +118,7 @@ int main()
     currLevel->moveEnemies();
     currLevel->handleBombs(player);
     currLevel->handleEnemies(player);
+    currLevel->handleEnemiesBombs(player);
     player.handleItems();
 
     player.draw(window);

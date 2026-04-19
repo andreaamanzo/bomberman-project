@@ -5,8 +5,7 @@
 #include "NcWrapper.hpp"
 #include <chrono>
 
-// PER ALE: ho harcodato la "velocità" a 50, puoi fare una funzione che a
-// seconda del nemico imposta una certa velocità
+
 Enemy::Enemy(Type enemyType, int x, int y)
     : Movable{getSprite(enemyType), x, y, setSpeed(enemyType)},
       m_type{enemyType}, m_points{setPoints(enemyType)} {}
