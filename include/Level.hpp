@@ -36,7 +36,9 @@ public:
   void movePlayer(Player& player, Direction dir);
 
   void addBomb(Bomb& bomb);
+  void addEnemyBomb(Bomb &bomb);
   void removeAllBombs();
+  void removeAllEnemyBombs();
 
   // gestisce esplosioni di muri e nemici, e hit player
   void handleBombs(Player& player); 

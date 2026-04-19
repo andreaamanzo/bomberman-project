@@ -49,18 +49,6 @@ int Enemy::setSpeed(Type enemyType) {
   return 0;
 }
 
-/*int Enemy::getEnemySpeed(){
-  auto duration = getSpeed();
-  int ms_as_int = static_cast<int>(duration.count());
-  return ms_as_int;
-}*/
-
-/*void Enemy::specialAbility(Type enemyType) {
-  if (enemyType == Type::Third_Enemy) {
-    int x = this->getX();
-    int y = this->getY();
-    int targetX = x - 1; // la bomba la mettiamo sempre dov'è il nemico e creiamo una sottoclasse bomba
-    //che non da collisioni con nemico.
-    }
-  }
-}*/
+Enemy::Type Enemy::getType() const{
+  return m_type;
+}

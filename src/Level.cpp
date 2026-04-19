@@ -140,9 +140,28 @@ void Level::addBomb(Bomb& bomb)
   m_bombs[m_bombsSize++] = bomb;
 }
 
+void Level::addEnemyBomb(Bomb& bomb) 
+{
+  if (m_enemyBombsSize >= s_maxLengthArrays)
+    Nc::stopWithError(1, "Bombs array capacity exceeded.");
+
+  while (bomb.getX() % Settings::entityWidth != 0)
+    bomb.setPos(bomb.getX() + 1, bomb.getY());
+
+  while (bomb.getY() % Settings::entityHeight != 0)
+    bomb.setPos(bomb.getX(), bomb.getY() + 1);
+
+  m_enemyBombs[m_enemyBombsSize++] = bomb;
+}
+
 void Level::removeAllBombs()
 {
   m_bombsSize = 0;
+}
+
+void Level::removeAllEnemyBombs()
+{
+  m_enemyBombsSize = 0;
 }
 
 void Level::setExplosionCells(Bomb& bomb) const 
@@ -287,7 +306,7 @@ void Level::handleEnemiesBombs(Player& player)
 {
   for (int i = 0; i < m_enemyBombsSize; i++) 
   {
-    Bomb& bomb = m_bombs[i];
+    Bomb& bomb = m_enemyBombs[i];
 
     if (bomb.getStatus() == Bomb::Status::Exploding) 
     {
@@ -305,8 +324,8 @@ void Level::handleEnemiesBombs(Player& player)
     else if (bomb.getStatus() == Bomb::Status::Finished) 
     {
       // porto la bomba da rimuovere in fondo per eliminarla
-      m_bombsSize--;
-      m_bombs[i] = m_bombs[m_bombsSize];
+      m_enemyBombsSize--;
+      m_enemyBombs[i] = m_enemyBombs[m_enemyBombsSize];
       // ora nella posizione i-esima ho la prossima bomba da controllare
       i--;
     }
@@ -332,14 +351,14 @@ void Level::drawBombs(Nc::Window& window)
 
     for (int i = 0; i < m_enemyBombsSize; i++) 
   {
-    Bomb& bomb = m_bombs[i];
+    Bomb& bomb = m_enemyBombs[i];
     if (bomb.getStatus() == Bomb::Status::Placed)
       bomb.draw(window);
   }
 
   for (int i = 0; i < m_enemyBombsSize; i++) 
   {
-    Bomb& bomb = m_bombs[i];
+    Bomb& bomb = m_enemyBombs[i];
     if (bomb.getStatus() == Bomb::Status::Exploding)
       drawExplosion(bomb, window);
   }
@@ -527,6 +546,12 @@ void Level::moveEnemies()
       do {
         enemy.setDirection(static_cast<Direction>(Random::get(1, 4)));
       } while (enemy.getDirection() == prevDir);
+    }
+    if (enemy.getType() == Enemy::Type::Third_Enemy){
+      if (rand()%30 == 0) {
+        Bomb bomb(enemy.getX(), enemy.getY(), 2, true);
+        addEnemyBomb(bomb);
+      }
     }
   }
 }
