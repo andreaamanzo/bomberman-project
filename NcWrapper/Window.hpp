@@ -10,6 +10,7 @@ namespace Nc
   class Window
   {
   public:
+    Window() = default;
     Window(int width, int height, int start_x = 0, int start_y = 0);
     
     void setBgColor(Color color);
