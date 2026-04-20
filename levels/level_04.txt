@@ -4,7 +4,7 @@ X  XXXX   #   X   XX   X  3 ###    X   X
 X  #      #   X   #    X     #     X   X
 P  #   XXXXXX X   X    XXXXXXXXXX  X   X
 X  #   #      #   #    #        X  #   X
-X  #####  ######  ###  #   XX   X  #   X
+X#######  ######  ###  #   XX   X  #   X
 X  #      #    #    #  #   XX   #  #   O
 X  #   XXXX    X    XXXX        #  #   X
 X  #   #       X       #  3 #####  #   X

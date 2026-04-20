@@ -21,16 +21,11 @@ public:
   void setDirection(Direction newDirection);
   void move();
   Direction getDirection() const;
-  int getSpeed();
   int getPoints() const;
   Type getType() const;
-  std::chrono::steady_clock::time_point getNextBombTime() const;
-  void setNextBombTime( std::chrono::steady_clock::time_point nextBombCooldown);
   bool isTimerActive() const;
-  void setBombTimer( bool active);
+  void setBombTimer(bool active);
   bool checkIfShouldBomb();
-
-
   
 private:
   inline const static Nc::Sprite2x3 s_spriteTypeNull{ "   ", "   ", Nc::Color::Default };

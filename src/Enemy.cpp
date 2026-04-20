@@ -6,8 +6,8 @@
 #include <chrono>
 
 Enemy::Enemy(Type enemyType, int x, int y)
-    : Movable{getSprite(enemyType), x, y, getSpeed(enemyType)},
-      m_type{enemyType}, m_points{getPoints(enemyType)} {}
+  : Movable{getSprite(enemyType), x, y, getSpeed(enemyType)},
+    m_type{enemyType}, m_points{getPoints(enemyType)} {}
 
 void Enemy::move() { Movable::move(m_direction, 1); }
 
@@ -55,14 +55,6 @@ int Enemy::getSpeed(Type enemyType) {
   return 0;
 }
 
-std::chrono::steady_clock::time_point Enemy::getNextBombTime() const {
-  return m_nextBombCooldown;
-}
-
-void Enemy::setNextBombTime(std::chrono::steady_clock::time_point time) {
-  m_nextBombCooldown = time;
-}
-
 bool Enemy::isTimerActive() const { return m_isTimerActive; }
 
 void Enemy::setBombTimer(bool active) { m_isTimerActive = active; }
@@ -71,12 +63,12 @@ bool Enemy::checkIfShouldBomb() {
   using EnemyClock = std::chrono::steady_clock;
 
   if (!isTimerActive()) {
-    setNextBombTime(EnemyClock::now() + std::chrono::seconds(4));
+    m_nextBombCooldown = EnemyClock::now() + std::chrono::seconds(4);
     setBombTimer(true);
     return false;
   }
 
-  if (isTimerActive() && EnemyClock::now() >= getNextBombTime()) {
+  if (isTimerActive() && EnemyClock::now() >= m_nextBombCooldown) {
     setBombTimer(false);
     return true;
   }

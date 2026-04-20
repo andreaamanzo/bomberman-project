@@ -11,9 +11,8 @@
 #include <chrono>
 #include <fstream>
 
-
 Level::Level(int levelNumber, const char* mapFilePath)
-  : m_levelNumber{levelNumber} 
+  : m_levelNumber{ levelNumber } 
 {
   // leggo il file con ifstram
   std::ifstream file{ mapFilePath };
@@ -480,22 +479,24 @@ void Level::handleEnemies(Player& player)
 
     if (player.collide(enemy))
       player.onHit();
-
-    for (int j = 0; j < m_itemsSize; j++){
+ 
+    for (int j = 0; j < m_itemsSize; j++)
+    {
       Item& item = m_items[j];
-      if (enemy.Entity::collide(item)){
-        item.Item::removeItem();
+      if (enemy.collide(item))
+      {
         m_itemsSize--;
         m_items[j] = m_items[m_itemsSize];
         j--;
       }
     }
 
-
-    if (enemy.getType() == Enemy::Type::Third_Enemy){
-      if (enemy.Enemy::checkIfShouldBomb()){
-         Bomb bomb{ enemy.getX(), enemy.getY(), 2, Bomb::Type::Enemy };
-         addBomb(bomb); 
+    if (enemy.getType() == Enemy::Type::Third_Enemy)
+    {
+      if (enemy.checkIfShouldBomb())
+      {
+        Bomb bomb{ enemy.getX(), enemy.getY(), 2, Bomb::Type::Enemy };
+        addBomb(bomb); 
       }
     }
   }
