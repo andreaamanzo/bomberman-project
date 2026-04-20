@@ -6,9 +6,9 @@ X#########X  #  ###X  X            XXXXX
 X                               X      X
 X     X  #    XXXXX             X      X
 X     X           #    ##       X      X
-X   2 X           #                    X
+X     X           #                    X
 XXXXXXX  XXX# XXXXXXXXX X###XXX     XXXX
-X                              1       X
+X                                      X
 X             X     ##    #X    # ##   X
 X         ##  X           XX           X
 X    X   X     #X              XXX     O

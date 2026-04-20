@@ -58,9 +58,9 @@ int Enemy::getPoints(Type enemyType)
 int Enemy::getSpeed(Type enemyType) 
 {
   if (enemyType == Type::First_Enemy)
-    return 40;
-  else if (enemyType == Type::Second_Enemy)
     return 70;
+  else if (enemyType == Type::Second_Enemy)
+    return 30;
   else if (enemyType == Type::Third_Enemy)
     return 60;
   return 0;

@@ -1,0 +1,20 @@
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+X  #  #  #  #  #  #  #  #  #  #  #  #  O
+X  # XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX # X
+X  # X         3        2          X # X
+X  # X  #########   #########  #   X # X
+X 1# X  #       #   #       #  #   X # X
+X  # X  #  XXX  #   #  XXX  #  #   X # X
+X  # X  #  X#X  #   #  X#X  #  #   X # X
+X  # X  #  XXX  #####  XXX  #  #   X # X
+X  # X  #       #   #       #  #   X # X
+X  # X  #########   #########  #   X # X
+X  # X         2          2    #   X # X
+X  # XXXXXXX   XXXXXXXXX   XXXXX   X # X
+X  #  3    #   #       #   #       X # X
+X  ####### #   # ##### #   # ####### # X
+X  #     # #   # #   # #   # #     # # X
+X  # XXXXX # 1 # XXXXX #   # XXXXX # # X
+P  #       #   #       # 2 #       # # X
+X  #  #  #  #  #  #  #  #  #  #  #  #  X
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX

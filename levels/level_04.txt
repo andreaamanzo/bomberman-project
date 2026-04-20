@@ -1,0 +1,20 @@
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+X     #    1  #        X     #         X
+X  XXXX   #   X   XX   X  3 ###    X   X
+X  #      #   X   #    X     #     X   X
+P  #   XXXXXX X   X    XXXXXXXXXX  X   X
+X  #   #      #   #    #        X  #   X
+X  #####  ######  ###  #   XX   X  #   X
+X  #      #    #    #  #   XX   #  #   O
+X  #   XXXX    X    XXXX        #  #   X
+X  #   #       X       #  3 #####  #   X
+X  #####   ##  XXXXX   #    #      #   X
+X     2    #       #   #    #   XXXX   X
+X   XXXXXXXXXXXX   #   ######   #      X
+X   #          #   #            #   #  X
+X   #   ####   #   XXXXXXXXXXXXXX   #  X
+X   #   #  #   #            1       #  X
+X   #####  #####   ##############   #  X
+X                  #            #   #  X
+X   #   3    #     #      #     #      X
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX

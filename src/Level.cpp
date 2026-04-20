@@ -7,10 +7,8 @@
 #include "Random.hpp"
 #include "Settings.hpp"
 #include <fstream>
-#include <iostream>
 
-// ALE: utilizzata ai per imparare utilizzo ifstram e capire utilizzo generale
-// delle librerie
+
 Level::Level(int levelNumber, const char* mapFilePath)
   : m_levelNumber{levelNumber} 
 {

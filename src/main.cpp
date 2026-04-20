@@ -32,8 +32,8 @@ int main()
   Nc::Window rightMenu{ Settings::menuWidth, Settings::mapHeight, rightMenuStartX, w_starty };
   rightMenu.setTitle("LEVEL STATS");
   
-  constexpr int numLevels{ 3 };
-  const char* paths[numLevels]{ "levels/level_01.txt", "levels/level_02.txt", "levels/level_03.txt" };
+  constexpr int numLevels{ 5 };
+  const char* paths[numLevels]{ "levels/level_01.txt", "levels/level_02.txt", "levels/level_03.txt", "levels/level_04.txt", "levels/level_05.txt" };
 
   LevelList levelList{ paths, numLevels };
   Level* currLevel{ levelList.getLevel() };
