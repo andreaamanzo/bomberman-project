@@ -6,6 +6,7 @@
 #include "LevelList.hpp"
 #include "Level.hpp"
 #include "Bomb.hpp"
+#include "ScoreList.hpp"
 #include <stdio.h>
 #include <iostream>
 
@@ -42,6 +43,8 @@ int main()
 
   bool running = true;
 
+  // ! test
+  // ScoreList test{ "state/scoreboard.txt" };
 
   while (running)
   {
@@ -110,9 +113,15 @@ int main()
         break;
     }
 
+    
     window.clear();
     leftMenu.clear();
     rightMenu.clear();
+    
+    // ! test scoreboard
+    // test.drawScoreboard(100, window, 10, 2);
+    // window.display();
+    // continue;
 
     currLevel->movePlayer(player, dir);
     currLevel->moveEnemies();
