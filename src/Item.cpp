@@ -60,3 +60,7 @@ bool Item::isActive()
 
   return (start <= m_expiration);
 }
+
+void Item::removeItem(){
+   m_type = Item::Type::Null;
+}

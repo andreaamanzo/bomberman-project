@@ -28,6 +28,7 @@ public:
   void activate();
   bool isTimed() const;
   bool isActive();
+  void removeItem();
 
 private:
   inline const static Nc::Sprite2x3 s_spriteTypeNull{ "   ", "   ", Nc::Color::Default };

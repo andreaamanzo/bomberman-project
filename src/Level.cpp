@@ -2,6 +2,8 @@
 #include "Bomb.hpp"
 #include "Direction.hpp"
 #include "Enemy.hpp"
+#include "Entity.hpp"
+#include "Item.hpp"
 #include "NcWrapper.hpp"
 #include "Player.hpp"
 #include "Random.hpp"
@@ -479,18 +481,21 @@ void Level::handleEnemies(Player& player)
     if (player.collide(enemy))
       player.onHit();
 
-    if (enemy.getType() == Enemy::Type::Third_Enemy)
-    {
-      if (!m_isTimerActive) {
-        m_nextBombCooldown = Clock::now() + std::chrono::seconds{ 4 };
-        m_isTimerActive = true;
+    for (int j = 0; j < m_itemsSize; j++){
+      Item& item = m_items[j];
+      if (enemy.Entity::collide(item)){
+        item.Item::removeItem();
+        m_itemsSize--;
+        m_items[j] = m_items[m_itemsSize];
+        j--;
       }
-      {
-        if(m_isTimerActive && Clock::now() >= m_nextBombCooldown) {
-        Bomb bomb{ enemy.getX(), enemy.getY(), 2, Bomb::Type::Enemy };
-        addBomb(bomb);
-        m_isTimerActive = false;
-        }
+    }
+
+
+    if (enemy.getType() == Enemy::Type::Third_Enemy){
+      if (enemy.Enemy::checkIfShouldBomb()){
+         Bomb bomb{ enemy.getX(), enemy.getY(), 2, Bomb::Type::Enemy };
+         addBomb(bomb); 
       }
     }
   }

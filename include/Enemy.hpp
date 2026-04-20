@@ -24,6 +24,13 @@ public:
   int getSpeed();
   int getPoints() const;
   Type getType() const;
+  std::chrono::steady_clock::time_point getNextBombTime() const;
+  void setNextBombTime( std::chrono::steady_clock::time_point nextBombCooldown);
+  bool isTimerActive() const;
+  void setBombTimer( bool active);
+  bool checkIfShouldBomb();
+
+
   
 private:
   inline const static Nc::Sprite2x3 s_spriteTypeNull{ "   ", "   ", Nc::Color::Default };
@@ -36,6 +43,8 @@ private:
   int m_points;
   std::chrono::steady_clock::time_point m_lastActionTime;
   std::chrono::milliseconds m_actionInterval{ 3000 };
+  std::chrono::steady_clock::time_point m_nextBombCooldown;
+  bool m_isTimerActive;
 
   static const Nc::Sprite2x3& getSprite(Type enemyType);
   static int getPoints(Type enemyType);

@@ -90,8 +90,6 @@ private:
   int   m_itemsSize{ 0 };
   Enemy m_enemies[s_maxLengthArrays]{};
   int   m_enemiesSize{ 0 };
-  std::chrono::steady_clock::time_point m_nextBombCooldown;
-  bool m_isTimerActive;
 
   void setExplosionCells(Bomb& bomb) const;
   void applyExplosion(const Bomb& bomb, Player &player) ;
