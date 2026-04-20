@@ -6,6 +6,7 @@
 #include "Player.hpp"
 #include "Random.hpp"
 #include "Settings.hpp"
+#include <chrono>
 #include <fstream>
 
 
@@ -480,10 +481,16 @@ void Level::handleEnemies(Player& player)
 
     if (enemy.getType() == Enemy::Type::Third_Enemy)
     {
-      if (Random::get(1, 800) == 800) 
+      if (!m_isTimerActive) {
+        m_nextBombCooldown = Clock::now() + std::chrono::seconds{ 4 };
+        m_isTimerActive = true;
+      }
       {
+        if(m_isTimerActive && Clock::now() >= m_nextBombCooldown) {
         Bomb bomb{ enemy.getX(), enemy.getY(), 2, Bomb::Type::Enemy };
         addBomb(bomb);
+        m_isTimerActive = false;
+        }
       }
     }
   }
