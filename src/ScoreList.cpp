@@ -63,13 +63,13 @@ void ScoreList::pushOrderly(const char* playerName, int score)
 
 void ScoreList::drawScoreboard(int numberPlayers, Nc::Window& window, int x, int y)
 {
-  window.write("NAME |\t | SCORE", x, y++);
+  window.write("[NAME]\t[SCORE]", x, y++);
 
   Node* node = m_head;
   while (numberPlayers-- > 0 && node != nullptr)
   {
     char buff[s_maxNameLenght * 2];
-    sprintf(buff, "%s\t%d", node -> playerName, node -> score);
+    sprintf(buff, "%-10s\t%d", node -> playerName, node -> score); // -10 allineamento a sx (copre 10 char)
 
     window.write(buff, x, y++);
 
