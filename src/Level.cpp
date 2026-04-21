@@ -304,7 +304,6 @@ void Level::removePrevDoor()
   if (x < 0 || x >= Settings::mapCols || y < 0 || y >= Settings::mapRows) return;
 
   m_map[y][x] = Tile::Wall;
-  m_doorPrevPos = { -1, -1 };
 }
 
 void Level::removeNextDoor()
@@ -315,7 +314,6 @@ void Level::removeNextDoor()
   if (x < 0 || x >= Settings::mapCols || y < 0 || y >= Settings::mapRows) return;
   
   m_map[y][x] = Tile::Wall;
-  m_doorNextPos = { -1, -1 };
 }
 
 bool Level::checkIsWall(int x, int y) const 
@@ -352,12 +350,22 @@ bool Level::checkWallCollision(const Entity& entity) const
 
 bool Level::checkDoorNextCollision(const Entity& entity) const 
 {
+  int x = m_doorNextPos.x / Settings::entityWidth;
+  int y = m_doorNextPos.y / Settings::entityHeight;
+
+  if (m_map[y][x] != Tile::DoorNext) return false;
+
   Entity door{ m_doorNextPos.x, m_doorNextPos.y };
   return entity.collide(door);
 }
 
 bool Level::checkDoorPrevCollision(const Entity& entity) const 
 {
+  int x = m_doorPrevPos.x / Settings::entityWidth;
+  int y = m_doorPrevPos.y / Settings::entityHeight;
+
+  if (m_map[y][x] != Tile::DoorPrev) return false;
+
   Entity door{ m_doorPrevPos.x, m_doorPrevPos.y };
   return entity.collide(door);
 }

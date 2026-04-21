@@ -25,6 +25,7 @@ private:
   void update();
   void render();
   void leaveCurrentLevel();
+  bool initCurrentLevel();
   void goToNextLevel();
   void goToPreviousLevel();
   void handleCompletedLevel();

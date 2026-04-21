@@ -74,8 +74,8 @@ private:
 
   int m_levelNumber{};
   Tile m_map[Settings::mapRows][Settings::mapCols];
-  Nc::Point m_doorPrevPos;
-  Nc::Point m_doorNextPos;
+  Nc::Point m_doorPrevPos{ 0, 0 };
+  Nc::Point m_doorNextPos{ Settings::mapCols -1, Settings::mapRows -1 };
   bool m_shouldGoNext{ false };
   bool m_shouldGoPrev{ false };
   bool m_isPaused{ true };

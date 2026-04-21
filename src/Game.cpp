@@ -176,9 +176,8 @@ void Game::handleCompletedLevel()
   leaveCurrentLevel();
 
   m_levelList.removeCurrent();
-  m_currLevel = m_levelList.getLevel();
 
-  if (!m_currLevel)
+  if (!initCurrentLevel())
   {
     drawMessage(2000, "YOU WON!", "Congratulations!");
     m_running = false;
@@ -192,9 +191,30 @@ void Game::handleCompletedLevel()
 
   if (m_levelList.isCurrLast())
     m_currLevel->removeNextDoor();
+    
+  m_player.atRespown();
+}
+
+void Game::leaveCurrentLevel()
+{
+  m_player.restoreAllBombs();
+  m_currLevel->removeAllBombs();
+  m_currLevel->pause();
+}
+
+bool Game::initCurrentLevel()
+{
+  m_currLevel = m_levelList.getLevel();
+
+  if (!m_currLevel)
+    return false;
+    
+  Nc::Point prevDoorPos = m_currLevel->getDoorPrevPos();
+  m_player.setRespownPoint(prevDoorPos.x + Settings::entityWidth, prevDoorPos.y);
 
   m_currLevel->start();
-  m_player.atRespown();
+
+  return true;
 }
 
 void Game::goToNextLevel()
@@ -202,12 +222,9 @@ void Game::goToNextLevel()
   leaveCurrentLevel();
 
   m_levelList.goNext();
-  m_currLevel = m_levelList.getLevel();
-
-  if (!m_currLevel)
+  
+  if (!initCurrentLevel())
     return;
-
-  m_currLevel->start();
 
   Nc::Point pos = m_currLevel->getDoorPrevPos();
   m_player.setPos(pos.x + Settings::entityWidth, pos.y);
@@ -218,22 +235,12 @@ void Game::goToPreviousLevel()
   leaveCurrentLevel();
 
   m_levelList.goBack();
-  m_currLevel = m_levelList.getLevel();
 
-  if (!m_currLevel)
+  if (!initCurrentLevel())
     return;
-
-  m_currLevel->start();
 
   Nc::Point pos = m_currLevel->getDoorNextPos();
   m_player.setPos(pos.x - Settings::entityWidth, pos.y);
-}
-
-void Game::leaveCurrentLevel()
-{
-  m_player.restoreAllBombs();
-  m_currLevel->removeAllBombs();
-  m_currLevel->pause();
 }
 
 int Game::play()
