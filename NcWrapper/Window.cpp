@@ -3,6 +3,7 @@
 #include "ColorPair.hpp"
 #include <ncurses.h>
 #include <cstring>
+#include <cctype>
 
 namespace Nc
 {
@@ -16,16 +17,10 @@ namespace Nc
     short id{ Nc::getColorPair(Color::White, m_bgColor) };
     m_bgColorPairId = id;
 
-    refresh();
-  }
-
-  void Window::drawBox()
-  {
+    keypad(m_window, TRUE);
     box(m_window, 0, 0);
-
-    int start{ (m_width + 2 - (static_cast<int>(strlen(m_title)) + 2)) / 2 };
-  
-    mvwprintw(m_window, 0, start, " %s ", m_title);
+    refresh();
+    wrefresh(m_window);
   }
 
   void Window::setBgColor(Color color)
@@ -37,8 +32,12 @@ namespace Nc
   
   void Window::setTitle(const char* title)
   {
-    strncpy(m_title, title, 63);
-    m_title[63] = '\0';
+    box(m_window, 0, 0);
+
+    int start{ (m_width + 2 - (static_cast<int>(strlen(title)) + 2)) / 2 };
+  
+    mvwprintw(m_window, 0, start, " %s ", title);
+    display();
   }
 
   void Window::draw(const Sprite2x3& sprite, int x, int y)
@@ -69,7 +68,6 @@ namespace Nc
   
   void Window::display()
   {
-    drawBox();
     wrefresh(m_window);
   }
   
@@ -102,26 +100,47 @@ namespace Nc
   {
     if (buffLength <= 1) return;
 
-    nodelay(stdscr, FALSE);
+    nodelay(m_window, FALSE);
     curs_set(1);
-    echo();
 
-    wmove(m_window, posY + 1, posX + 1);
-    
+    int x = posX + 1;
+    int y = posY + 1;
+
+    wmove(m_window, y, x);
+    wrefresh(m_window);
+
     int i = 0;
-    
+
     while (i < buffLength - 1)
     {
       int c = wgetch(m_window);
-      if (c == KEY_ENTER || c == 10) break;
 
-      buff[i] = c;
-      i++;
+      if (c == KEY_ENTER || c == '\n' || c == 27)
+        break;
+
+      if (c == KEY_BACKSPACE || c == 127 || c == 8)
+      {
+        if (i > 0)
+        {
+          i--;
+          x--;
+
+          mvwaddch(m_window, y, x, ' ');
+          wmove(m_window, y, x);
+        }
+      }
+      else if (isprint(c))
+      {
+        buff[i++] = c;
+        waddch(m_window, c);
+        x++;
+      }
+      wrefresh(m_window);
     }
+
     buff[i] = '\0';
 
-    nodelay(stdscr, TRUE);
     curs_set(0);
-    noecho();
+    nodelay(m_window, TRUE);
   }
 }

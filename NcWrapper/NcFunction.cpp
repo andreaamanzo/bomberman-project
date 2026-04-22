@@ -118,14 +118,14 @@ namespace Nc
       case KEY_ENTER:  return Key::Enter;
 
       case 27:        
-          return Key::Escape;
+        return Key::Escape;
 
       case ' ':
-          return Key::Space;
+        return Key::Space;
 
       case 127:
       case KEY_BACKSPACE:
-          return Key::Backspace;
+        return Key::Backspace;
     }
 
     if (c >= 'a' && c <= 'z')
