@@ -97,4 +97,31 @@ namespace Nc
   {
     return Point{ m_startX, m_startY };
   }
+
+  void Window::getUserInput(int posX, int posY, char* buff, int buffLength)
+  {
+    if (buffLength <= 1) return;
+
+    nodelay(stdscr, FALSE);
+    curs_set(1);
+    echo();
+
+    wmove(m_window, posX, posY);
+    
+    int i = 0;
+    
+    while (i < buffLength - 1)
+    {
+      int c = wgetch(m_window);
+      if (c == KEY_ENTER || c == 10) break;
+
+      buff[i] = c;
+      i++;
+    }
+    buff[i] = '\0';
+
+    nodelay(stdscr, TRUE);
+    curs_set(0);
+    noecho();
+  }
 }

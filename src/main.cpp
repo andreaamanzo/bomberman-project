@@ -41,9 +41,13 @@ int main()
     case 1:
       window.setTitle("BOMBERMAN MENU");
       window.clear();
-      window.display();
+      
       // TODO menu -> get option
       // option = 0;
+
+      window.display();
+
+      
       break;
     case 2:
     {
@@ -58,6 +62,10 @@ int main()
       //  1) chiede numero di giocatori da visualizzare 
       //  2) while che mostra semplicemente la classifica + controlla se l'utente preme esc/Q
       //  3) quando l'utente preme esc funzione termina -> dobbiamo tornare al menu
+
+      // esempio utilizzo getUserInput:
+      // char buff[64];
+      // window.getUserInput(1, 1, buff, 64);
 
       scoreBoard.drawScoreboard(100, window);
 

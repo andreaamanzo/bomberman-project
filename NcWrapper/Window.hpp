@@ -23,6 +23,7 @@ namespace Nc
     int getWidth() const; 
     int getHeight() const;
     Point getPos() const;
+    void getUserInput(int posX, int posY, char* buff, int buffLength);
 
   private:
     WINDOW* m_window{};
