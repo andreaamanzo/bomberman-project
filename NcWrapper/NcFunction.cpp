@@ -92,6 +92,7 @@ namespace Nc
   void clearAll()
   {
     clear();
+    refresh();
   }
 
   void sleepFor(int milliseconds)

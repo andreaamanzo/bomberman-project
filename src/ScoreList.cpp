@@ -63,7 +63,7 @@ void ScoreList::pushOrderly(const char* playerName, int score)
 
 void ScoreList::drawScoreboard(int numberPlayers, Nc::Window& window)
 {
-  window.setTitle("SCOREBOARD");
+  
   int startX{ (window.getWidth() - 25) / 2 };
   
   bool running{ true };

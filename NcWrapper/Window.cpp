@@ -106,7 +106,7 @@ namespace Nc
     curs_set(1);
     echo();
 
-    wmove(m_window, posX, posY);
+    wmove(m_window, posY + 1, posX + 1);
     
     int i = 0;
     
