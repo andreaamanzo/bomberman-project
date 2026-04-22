@@ -16,12 +16,15 @@ private:
   LevelList  m_levelList;
   Level*     m_currLevel;
   Nc::Window m_mainWindow;
-  Nc::Window m_leftMenu;
-  Nc::Window m_rightMenu;
+  Nc::Window m_playerMenu;
+  Nc::Window m_itemsMenu;
+  Nc::Window m_levelMenu;
+  Nc::Window m_controlsMenu;
   Player     m_player;
   bool m_running{ true };
 
   bool checkLoseConditions();
+  void writeOnMenus();
   void update();
   void render();
   void leaveCurrentLevel();
@@ -29,7 +32,7 @@ private:
   void goToNextLevel();
   void goToPreviousLevel();
   void handleCompletedLevel();
-  void drawMessage(int displayTime, const char* message, const char* subMessage = "");
+  void drawMessage(const char* message, const char* subMessage = "");
 };
 
 #endif

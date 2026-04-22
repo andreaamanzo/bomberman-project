@@ -3,7 +3,7 @@
 #include "ColorPair.hpp"
 #include <ncurses.h>
 #include <cstring>
-#include <cctype>
+#include <cctype> // for isprint()
 
 namespace Nc
 {
@@ -32,12 +32,17 @@ namespace Nc
   
   void Window::setTitle(const char* title)
   {
+    strncpy(m_title, title, 63);
+    m_title[63] = '\0';
+  }
+
+  void Window::drawBox()
+  {
     box(m_window, 0, 0);
 
-    int start{ (m_width + 2 - (static_cast<int>(strlen(title)) + 2)) / 2 };
+    int start{ (m_width + 2 - (static_cast<int>(strlen(m_title)) + 2)) / 2 };
   
-    mvwprintw(m_window, 0, start, " %s ", title);
-    display();
+    mvwprintw(m_window, 0, start, " %s ", m_title);
   }
 
   void Window::draw(const Sprite2x3& sprite, int x, int y)
@@ -68,6 +73,7 @@ namespace Nc
   
   void Window::display()
   {
+    drawBox();
     wrefresh(m_window);
   }
   

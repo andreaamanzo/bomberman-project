@@ -140,4 +140,14 @@ namespace Nc
 
     return Key::None;
   }
+
+  Key waitForKeyPressd()
+  {
+    getch(); // "svuta il buffer (?)"
+    nodelay(stdscr, FALSE);
+    Key k = getKeyPressed();
+    nodelay(stdscr, TRUE);
+
+    return k;
+  }
 }  

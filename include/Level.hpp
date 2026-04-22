@@ -44,6 +44,7 @@ public:
 
   bool isCompleted() const;
   int  getLevelNumber() const;
+  int  getEnemiesNumber() const;
 
   // Funzioni per la gestione del tempo
   void pause(); // mette il livello in pausa

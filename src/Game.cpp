@@ -14,37 +14,52 @@ Game::Game(int numLevels, const char* levelPaths[])
   : m_levelList{ levelPaths, numLevels }
   , m_currLevel{ m_levelList.getLevel() }
   , m_mainWindow{ Settings::mapWidth, Settings::mapHeight, 
-                  (Nc::getTerminalWidth()  - Settings::mapWidth) / 2, 
-                  (Nc::getTerminalHeight() - Settings::mapHeight) / 2 }
-  , m_leftMenu{ Settings::menuWidth, Settings::mapHeight, 
+                 (Nc::getTerminalWidth()  - Settings::mapWidth) / 2, 
+                 (Nc::getTerminalHeight() - Settings::mapHeight) / 2 }
+  , m_playerMenu{ Settings::menuWidth, Settings::mapHeight / 2 - 1, 
+                 (m_mainWindow.getPos().x - Settings::menuWidth - 3), 
+                  m_mainWindow.getPos().y }
+  , m_itemsMenu{ Settings::menuWidth, Settings::mapHeight / 2 - 1, 
                 (m_mainWindow.getPos().x - Settings::menuWidth - 3), 
-                 m_mainWindow.getPos().y }
-  , m_rightMenu{ Settings::menuWidth, Settings::mapHeight, 
+                 m_mainWindow.getPos().y + m_mainWindow.getHeight() / 2 + 1 }
+  , m_levelMenu{ Settings::menuWidth, Settings::mapHeight / 2 - 1, 
                 (m_mainWindow.getPos().x + m_mainWindow.getWidth() + 3),
                  m_mainWindow.getPos().y }
+  , m_controlsMenu{ Settings::menuWidth, Settings::mapHeight / 2 - 1, 
+                   (m_mainWindow.getPos().x + m_mainWindow.getWidth() + 3),
+                    m_mainWindow.getPos().y + m_mainWindow.getHeight() / 2 + 1 }
   , m_player{ 5, Settings::entityWidth, Settings::entityHeight }
 {
   m_mainWindow.setTitle("BOMBERMAN");
-  m_leftMenu.setTitle("PLAYER STATS");
-  m_rightMenu.setTitle("LEVEL STATS");
+  m_playerMenu.setTitle("PLAYER STATS");
+  m_itemsMenu.setTitle("ITEMS INFO");
+  m_levelMenu.setTitle("LEVEL STATS");
+  m_controlsMenu.setTitle("CONTROLS");
 }
 
-void Game::drawMessage(int displayTime, const char* message, const char* subMessage)
+void Game::drawMessage(const char* message, const char* subMessage)
 {
   m_mainWindow.clear();
 
   m_mainWindow.write(message, 
                      m_mainWindow.getWidth() / 2 - static_cast<int>(strlen(message)) / 2, 
-                     m_mainWindow.getHeight() / 2, 
+                     m_mainWindow.getHeight() / 2 - 1, 
                      Nc::Color::Gold);
   m_mainWindow.write(subMessage, 
                      m_mainWindow.getWidth() / 2 - static_cast<int>(strlen(subMessage)) / 2, 
-                     m_mainWindow.getHeight() / 2 + 2, 
+                     m_mainWindow.getHeight() / 2 + 1, 
+                     Nc::Color::Gold);
+
+  char msg[]{ "Press any key to continue..." };
+  m_mainWindow.write(msg, 
+                     m_mainWindow.getWidth() / 2 - static_cast<int>(strlen(msg)) / 2, 
+                     m_mainWindow.getHeight() - 2, 
                      Nc::Color::Gold);
 
   m_mainWindow.display();
 
-  Nc::sleepFor(displayTime);
+  Nc::sleepFor(1500); 
+  Nc::waitForKeyPressd();
 }
 
 bool Game::checkLoseConditions()
@@ -54,13 +69,13 @@ bool Game::checkLoseConditions()
 
   if (!m_player.isAlive())
   {
-    drawMessage(2000, "GAME OVER!", "You're out of lives");
+    drawMessage("GAME OVER!", "You're out of lives");
     return false;
   }
 
   if (m_currLevel->checkTimeFinished())
   {
-    drawMessage(2000, "GAME OVER!", "Time's up");
+    drawMessage("GAME OVER!", "Time's up");
     return false;
   }
 
@@ -124,12 +139,88 @@ void Game::update()
   m_currLevel->updateTime();
 }
 
+void Game::writeOnMenus()
+{
+  // ===== PLAYER MENU =====
+  m_playerMenu.write("Lives: ", 2, 3);
+  for (int i = 0; i < m_player.getLives(); i++)
+    m_playerMenu.write("♥ ", 9 + i * 2, 3);
+
+  m_playerMenu.write("Points: ", 2, 5);
+  m_playerMenu.writeInt(m_player.getPoints(), 10, 5);
+
+  m_playerMenu.write("Bomb Radius: ", 2, 7);
+  m_playerMenu.writeInt(m_player.getBombRadius(), 15, 7);
+
+  char bombsStr[64];
+  snprintf(
+    bombsStr,
+    sizeof(bombsStr),
+    "Bombs: %d/%d",
+    m_player.getMaxBombs() - m_player.getPlacedBombs(),
+    m_player.getMaxBombs()
+  );
+  m_playerMenu.write(bombsStr, 2, 9);
+
+  // ===== ITEMS MENU =====
+  m_itemsMenu.write("|+|", 2, 3, Nc::Color::Yellow);
+  m_itemsMenu.write("|+|", 2, 4, Nc::Color::Yellow);
+  m_itemsMenu.write("+1 Bomb", 6, 3);
+
+  m_itemsMenu.write("|↑|", 2, 6, Nc::Color::Yellow);
+  m_itemsMenu.write("|↓|", 2, 7, Nc::Color::Yellow);
+  m_itemsMenu.write("+1 Bomb Radius", 6, 6);
+
+  m_itemsMenu.write("|❤|", 2, 9, Nc::Color::Yellow);
+  m_itemsMenu.write("|❤|", 2, 10, Nc::Color::Yellow);
+  m_itemsMenu.write("+1 Life", 6, 9);
+
+  m_itemsMenu.write("|⛨|", 2, 12, Nc::Color::Yellow);
+  m_itemsMenu.write("|⛨|", 2, 13, Nc::Color::Yellow);
+  m_itemsMenu.write("Shield (10 sec)", 6, 12);
+
+  m_itemsMenu.write("|☀|", 2, 15, Nc::Color::Yellow);
+  m_itemsMenu.write("|☀|", 2, 16, Nc::Color::Yellow);
+  m_itemsMenu.write("Power (10 sec)", 6, 15);
+
+  // ===== LEVEL MENU =====
+  m_levelMenu.write("Level: ", 2, 3);
+  m_levelMenu.writeInt(m_currLevel->getLevelNumber(), 9, 3);
+
+  m_levelMenu.write("Enemies: ", 2, 5);
+  m_levelMenu.writeInt(m_currLevel->getEnemiesNumber(), 11, 5);
+
+  char timeStr[64];
+  int secs = m_currLevel->getTimeLeftSec();
+
+  snprintf(
+    timeStr,
+    sizeof(timeStr),
+    "Time Left: %d:%02d",
+    secs / 60,
+    secs % 60
+  );
+
+  m_levelMenu.write(timeStr, 2, 7);
+
+  // ===== CONTROLS MENU =====
+  m_controlsMenu.write("Move Up:     W / ↑",      2, 3);
+  m_controlsMenu.write("Move Down:   S / ↓",      2, 4);
+  m_controlsMenu.write("Move Left:   A / ←",      2, 5);
+  m_controlsMenu.write("Move Right:  D / →",      2, 6);
+
+  m_controlsMenu.write("Place Bomb:  E / Enter",  2, 8);
+  m_controlsMenu.write("Quit:        Q / Esc",    2, 10);
+}
+
 void Game::render()
 {
   // cancella tutto
   m_mainWindow.clear();
-  m_leftMenu.clear();
-  m_rightMenu.clear();
+  m_playerMenu.clear();
+  m_itemsMenu.clear();
+  m_levelMenu.clear();
+  m_controlsMenu.clear();
   
   // disegna i vari elementi della mappa da gioco
   m_player.draw(m_mainWindow);
@@ -139,33 +230,14 @@ void Game::render()
   m_currLevel->drawBombs(m_mainWindow);
 
   // dsegna le scritte sui menu laterali
-  m_leftMenu.write("Lives: ", 2, 5);
-  for (int i = 0; i < m_player.getLives(); i++)
-    m_leftMenu.write("♥ ", 9 + i*2, 5);
-
-  m_leftMenu.write("Points: ", 2, 7);
-  m_leftMenu.writeInt(m_player.getPoints(), 10, 7);
-
-  m_leftMenu.write("Bomb Radius: ", 2, 9);
-  m_leftMenu.writeInt(m_player.getBombRadius(), 15, 9);
-
-  char str[64];
-  snprintf(str, sizeof(str), "Bombs: %d/%d", m_player.getMaxBombs() - m_player.getPlacedBombs(), m_player.getMaxBombs());
-  m_leftMenu.write(str, 2, 11);
-
-  m_rightMenu.write("Level: ", 2, 5);
-  m_rightMenu.writeInt(m_currLevel->getLevelNumber(), 9, 5);
-
-  char time[64];
-  int secs = m_currLevel->getTimeLeftSec();
-  snprintf(time, sizeof(time), "Time Left: %d:%02d", secs/60, secs%60);
-
-  m_rightMenu.write(time, 2, 7);
+  writeOnMenus();
 
   // display finale
   m_mainWindow.display();
-  m_leftMenu.display();
-  m_rightMenu.display();
+  m_playerMenu.display();
+  m_itemsMenu.display();
+  m_levelMenu.display();
+  m_controlsMenu.display();
 }
  
 void Game::handleCompletedLevel()
@@ -179,12 +251,12 @@ void Game::handleCompletedLevel()
 
   if (!initCurrentLevel())
   {
-    drawMessage(2000, "YOU WON!", "Congratulations!");
+    drawMessage("YOU WON!", "Congratulations!");
     m_running = false;
     return;
   }
 
-  drawMessage(1500, "LEVEL COMPLETED!");
+  drawMessage("LEVEL COMPLETED!");
 
   if (m_levelList.isCurrFirst())
     m_currLevel->removePrevDoor();

@@ -12,6 +12,7 @@ namespace Nc
   int getTerminalHeight();
   void checkTerminalSize(int minWidth, int minHeight);
   Key getKeyPressed();
+  Key waitForKeyPressd();
   void clearAll();
   void sleepFor(int milliseconds);
 }
