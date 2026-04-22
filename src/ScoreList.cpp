@@ -61,20 +61,39 @@ void ScoreList::pushOrderly(const char* playerName, int score)
   }
 }
 
-void ScoreList::drawScoreboard(int numberPlayers, Nc::Window& window, int x, int y)
+void ScoreList::drawScoreboard(int numberPlayers, Nc::Window& window)
 {
-  window.write("[NAME]\t[SCORE]", x, y++);
-
-  Node* node = m_head;
-  while (numberPlayers-- > 0 && node != nullptr)
+  window.setTitle("SCOREBOARD");
+  int startX{ (window.getWidth() - 25) / 2 };
+  
+  bool running{ true };
+  while (running)
   {
+    Nc::Key key = Nc::getKeyPressed();
+    if (key == Nc::Key::Q || key == Nc::Key::Escape) running = false;
+    
+    window.clear();
+    
+    int startY{ 2 };
     char buff[s_maxNameLenght * 2];
-    sprintf(buff, "%-10s\t%d", node -> playerName, node -> score); // -10 allineamento a sx (copre 10 char)
+    snprintf(buff, sizeof(buff), "%-20s\t%s", "[NAME]", "[SCORE]");
+    window.write(buff, startX, startY++);  
 
-    window.write(buff, x, y++);
-
-    node = node -> next;
+    Node* node = m_head;
+    int num = numberPlayers;
+    while (num-- > 0 && node != nullptr)
+    {
+      snprintf(buff, sizeof(buff), "%-20s\t%d", node -> playerName, node -> score); // -20 allineamento a sx (copre 20 char)
+  
+      window.write(buff, startX, startY++);
+  
+      node = node -> next;
+    }
+    
+    window.display();
+    Nc::sleepFor(20);
   }
+
 }
 
 void ScoreList::saveToFile(const char* filePath)

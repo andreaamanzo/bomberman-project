@@ -13,9 +13,11 @@ int main()
 
   int w_startx = (Nc::getTerminalWidth()  - Settings::mapWidth) / 2;
   int w_starty = (Nc::getTerminalHeight() - Settings::mapHeight) / 2;
-  
+
   Nc::Window window{ Settings::mapWidth, Settings::mapHeight, w_startx, w_starty };
-  window.setTitle("BOMBERMAN MENU");
+  
+
+  ScoreList scoreBoard{ "state/scoreboard.txt" };
   
   constexpr int numLevels{ 5 };
   const char* paths[numLevels]{ 
@@ -37,6 +39,7 @@ int main()
       running = false;
       break;
     case 1:
+      window.setTitle("BOMBERMAN MENU");
       window.clear();
       window.display();
       // TODO menu -> get option
@@ -55,6 +58,8 @@ int main()
       //  1) chiede numero di giocatori da visualizzare 
       //  2) while che mostra semplicemente la classifica + controlla se l'utente preme esc/Q
       //  3) quando l'utente preme esc funzione termina -> dobbiamo tornare al menu
+
+      scoreBoard.drawScoreboard(100, window);
 
       // ! test scoreboard (dovrà essere una funzione come sopra)
       // ScoreList test{ "state/scoreboard.txt" };
