@@ -28,10 +28,18 @@ ScoreList::ScoreList(const char* filePath)
   file.close();
 }
 
+// funzione per rimuovere eventuali spazi bianchi iniziali
+const char* stringPolish(const char* toPolish)
+{
+  while (*toPolish == ' ') toPolish++;
+
+  return toPolish;
+}
+
 void ScoreList::pushOrderly(const char* playerName, int score)
 {
   Node* foo = new Node;
-  strncpy(foo -> playerName, playerName, s_maxNameLenght - 1);
+  strncpy(foo -> playerName, stringPolish(playerName), s_maxNameLenght - 1);
   foo -> playerName[s_maxNameLenght - 1] = '\0'; // assicuro che l'ultimo char sia nullchar
   foo -> score = score;
   
