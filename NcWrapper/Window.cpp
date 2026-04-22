@@ -15,9 +15,17 @@ namespace Nc
   {
     short id{ Nc::getColorPair(Color::White, m_bgColor) };
     m_bgColorPairId = id;
-    box(m_window, 0, 0);
+
     refresh();
-    wrefresh(m_window);
+  }
+
+  void Window::drawBox()
+  {
+    box(m_window, 0, 0);
+
+    int start{ (m_width + 2 - (static_cast<int>(strlen(m_title)) + 2)) / 2 };
+  
+    mvwprintw(m_window, 0, start, " %s ", m_title);
   }
 
   void Window::setBgColor(Color color)
@@ -29,10 +37,8 @@ namespace Nc
   
   void Window::setTitle(const char* title)
   {
-    int start{ (m_width + 2 - (static_cast<int>(strlen(title)) + 2)) / 2 };
-  
-    mvwprintw(m_window, 0, start, " %s ", title);
-    wrefresh(m_window);
+    strncpy(m_title, title, 63);
+    m_title[63] = '\0';
   }
 
   void Window::draw(const Sprite2x3& sprite, int x, int y)
@@ -63,6 +69,7 @@ namespace Nc
   
   void Window::display()
   {
+    drawBox();
     wrefresh(m_window);
   }
   

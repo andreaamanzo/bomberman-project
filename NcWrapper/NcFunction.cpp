@@ -4,6 +4,7 @@
 #include <thread>
 #include <chrono>
 #include <cstdlib>
+#include <ctime>
 #include <iostream>
 
 namespace Nc
@@ -46,6 +47,8 @@ namespace Nc
   void init()
   {
     std::setlocale(LC_ALL, "");
+    std::srand(static_cast<unsigned int>(std::time(0)));
+    
     initscr();
     initDefaultColors();
     cbreak();
@@ -84,6 +87,11 @@ namespace Nc
     {
       stopWithError(1, "Terminal window is too small. Please resize it and try again.");
     }
+  }
+
+  void clearAll()
+  {
+    clear();
   }
 
   void sleepFor(int milliseconds)

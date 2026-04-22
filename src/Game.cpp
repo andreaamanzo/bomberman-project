@@ -269,5 +269,8 @@ int Game::play()
     Nc::sleepFor(10);
   }
 
+  // cancella le window del gioco
+  Nc::clearAll();
+  
   return m_player.getPoints();
 }

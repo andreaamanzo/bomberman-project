@@ -32,6 +32,9 @@ namespace Nc
     int m_height{};
     int m_startX{};
     int m_startY{};
+    char m_title[64];
+
+    void drawBox();
   };
 }
 

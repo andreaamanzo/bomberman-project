@@ -43,7 +43,7 @@ int main()
       window.clear();
       window.display();
       // TODO menu -> get option
-      option = 0;
+      // option = 0;
       break;
     case 2:
     {
@@ -60,11 +60,6 @@ int main()
       //  3) quando l'utente preme esc funzione termina -> dobbiamo tornare al menu
 
       scoreBoard.drawScoreboard(100, window);
-
-      // ! test scoreboard (dovrà essere una funzione come sopra)
-      // ScoreList test{ "state/scoreboard.txt" };
-      // test.drawScoreboard(100, window, 10, 2);
-      // window.display();
 
       option = 1;
       break;
