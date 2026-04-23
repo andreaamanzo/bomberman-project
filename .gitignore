@@ -27,3 +27,6 @@ Testing/
 *.app
 *.out
 *.log
+
+# misc
+state/scoreboard.txt
