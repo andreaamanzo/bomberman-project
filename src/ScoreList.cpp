@@ -9,6 +9,14 @@ ScoreList::ScoreList(const char* filePath)
   // leggo dal file state/scoreboard.txt
   std::ifstream file{ filePath };
 
+  if (!file)
+  {
+    std::ofstream create(filePath); // crea file vuoto
+    create.close();
+
+    file.open(filePath); // riapre in lettura
+  }
+
   if (!file.is_open())
   {
     Nc::stopWithError(1, "Scoreboard loading failed: file not opened correctly");
