@@ -63,8 +63,12 @@ int main()
       window.display();
 
       // gestione input del giocatore
-      char buffer[64];
-      window.getUserInput(3, 3, buffer, sizeof(buffer));
+      char buffer[15];
+      do
+      {
+        window.getUserInput(3, 3, buffer, sizeof(buffer));
+      } while (buffer[0] == '\0');
+      
       scoreBoard.pushOrderly(buffer, score);
       scoreBoard.saveToFile("state/scoreboard.txt");
       

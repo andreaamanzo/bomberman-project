@@ -117,7 +117,7 @@ namespace Nc
 
     int i = 0;
 
-    while (i < buffLength - 1)
+    while (true)
     {
       int c = wgetch(m_window);
 
@@ -135,7 +135,7 @@ namespace Nc
           wmove(m_window, y, x);
         }
       }
-      else if (isprint(c))
+      else if (i < buffLength - 1 && isprint(c))
       {
         buff[i++] = c;
         waddch(m_window, c);
