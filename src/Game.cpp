@@ -144,23 +144,23 @@ void Game::writeOnMenus()
   // ===== PLAYER MENU =====
   m_playerMenu.write("Lives: ", 2, 3);
   for (int i = 0; i < m_player.getLives(); i++)
-    m_playerMenu.write("♥ ", 9 + i * 2, 3);
+    m_playerMenu.write("♥ ", 9 + i * 2, 3, Nc::Color::Red);
 
-  m_playerMenu.write("Points: ", 2, 5);
-  m_playerMenu.writeInt(m_player.getPoints(), 10, 5);
+  m_playerMenu.write("Points: ", 2, 6);
+  m_playerMenu.writeInt(m_player.getPoints(), 10, 6, Nc::Color::Yellow);
 
-  m_playerMenu.write("Bomb Radius: ", 2, 7);
-  m_playerMenu.writeInt(m_player.getBombRadius(), 15, 7);
+  m_playerMenu.write("Bombs: ", 2, 9);
 
-  char bombsStr[64];
-  snprintf(
-    bombsStr,
-    sizeof(bombsStr),
-    "Bombs: %d/%d",
-    m_player.getMaxBombs() - m_player.getPlacedBombs(),
-    m_player.getMaxBombs()
-  );
-  m_playerMenu.write(bombsStr, 2, 9);
+  int availableBombs = m_player.getMaxBombs() - m_player.getPlacedBombs();
+
+  for (int i = 0; i < availableBombs; i++)
+  {
+    m_playerMenu.write(" ╽ ", 9 + i * 2, 8, Nc::Color::Orange);
+    m_playerMenu.write("(●)", 9 + i * 2, 9, Nc::Color::Orange);
+  }
+
+  m_playerMenu.write("Bomb Radius: ", 2, 12);
+  m_playerMenu.writeInt(m_player.getBombRadius(), 15, 12);
 
   // ===== ITEMS MENU =====
   m_itemsMenu.write("|+|", 2, 3, Nc::Color::Yellow);
@@ -187,8 +187,8 @@ void Game::writeOnMenus()
   m_levelMenu.write("Level: ", 2, 3);
   m_levelMenu.writeInt(m_currLevel->getLevelNumber(), 9, 3);
 
-  m_levelMenu.write("Enemies: ", 2, 5);
-  m_levelMenu.writeInt(m_currLevel->getEnemiesNumber(), 11, 5);
+  m_levelMenu.write("Enemies: ", 2, 6);
+  m_levelMenu.writeInt(m_currLevel->getEnemiesNumber(), 11, 6);
 
   char timeStr[64];
   int secs = m_currLevel->getTimeLeftSec();
@@ -201,7 +201,7 @@ void Game::writeOnMenus()
     secs % 60
   );
 
-  m_levelMenu.write(timeStr, 2, 7);
+  m_levelMenu.write(timeStr, 2, 9);
 
   // ===== CONTROLS MENU =====
   m_controlsMenu.write("Move Up:     W / ↑",      2, 3);
