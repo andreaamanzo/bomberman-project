@@ -22,7 +22,7 @@ namespace Nc
 
     // base
     init_color(COLOR_BLACK,   0,   0,   0);
-    init_color(COLOR_RED,     900, 100, 100);
+    init_color(COLOR_RED,     1000, 0, 0);
     init_color(COLOR_GREEN,   100, 900, 100);
     init_color(COLOR_YELLOW,  900, 900, 200);
     init_color(COLOR_BLUE,    100, 100, 900);

@@ -9,3 +9,4 @@
 0 zingaro
 0 testrimuovispa
 0 gino p
+0 pippo
