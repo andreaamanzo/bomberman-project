@@ -16,7 +16,6 @@ int main()
   int w_starty = (Nc::getTerminalHeight() - Settings::mapHeight) / 2;
 
   Nc::Window window{ Settings::mapWidth, Settings::mapHeight, w_startx, w_starty };
-  
 
   ScoreList scoreBoard{ "state/scoreboard.txt" };
   

@@ -14,7 +14,7 @@ void Player::move(Direction dir)
 
 Bomb Player::placeBomb()
 {
-  if (m_placedBombs >= m_maxBombs) return Bomb{};
+  if (m_placedBombs >= m_currMaxBombs) return Bomb{};
 
   m_placedBombs++;
   
@@ -72,7 +72,7 @@ void Player::collectItem(const Item& item)
     break;
 
   case Item::Type::IncrementMaxBombs :
-    m_maxBombs++;
+    if (m_currMaxBombs < m_maxBombs) m_currMaxBombs++;
     break;
 
   case Item::Type::Invulnerability :
@@ -82,11 +82,11 @@ void Player::collectItem(const Item& item)
 
   case Item::Type::TimedIncrementBombPower :
     m_bombRadius += 3;
-    m_maxBombs   += 2;
+    m_currMaxBombs += 2;
     break;
 
   case Item::Type::OneUp :
-    m_lives++;
+    if (m_lives < m_maxLives) m_lives++;
     break;
   }
 
@@ -105,7 +105,11 @@ int Player::getPoints() const { return m_points; }
   
 int Player::getLives() const { return m_lives; }
 
+int Player::getMaxLives() const { return m_maxLives; }
+
 int Player::getBombRadius() const { return m_bombRadius; }
+
+int Player::getCurrMaxBombs() const { return m_currMaxBombs; }
 
 int Player::getMaxBombs() const { return m_maxBombs; }
 
@@ -126,7 +130,7 @@ void Player::handleItems()
       {
       case Item::Type::TimedIncrementBombPower :
         m_bombRadius -= 3;
-        m_maxBombs   -= 2;
+        m_currMaxBombs -= 2;
         restoreBomb();
         restoreBomb();
         break;

@@ -23,8 +23,10 @@ public:
   void atRespown();
   bool isAlive() const;
   int getLives() const;
+  int getMaxLives() const;
   int getBombRadius() const;
   int getPlacedBombs() const;
+  int getCurrMaxBombs() const;
   int getMaxBombs() const;
   void handleItems();
   const Item* getItemsList() const;
@@ -34,13 +36,14 @@ public:
 
 private:
   inline const static Nc::Sprite2x3 s_playerSprite{ "ʘ‿ʘ", "╰╩╯", Nc::Color::Green };
-
-  inline constexpr static int s_maxLengthArrays{ 64 };
-
+  constexpr static int s_maxLengthArrays{ 64 };
+  
   Nc::Point m_respawnPoint{ 0, 0 };
+  int m_maxLives{ 8 };
+  int m_maxBombs{ 7 };
   int m_lives{ 1 };
   int m_bombRadius{ 2 };
-  int m_maxBombs{ 1 };
+  int m_currMaxBombs{ 1 };
   int m_placedBombs{ 0 };
   int m_itemsSize{ 0 };
   int m_points{ 0 };

@@ -28,7 +28,7 @@ Game::Game(int numLevels, const char* levelPaths[])
   , m_controlsMenu{ Settings::menuWidth, Settings::mapHeight / 2 - 1, 
                    (m_mainWindow.getPos().x + m_mainWindow.getWidth() + 3),
                     m_mainWindow.getPos().y + m_mainWindow.getHeight() / 2 + 1 }
-  , m_player{ 5, Settings::entityWidth, Settings::entityHeight }
+  , m_player{ 3, Settings::entityWidth, Settings::entityHeight }
 {
   m_mainWindow.setTitle("BOMBERMAN");
   m_playerMenu.setTitle("PLAYER STATS");
@@ -143,21 +143,36 @@ void Game::writeOnMenus()
 {
   // ===== PLAYER MENU =====
   m_playerMenu.write("Lives: ", 2, 3);
-  for (int i = 0; i < m_player.getLives(); i++)
+  int lives = m_player.getLives();
+
+  for (int i = 0; i < lives; i++)
     m_playerMenu.write("♥ ", 9 + i * 2, 3, Nc::Color::Red);
+
+  if (lives == m_player.getMaxLives())
+    m_playerMenu.write(" max", 9 + lives * 2, 3, Nc::Color::Red);
 
   m_playerMenu.write("Points: ", 2, 6);
   m_playerMenu.writeInt(m_player.getPoints(), 10, 6, Nc::Color::Yellow);
 
   m_playerMenu.write("Bombs: ", 2, 9);
 
-  int availableBombs = m_player.getMaxBombs() - m_player.getPlacedBombs();
+  int maxBombs = m_player.getCurrMaxBombs();
+  int availableBombs = maxBombs - m_player.getPlacedBombs();
 
   for (int i = 0; i < availableBombs; i++)
   {
     m_playerMenu.write(" ╽ ", 9 + i * 2, 8, Nc::Color::Orange);
     m_playerMenu.write("(●)", 9 + i * 2, 9, Nc::Color::Orange);
   }
+
+  for (int i = availableBombs; i < maxBombs; i++)
+  {
+    m_playerMenu.write(" ╽ ", 9 + i * 2, 8, Nc::Color::White);
+    m_playerMenu.write("(●)", 9 + i * 2, 9, Nc::Color::White);
+  }
+
+  if (maxBombs == m_player.getMaxBombs())
+    m_playerMenu.write(" max", 10 + maxBombs * 2, 9, Nc::Color::Orange);
 
   m_playerMenu.write("Bomb Radius: ", 2, 12);
   m_playerMenu.writeInt(m_player.getBombRadius(), 15, 12);

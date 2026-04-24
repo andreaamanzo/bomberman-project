@@ -143,7 +143,8 @@ namespace Nc
 
   Key waitForKeyPressd()
   {
-    getch(); // "svuta il buffer (?)"
+    while (getKeyPressed() != Key::None); // "svuta il buffer (?)"
+    
     nodelay(stdscr, FALSE);
     Key k = getKeyPressed();
     nodelay(stdscr, TRUE);
