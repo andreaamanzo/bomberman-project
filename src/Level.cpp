@@ -122,6 +122,9 @@ void Level::drawWalls(Nc::Window& window) const
 
       else if (m_map[y][x] == Tile::BreakableWall)
         window.draw(s_breakableWallSprite, drawX, drawY);
+
+      //else if (m_map[x][y] == Tile::Spikes)
+        //window.draw(s_spikesSprite, drawX, drawY);
     }
   }
 }
@@ -202,7 +205,9 @@ void Level::applyExplosion(const Bomb& bomb, Player& player)
 
     // applicato solo la prima volta (prima di hasExploded = true)
     if (!bomb.hasExploded() && tile == Tile::BreakableWall)
+    {
       tile = Tile::Empty;
+    }
 
     Entity explosion{ x * Settings::entityWidth, y * Settings::entityHeight };
 

@@ -16,7 +16,7 @@ public:
     IncrementMaxBombs,
     Invulnerability,
     OneUp,
-    TimedIncrementBombPower,
+    Ice,
   };
 
   Item();
@@ -35,7 +35,7 @@ private:
   inline const static Nc::Sprite2x3 s_spriteTypeIncrementBombRadius{ "|↑|", "|↓|", Nc::Color::Yellow };
   inline const static Nc::Sprite2x3 s_spriteTypeOneUp{ "|❤|", "|❤|", Nc::Color::Yellow };
   inline const static Nc::Sprite2x3 s_spriteTypeInvulnerability{ "|⛨|", "|⛨|", Nc::Color::Yellow };
-  inline const static Nc::Sprite2x3 s_spriteTypeTimedIncrementBombPower{ "|☀|", "|☀|", Nc::Color::Yellow };
+  inline const static Nc::Sprite2x3 s_spriteTypeIce{ "|❅|", "|❅|", Nc::Color::Yellow };
 
 
   using Clock = std::chrono::steady_clock;

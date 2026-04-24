@@ -63,12 +63,14 @@ private:
     Empty,
     Wall,
     BreakableWall,
+    Spikes,
     DoorNext,
     DoorPrev,
   };
 
   inline const static Nc::Sprite2x3 s_wallSprite{ "███", "███", Nc::Color::White };
   inline const static Nc::Sprite2x3 s_breakableWallSprite{ "▚▞▚", "▚▞▚", Nc::Color::White };
+  inline const static Nc::Sprite2x3 s_spikesSprite{ "▲▲▲", "▲▲▲", Nc::Color::White };
   inline const static Nc::Sprite2x3 s_doorNextSprite{ "-⌼-", "-⌼-", Nc::Color::Sky, Nc::Color::Black };
   inline const static Nc::Sprite2x3 s_doorPrevSprite{ "-▣-", "-▣-", Nc::Color::Magenta, Nc::Color::Black };
 

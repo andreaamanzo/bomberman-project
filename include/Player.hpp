@@ -22,6 +22,7 @@ public:
   void setRespownPoint(int x, int y);
   void atRespown();
   bool isAlive() const;
+  bool hasIce() const;
   int getLives() const;
   int getMaxLives() const;
   int getBombRadius() const;
@@ -49,6 +50,7 @@ private:
   int m_points{ 0 };
   Item m_items[s_maxLengthArrays]{ };
   bool m_isInvincible{ false };
+  bool m_hasIce{ false };
 
 };
 

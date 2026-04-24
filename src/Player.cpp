@@ -60,6 +60,11 @@ bool Player::isAlive() const
   return m_lives > 0;
 }
 
+bool Player::hasIce() const
+{
+  return m_hasIce;
+}
+
 void Player::collectItem(const Item& item)
 {
   switch (item.getType())
@@ -80,16 +85,15 @@ void Player::collectItem(const Item& item)
     m_isInvincible = true;
     break;
 
-  case Item::Type::TimedIncrementBombPower :
-    m_bombRadius += 3;
-    m_currMaxBombs += 2;
+  case Item::Type::Ice :
+    m_hasIce = true;
     break;
 
   case Item::Type::OneUp :
     if (m_lives < m_maxLives) m_lives++;
     break;
   }
-
+  
   // lo aggiungo alla lista di item del player
   m_items[m_itemsSize] = item;
   if (m_items[m_itemsSize].isTimed()) m_items[m_itemsSize].activate();
@@ -123,16 +127,13 @@ void Player::handleItems()
 {
   for (int i{ 0 } ; i < m_itemsSize ; i++)
   {
-    // annullo l'effetto dell'item
+    // annullo l'effetto dell'item temporaneo scaduto
     if (!m_items[i].isActive())
     {
       switch (m_items[i].getType())
       {
-      case Item::Type::TimedIncrementBombPower :
-        m_bombRadius -= 3;
-        m_currMaxBombs -= 2;
-        restoreBomb();
-        restoreBomb();
+      case Item::Type::Ice :
+        m_hasIce = false;
         break;
       
       case Item::Type::Invulnerability :

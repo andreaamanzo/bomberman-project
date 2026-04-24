@@ -130,8 +130,11 @@ void Game::update()
   }
 
   m_currLevel->movePlayer(m_player, dir);
-  m_currLevel->moveEnemies();
-
+  if (!m_player.hasIce())
+  {
+    m_currLevel->moveEnemies();
+  }
+  
   m_currLevel->handleBombs(m_player);
   m_currLevel->handleEnemies(m_player);
   m_player.handleItems();
@@ -198,9 +201,9 @@ void Game::writeOnMenus()
   m_itemsMenu.write("|⛨|", 2, 13, Nc::Color::Yellow);
   m_itemsMenu.write("Shield (10 sec)", 6, 12);
 
-  m_itemsMenu.write("|☀|", 2, 15, Nc::Color::Yellow);
-  m_itemsMenu.write("|☀|", 2, 16, Nc::Color::Yellow);
-  m_itemsMenu.write("Power (10 sec)", 6, 15);
+  m_itemsMenu.write("|❅|", 2, 15, Nc::Color::Yellow);
+  m_itemsMenu.write("|❅|", 2, 16, Nc::Color::Yellow);
+  m_itemsMenu.write("Freeze enemies (10 sec)", 6, 15);
 
   // ===== LEVEL MENU =====
   m_levelMenu.write("Level: ", 2, 3);
