@@ -478,6 +478,11 @@ void Level::moveEnemies()
         enemy.setDirection(static_cast<Direction>(Random::get(1, 4)));
       } while (enemy.getDirection() == prevDir);
     }
+    if (enemy.getSurpriseStatus() && enemy.getType() == Enemy::Type::First_Enemy){
+      if (Random::get(0,50) < 10) {
+        enemy.setDirection(static_cast<Direction>(Random::get(1,4)));
+      }
+    }
   }
 }
 
@@ -532,4 +537,10 @@ Item Level::getItem(const Entity& entity)
 bool Level::isCompleted() const
 {
   return m_enemiesSize == 0;
+}
+
+void Level::setEnemySurprise(bool set){
+  for (int i = 0; i < m_enemiesSize; i++){
+    m_enemies[i].surprise(set);
+  }
 }

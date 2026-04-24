@@ -26,13 +26,15 @@ public:
   bool isTimerActive() const;
   void setBombTimer(bool active);
   bool checkIfShouldBomb();
-  
-private:
+  void surprise(bool set);
+  bool getSurpriseStatus();
+
+  private:
   inline const static Nc::Sprite2x3 s_spriteTypeNull{ "   ", "   ", Nc::Color::Default };
   inline const static Nc::Sprite2x3 s_enemy1{"°|°", "/ \\ ", Nc::Color::Red};
   inline const static Nc::Sprite2x3 s_enemy2{"ò_ó", "###", Nc::Color::Red};
   inline const static Nc::Sprite2x3 s_enemy3{"⋋▃⋌", "╱║╲", Nc::Color::Red};
-
+  
   Type m_type{ Type::Null };
   Direction m_direction{ Direction::Left };
   int m_points;
@@ -40,6 +42,7 @@ private:
   std::chrono::milliseconds m_actionInterval{ 3000 };
   std::chrono::steady_clock::time_point m_nextBombCooldown;
   bool m_isTimerActive;
+  bool m_surprise;
 
   static const Nc::Sprite2x3& getSprite(Type enemyType);
   static int getPoints(Type enemyType);
