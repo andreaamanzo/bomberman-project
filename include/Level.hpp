@@ -45,6 +45,7 @@ public:
   bool isCompleted() const;
   int  getLevelNumber() const;
   int  getEnemiesNumber() const;
+  int  getItemsNumber() const;
   void setEnemySurprise(bool set);
 
   // Funzioni per la gestione del tempo

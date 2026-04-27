@@ -27,7 +27,8 @@ public:
   void setPowerDuration(int secDuration);
   void activate();
   bool isTimed() const;
-  bool isActive();
+  bool isActive() const;
+  int  getTimeLeftSec() const;
 
 private:
   inline const static Nc::Sprite2x3 s_spriteTypeNull{ "   ", "   ", Nc::Color::Default };

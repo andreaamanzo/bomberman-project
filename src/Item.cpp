@@ -51,12 +51,20 @@ void Item::activate()
   m_expiration = Clock::now() + m_powerDuration;
 }
 
-bool Item::isActive()
+bool Item::isActive() const
 {
   if (!isTimed()) return true;
 
   // ** tipo esplicito: std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
-  auto start = std::chrono::steady_clock::now();
+  auto start = Clock::now();
 
   return (start <= m_expiration);
+}
+
+int Item::getTimeLeftSec() const
+{
+  if (!isActive() || !isTimed()) return 0;
+
+  float floatSec = std::chrono::duration<float>(m_expiration - Clock::now()).count();
+  return static_cast<int>(floatSec);
 }

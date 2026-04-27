@@ -24,6 +24,7 @@ private:
   bool m_running{ true };
 
   bool checkLoseConditions();
+  void writeTimedItems();
   void writeOnMenus();
   void update();
   void render();

@@ -295,6 +295,8 @@ int Level::getLevelNumber() const { return m_levelNumber; }
 
 int  Level::getEnemiesNumber() const { return m_enemiesSize; }
 
+int  Level::getItemsNumber() const { return m_itemsSize; }
+
 bool Level::shouldGoNextLevel() const { return m_shouldGoNext; }
 
 bool Level::shouldGoPrevLevel() const { return m_shouldGoPrev; }
