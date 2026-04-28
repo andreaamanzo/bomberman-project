@@ -490,7 +490,7 @@ void Level::moveEnemies()
         enemy.setDirection(static_cast<Direction>(Random::get(1, 4)));
       } while (enemy.getDirection() == prevDir);
     }
-    if (enemy.getSurpriseStatus() && enemy.getType() == Enemy::Type::First_Enemy){
+    if (enemy.getSurpriseStatus()){
       if (Random::get(0,50) < 10) {
         enemy.setDirection(static_cast<Direction>(Random::get(1,4)));
       }
