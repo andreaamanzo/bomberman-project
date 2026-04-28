@@ -67,6 +67,17 @@ bool Player::hasIce() const
 
 void Player::collectItem(const Item& item)
 {
+  // faccio ripartire item a tempo se già presente
+  for (int i{ 0 }; i < m_itemsSize; i++)
+  {
+    if (m_items[i].isTimed() && m_items[i].getType() == item.getType())
+    {
+      // m_items[i] = item;
+      m_items[i].activate();
+      return;
+    }
+  }
+
   switch (item.getType())
   {
   case Item::Type::Null :
