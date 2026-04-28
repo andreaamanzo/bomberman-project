@@ -72,7 +72,6 @@ void Player::collectItem(const Item& item)
   {
     if (m_items[i].isTimed() && m_items[i].getType() == item.getType())
     {
-      // m_items[i] = item;
       m_items[i].activate();
       return;
     }
