@@ -99,6 +99,11 @@ Level::Level(int levelNumber, const char* mapFilePath)
   if (nrow != Settings::mapRows - 1)
     Nc::stopWithError(1, "Invalid map: incorrect number of rows.");
 
+  if (m_levelNumber == 4 || m_levelNumber == 5) {
+    setEnemySurprise(true);
+  }
+  else setEnemySurprise(false);
+
   file.close();
 }
 
@@ -515,7 +520,7 @@ void Level::handleEnemies(Player& player)
 
     if (enemy.getType() == Enemy::Type::Third_Enemy)
     {
-      if (enemy.checkIfShouldBomb())
+      if (enemy.checkIfShouldBomb() && !player.hasIce())
       {
         Bomb bomb{ enemy.getX(), enemy.getY(), 2, Bomb::Type::Enemy };
         addBomb(bomb); 
@@ -548,6 +553,7 @@ bool Level::isCompleted() const
 
 void Level::setEnemySurprise(bool set){
   for (int i = 0; i < m_enemiesSize; i++){
-    m_enemies[i].surprise(set);
+    if (m_enemies[i].getType() == Enemy::Type::First_Enemy)
+      m_enemies[i].surprise(set);
   }
 }

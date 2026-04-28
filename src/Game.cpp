@@ -140,10 +140,6 @@ void Game::update()
   m_player.handleItems();
 
   m_currLevel->updateTime();
-  if (m_currLevel->getLevelNumber() == 4 || m_currLevel->getLevelNumber() == 5){
-    m_currLevel->setEnemySurprise(true);
-  }
-  else m_currLevel->setEnemySurprise(false);
 }
 
 void Game::writeTimedItems()
