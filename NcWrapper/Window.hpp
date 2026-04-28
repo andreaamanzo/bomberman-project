@@ -16,8 +16,8 @@ namespace Nc
     void setBgColor(Color color);
     void setTitle(const char* title);
     void draw(const Sprite2x3& sprite, int x, int y);
-    void write(const char* string, int x, int y, Color color = Color::White);
-    void writeInt(int n, int x, int y, Color color = Color::White);
+    void write(const char* string, int x, int y, Color color = Color::White, Color bgColor = Color::Default);
+    void writeInt(int n, int x, int y, Color color = Color::White, Color bgColor = Color::Default);
     void display();
     void clear();
     int getWidth() const; 

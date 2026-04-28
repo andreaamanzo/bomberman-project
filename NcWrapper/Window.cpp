@@ -55,17 +55,17 @@ namespace Nc
     wattroff(m_window, COLOR_PAIR(id));
   }
 
-  void Window::write(const char* string, int x, int y, Color color)
+  void Window::write(const char* string, int x, int y, Color color, Color bgColor)
   {
-    short id{ Nc::getColorPair(color, m_bgColor) };
+    short id{ Nc::getColorPair(color, bgColor == Color::Default ? m_bgColor : bgColor) };
     wattron(m_window, COLOR_PAIR(id));
     mvwaddstr(m_window, y + 1, x + 1, string);
     wattroff(m_window, COLOR_PAIR(id));
   }
 
-  void Window::writeInt(int n, int x, int y, Color color)
+  void Window::writeInt(int n, int x, int y, Color color, Color bgColor)
   {
-    short id{ Nc::getColorPair(color, m_bgColor) };
+    short id{ Nc::getColorPair(color, bgColor == Color::Default ? m_bgColor : bgColor) };
     wattron(m_window, COLOR_PAIR(id));
     mvwprintw(m_window, y + 1, x + 1, "%d", n);
     wattroff(m_window, COLOR_PAIR(id));
