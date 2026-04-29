@@ -2,6 +2,7 @@
 #include "Settings.hpp"
 #include "ScoreList.hpp"
 #include "Game.hpp"
+#include "Menu.hpp"
 #include <iostream>
 #include <cstdlib>
 
@@ -17,6 +18,7 @@ int main()
 
   Nc::Window window{ Settings::mapWidth, Settings::mapHeight, w_startx, w_starty };
 
+  Menu menu{};
   ScoreList scoreBoard{ "state/scoreboard.txt" };
   
   constexpr int numLevels{ 5 };
@@ -29,27 +31,20 @@ int main()
   };
 
   bool running = true;
-  int option = 2;
+  Menu::Option option = Menu::Option::Menu;
 
   while (running)
   {
     switch (option)
     {
-    case 0:
+    case Menu::Option::Close :
       running = false;
       break;
-    case 1:
-      window.setTitle("BOMBERMAN MENU");
-      window.clear();
+    
+    case Menu::Option::Menu:
+      option = menu.getMenuOption();
       
-      // TODO menu -> get option
-      // option = 0;
-
-      window.display();
-
-      
-      break;
-    case 2:
+    case Menu::Option::Game:
     {
       Game game{ numLevels, paths };
       int score = game.play();
@@ -73,10 +68,10 @@ int main()
       
       window.clear();
       
-      option = 3;
+      option = Menu::Option::Scoreboard;
       break;
     }
-    case 3:
+    case Menu::Option::Scoreboard:
       // show scoreboard
       // 1) chiede numero di giocatori da visualizzare 
       // 2) while che mostra semplicemente la classifica + controlla se l'utente preme esc/Q
@@ -94,7 +89,7 @@ int main()
 
       if(showPlayers > 0) scoreBoard.drawScoreboard(showPlayers, window);
       
-      option = 1;
+      option = Menu::Option::Menu;
       break;
     } 
   }

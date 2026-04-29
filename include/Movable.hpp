@@ -1,5 +1,5 @@
-#ifndef MOVABLE_H
-#define MOVABLE_H
+#ifndef MOVABLE_HPP
+#define MOVABLE_HPP
 
 #include "Entity.hpp"
 #include "Direction.hpp"
