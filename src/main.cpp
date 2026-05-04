@@ -43,6 +43,7 @@ int main()
     
     case Menu::Option::Menu:
       option = menu.getMenuOption();
+      break;
       
     case Menu::Option::Game:
     {
@@ -89,6 +90,7 @@ int main()
 
       if(showPlayers > 0) scoreBoard.drawScoreboard(showPlayers, window);
       
+      window.clear();
       option = Menu::Option::Menu;
       break;
     } 

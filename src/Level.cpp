@@ -555,5 +555,7 @@ void Level::setEnemySurprise(bool set){
   for (int i = 0; i < m_enemiesSize; i++){
     if (m_enemies[i].getType() == Enemy::Type::First_Enemy)
       m_enemies[i].surprise(set);
+    else
+     m_enemies[i].surprise(false);
   }
 }

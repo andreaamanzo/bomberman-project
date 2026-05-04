@@ -8,10 +8,10 @@ class Menu
 public:
   enum class Option
   {
-    Menu,
-    Scoreboard,
     Game,
+    Scoreboard,
     Close,
+    Menu,
   };
 
   Menu();
@@ -20,8 +20,6 @@ public:
 
 private:
   Nc::Window m_mainWindow;
-  bool m_running{ true };
-
 };
 
 #endif

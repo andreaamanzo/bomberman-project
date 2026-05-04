@@ -42,7 +42,7 @@ public:
   std::chrono::milliseconds m_actionInterval{ 3000 };
   std::chrono::steady_clock::time_point m_nextBombCooldown;
   bool m_isTimerActive;
-  bool m_surprise;
+  bool m_surprise{ false };
 
   static const Nc::Sprite2x3& getSprite(Type enemyType);
   static int getPoints(Type enemyType);

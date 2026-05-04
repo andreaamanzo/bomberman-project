@@ -75,8 +75,7 @@ bool Enemy::checkIfShouldBomb() {
   return false;
 }
 void Enemy::surprise(bool set){
-  if (set == true) m_surprise = true;
-  else m_surprise = false;
+  m_surprise = set;
 }
 
 bool Enemy::getSurpriseStatus(){
