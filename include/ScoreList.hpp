@@ -10,7 +10,6 @@ public:
 
   // push in ordine decrescente
   void pushOrderly(const char* playerName, const int score);
-  void pushBack(const char* playerName, const int score);
   void drawScoreboard(int numberPlayers, Nc::Window& window);
   void saveToFile(const char* filePath);
 

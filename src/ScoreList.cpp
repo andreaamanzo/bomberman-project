@@ -24,13 +24,32 @@ ScoreList::ScoreList(const char* filePath)
 
   int playerScore;
   char nameBuffer[s_maxNameLenght];
+  Node* current{ nullptr };
   while (file >> playerScore)
   {
     file >> std::ws; // salta ogni spazio bianco prima del nome
     
     file.getline(nameBuffer, s_maxNameLenght); // permette di avere spazi bianchi nel nome del giocatore
 
-    pushOrderly(nameBuffer, playerScore); // ! da modificare
+    Node* foo = new Node;
+    strncpy(foo -> playerName, nameBuffer, s_maxNameLenght - 1);
+    foo -> playerName[s_maxNameLenght - 1] = '\0'; // mi assicuro che l'ultimo char sia il nullchar
+    foo -> score = playerScore;
+    if (m_head == nullptr)
+    {
+      m_head = foo;
+      current = foo;
+    }
+    else if (m_head -> next == nullptr)
+    {
+      m_head -> next = foo;
+      current = foo;
+    }
+    else
+    {
+      current -> next = foo;
+      current = foo;
+    }
   }
 
   file.close();
@@ -77,15 +96,10 @@ void ScoreList::pushOrderly(const char* playerName, const int score)
   }
 }
 
-void ScoreList::pushBack(const char* playerName, const int score)
-{
-  
-}
-
 void ScoreList::drawScoreboard(int numberPlayers, Nc::Window& window)
 {
   
-  int startX{ (window.getWidth() - 25) / 2 };
+  int startX{ (window.getWidth() - 35) / 2 };
   
   bool running{ true };
   while (running)
@@ -97,14 +111,14 @@ void ScoreList::drawScoreboard(int numberPlayers, Nc::Window& window)
     
     int startY{ 2 };
     char buff[s_maxNameLenght * 2];
-    snprintf(buff, sizeof(buff), "%-20s\t%s", "[NAME]", "[SCORE]");
+    snprintf(buff, sizeof(buff), "%-20s\t%s", "\t[NAME]", "[SCORE]");
     window.write(buff, startX, startY++);  
 
     Node* node = m_head;
-    int num = numberPlayers;
-    while (num-- > 0 && node != nullptr)
+    int num{ 0 };
+    while (num++ < numberPlayers && node != nullptr)
     {
-      snprintf(buff, sizeof(buff), "%-20s\t%d", node -> playerName, node -> score); // -20 allineamento a sx (copre 20 char)
+      snprintf(buff, sizeof(buff), "%d\t%-20s\t%d", num, node -> playerName, node -> score); // -20 allineamento a sx (copre 20 char)
   
       window.write(buff, startX, startY++);
   
