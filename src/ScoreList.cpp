@@ -30,7 +30,7 @@ ScoreList::ScoreList(const char* filePath)
     
     file.getline(nameBuffer, s_maxNameLenght); // permette di avere spazi bianchi nel nome del giocatore
 
-    pushOrderly(nameBuffer, playerScore);
+    pushOrderly(nameBuffer, playerScore); // ! da modificare
   }
 
   file.close();
@@ -44,7 +44,7 @@ const char* stringPolish(const char* toPolish)
   return toPolish;
 }
 
-void ScoreList::pushOrderly(const char* playerName, int score)
+void ScoreList::pushOrderly(const char* playerName, const int score)
 {
   Node* foo = new Node;
   strncpy(foo -> playerName, stringPolish(playerName), s_maxNameLenght - 1);
@@ -75,6 +75,11 @@ void ScoreList::pushOrderly(const char* playerName, int score)
     }
     check -> next = foo;
   }
+}
+
+void ScoreList::pushBack(const char* playerName, const int score)
+{
+  
 }
 
 void ScoreList::drawScoreboard(int numberPlayers, Nc::Window& window)
