@@ -109,13 +109,13 @@ namespace Nc
     nodelay(m_window, FALSE);
     curs_set(1);
 
-    int x = posX + 1;
-    int y = posY + 1;
+    int x{ posX + 1 };
+    int y{ posY + 1 };
 
     wmove(m_window, y, x);
     wrefresh(m_window);
 
-    int i = 0;
+    int i{ 0 };
 
     while (true)
     {

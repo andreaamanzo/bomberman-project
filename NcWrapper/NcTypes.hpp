@@ -1,5 +1,5 @@
-#ifndef NC_TYPES_H
-#define NC_TYPES_H
+#ifndef NC_TYPES_HPP
+#define NC_TYPES_HPP
 
 namespace Nc
 {

@@ -3,6 +3,9 @@
 
 namespace Nc
 {
+  static ColorPair s_colorPairs[64]{};
+  static short s_nextPairId{ 1 };
+
   static short toNcurses(Color c)
   {
     switch (c)
@@ -35,14 +38,18 @@ namespace Nc
 
   short getColorPair(Color fg, Color bg)
   {
-    for (auto& cp : s_colorPairs)
+    for (int i = 0; i < s_nextPairId; i++)
+    {
+      ColorPair& cp{ s_colorPairs[i] };
+
       if (cp.fg == fg && cp.bg == bg)
         return cp.pairId;
+    }
 
     short id{ s_nextPairId };
     init_pair(id, toNcurses(fg), toNcurses(bg));
 
-    s_colorPairs[s_nextPairId] =  { fg, bg, id };
+    s_colorPairs[s_nextPairId] = { fg, bg, id };
     ++s_nextPairId;
     return id;
   }

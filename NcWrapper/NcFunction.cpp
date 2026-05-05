@@ -46,7 +46,7 @@ namespace Nc
 
   void init()
   {
-    std::setlocale(LC_ALL, "");
+    std::setlocale(LC_ALL, ""); // per caratteri utf-8
     std::srand(static_cast<unsigned int>(std::time(0)));
     
     initscr();
@@ -102,7 +102,7 @@ namespace Nc
   
   Key getKeyPressed()
   {
-    int c = getch();
+    int c{ getch() };
 
     if (c == ERR)
       return Key::None;

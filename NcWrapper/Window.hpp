@@ -1,5 +1,5 @@
-#ifndef WINDOW_H
-#define WINDOW_H
+#ifndef WINDOW_HPP
+#define WINDOW_HPP
 
 #include "Sprite2x3.hpp"
 #include "NcTypes.hpp"
@@ -33,7 +33,7 @@ namespace Nc
     int m_height{};
     int m_startX{};
     int m_startY{};
-    char m_title[64];
+    char m_title[64]{};
 
     void drawBox();
   };

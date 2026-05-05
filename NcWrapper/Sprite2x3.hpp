@@ -1,5 +1,5 @@
-#ifndef SPRITE_2X3_H
-#define SPRITE_2X3_H
+#ifndef SPRITE_2X3_HPP
+#define SPRITE_2X3_HPP
 
 #include "NcTypes.hpp"
 #include <ncurses.h>
@@ -20,8 +20,8 @@ namespace Nc
     void setBgColor(Color color);
   
   private:
-    static constexpr int s_height = 2;
-    static constexpr int s_width  = 3;
+    static constexpr int s_height{ 2 };
+    static constexpr int s_width{ 3 };
   
     const char* m_rows[s_height]{};
     Color m_color{ Color::White };

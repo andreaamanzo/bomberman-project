@@ -1,5 +1,5 @@
-#ifndef COLOR_PAIR_H
-#define COLOR_PAIR_H
+#ifndef COLOR_PAIR_HPP
+#define COLOR_PAIR_HPP
 
 #include "NcTypes.hpp"
 #include <ncurses.h>
@@ -12,9 +12,6 @@ namespace Nc
     Color bg;
     short pairId;
   };
-
-  static ColorPair s_colorPairs[64]{};
-  static short s_nextPairId{ 1 };
 
   short getColorPair(Color fg, Color bg);
 }

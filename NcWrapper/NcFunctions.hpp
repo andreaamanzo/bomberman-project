@@ -1,5 +1,5 @@
-#ifndef NC_HELPERS_H
-#define NC_HELPERS_H
+#ifndef NC_FUNCTIONS_HPP
+#define NC_FUNCTIONS_HPP
 
 #include "NcTypes.hpp"
 
