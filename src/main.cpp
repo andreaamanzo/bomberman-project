@@ -3,8 +3,6 @@
 #include "ScoreBoard.hpp"
 #include "Game.hpp"
 #include "Menu.hpp"
-#include <iostream>
-#include <cstdlib>
 
 int main() 
 {
@@ -12,11 +10,6 @@ int main()
   
   // grandezza minima
   Nc::checkTerminalSize(Settings::mapWidth + Settings::menuWidth*2 + 6, Settings::mapHeight); 
-
-  int w_startx = (Nc::getTerminalWidth()  - Settings::mapWidth) / 2;
-  int w_starty = (Nc::getTerminalHeight() - Settings::mapHeight) / 2;
-
-  Nc::Window window{ Settings::mapWidth, Settings::mapHeight, w_startx, w_starty };
 
   Menu menu{};
   ScoreBoard scoreBoard{ "state/scoreboard.txt" };
@@ -59,7 +52,7 @@ int main()
       option = Menu::Option::Scoreboard;
       break;
     }
-    
+
     case Menu::Option::Scoreboard:
       scoreBoard.show();
 
