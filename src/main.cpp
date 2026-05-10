@@ -1,6 +1,6 @@
 #include "NcWrapper.hpp"
 #include "Settings.hpp"
-#include "ScoreList.hpp"
+#include "ScoreBoard.hpp"
 #include "Game.hpp"
 #include "Menu.hpp"
 #include <iostream>
@@ -19,7 +19,7 @@ int main()
   Nc::Window window{ Settings::mapWidth, Settings::mapHeight, w_startx, w_starty };
 
   Menu menu{};
-  ScoreList scoreBoard{ "state/scoreboard.txt" };
+  ScoreBoard scoreBoard{ "state/scoreboard.txt" };
   
   constexpr int numLevels{ 5 };
   const char* levelPaths[numLevels]{ 

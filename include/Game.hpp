@@ -4,7 +4,7 @@
 #include "NcWrapper.hpp"
 #include "Player.hpp"
 #include "LevelList.hpp"
-#include "ScoreList.hpp"
+#include "ScoreBoard.hpp"
 
 class Game
 {

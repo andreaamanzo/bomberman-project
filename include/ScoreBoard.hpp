@@ -1,13 +1,13 @@
-#ifndef SCORELIST_HPP
-#define SCORELIST_HPP
+#ifndef SCOREBOARD_HPP
+#define SCOREBOARD_HPP
 
 #include "NcWrapper.hpp"
 #include "Settings.hpp"
 
-class ScoreList
+class ScoreBoard
 {
 public:
-  ScoreList(const char* filePath);
+  ScoreBoard(const char* filePath);
   void pushOrderly(const char* playerName, const int score);
   void drawScoreboard(int numberPlayers, Nc::Window& window);
   void saveToFile(const char* filePath);

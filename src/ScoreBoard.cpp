@@ -1,10 +1,10 @@
-#include "ScoreList.hpp"
+#include "ScoreBoard.hpp"
 #include "NcWrapper.hpp"
 
 #include <cstring>
 #include <fstream>
 
-ScoreList::ScoreList(const char* filePath)
+ScoreBoard::ScoreBoard(const char* filePath)
 {
   // leggo dal file state/scoreboard.txt
   std::ifstream file{ filePath };
@@ -45,7 +45,7 @@ const char* stringPolish(const char* toPolish)
 }
 
 // push in ordine decrescente
-void ScoreList::pushOrderly(const char* playerName, const int score)
+void ScoreBoard::pushOrderly(const char* playerName, const int score)
 {
   Node* foo = new Node;
   strncpy(foo -> playerName, stringPolish(playerName), s_maxNameLenght - 1);
@@ -80,7 +80,7 @@ void ScoreList::pushOrderly(const char* playerName, const int score)
 
 // mostra la classifica e controlla se l'utente preme esc/Q
 // quando l'utente preme esc/Q funzione termina -> torna al menu
-void ScoreList::drawScoreboard(int numberPlayers, Nc::Window& window)
+void ScoreBoard::drawScoreboard(int numberPlayers, Nc::Window& window)
 {
   
   int startX{ (window.getWidth() - 30) / 2 };
@@ -119,7 +119,7 @@ void ScoreList::drawScoreboard(int numberPlayers, Nc::Window& window)
 
 }
 
-void ScoreList::saveToFile(const char* filePath)
+void ScoreBoard::saveToFile(const char* filePath)
 {
   std::ofstream file{ filePath };
 
@@ -140,7 +140,7 @@ void ScoreList::saveToFile(const char* filePath)
 }
 
 // chiede quante posizioni vedere nella classifica
-void ScoreList::show()
+void ScoreBoard::show()
 {
   m_window.setTitle("SCOREBOARD");
 

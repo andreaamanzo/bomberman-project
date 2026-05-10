@@ -7,7 +7,7 @@
 #include "LevelList.hpp"
 #include "Level.hpp"
 #include "Bomb.hpp"
-#include "ScoreList.hpp"
+#include "ScoreBoard.hpp"
 #include <cstring>
 
 Game::Game(int numLevels, const char* levelPaths[])
