@@ -50,52 +50,19 @@ int main()
       Game game{ numLevels, paths };
       int score = game.play();
       
-      // chiede nome e aggiorna scoreboard
-      window.setTitle("END GAME");
-
-      window.write("Enter your name:", 1, 1);
-      window.write("> ", 1, 3);
-      window.display();
-
-      // gestione input del giocatore
-      char buffer[15];
-      do
-      {
-        window.getUserInput(3, 3, buffer, sizeof(buffer));
-      } while (buffer[0] == '\0');
-      
-      scoreBoard.pushOrderly(buffer, score);
-      scoreBoard.saveToFile("state/scoreboard.txt");
-      
-      window.clear();
+      game.enterPlayerName(window, scoreBoard, score);
       
       option = Menu::Option::Scoreboard;
       break;
     }
     case Menu::Option::Scoreboard:
-      // show scoreboard
-      // 1) chiede numero di giocatori da visualizzare 
-      // 2) while che mostra semplicemente la classifica + controlla se l'utente preme esc/Q
-      // 3) quando l'utente preme esc funzione termina -> dobbiamo tornare al menu
-      window.setTitle("SCOREBOARD");
+    
+      scoreBoard.show();
 
-      window.write("How many scoreboard entries do you want to see?", 1, 1);
-      window.write("> ", 1, 3);
-      window.display(); 
-
-      // gestione input del giocatore
-      char buffer[64];
-      window.getUserInput(3, 3, buffer, sizeof(buffer));
-      int showPlayers = std::atoi(buffer);
-
-      if(showPlayers > 0) scoreBoard.drawScoreboard(showPlayers, window);
-      
-      window.clear();
       option = Menu::Option::Menu;
       break;
-    } 
+    }
   }
 
   Nc::stop();
 }
-

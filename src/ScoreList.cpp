@@ -44,6 +44,7 @@ const char* stringPolish(const char* toPolish)
   return toPolish;
 }
 
+// push in ordine decrescente
 void ScoreList::pushOrderly(const char* playerName, const int score)
 {
   Node* foo = new Node;
@@ -77,10 +78,12 @@ void ScoreList::pushOrderly(const char* playerName, const int score)
   }
 }
 
+// mostra la classifica e controlla se l'utente preme esc/Q
+// quando l'utente preme esc/Q funzione termina -> torna al menu
 void ScoreList::drawScoreboard(int numberPlayers, Nc::Window& window)
 {
   
-  int startX{ (window.getWidth() - 25) / 2 };
+  int startX{ (window.getWidth() - 30) / 2 };
   
   bool running{ true };
   while (running)
@@ -92,7 +95,7 @@ void ScoreList::drawScoreboard(int numberPlayers, Nc::Window& window)
     
     int startY{ 1 };
     char buff[s_maxNameLenght * 3];
-    snprintf(buff, sizeof(buff), "%-8s%-17s%s", "[N°]","[NAME]", "[SCORE]");
+    snprintf(buff, sizeof(buff), "%-8s%-17s%s", "[N°]", "[NAME]", "[SCORE]");
     window.write(buff, startX, startY++);
     startY++; // stacco dopo i titoli
 
@@ -100,7 +103,9 @@ void ScoreList::drawScoreboard(int numberPlayers, Nc::Window& window)
     int num{ 0 };
     while (num++ < numberPlayers && node != nullptr)
     {
-      snprintf(buff, sizeof(buff), "%-8d%-17s%d", num, node -> playerName, node -> score); // -20 allineamento a sx (copre 20 char)
+      // -8 -> allineamento a sx
+      // -17 -> allineamento a sx (copre 17 char)
+      snprintf(buff, sizeof(buff), "%-8d%-17s%d", num, node -> playerName, node -> score);
   
       window.write(buff, startX, startY++);
       window.write("--------------------------------", startX-1, startY++);
@@ -132,4 +137,23 @@ void ScoreList::saveToFile(const char* filePath)
   }
 
   file.close();
+}
+
+// chiede quante posizioni vedere nella classifica
+void ScoreList::show()
+{
+  m_window.setTitle("SCOREBOARD");
+
+  m_window.write("How many scoreboard entries do you want to see?", 1, 1);
+  m_window.write("> ", 1, 3);
+  m_window.display(); 
+
+  // gestione input del giocatore
+  char buffer[64];
+  m_window.getUserInput(3, 3, buffer, sizeof(buffer));
+  int showPlayers = std::atoi(buffer);
+
+  if(showPlayers > 0) drawScoreboard(showPlayers, m_window);
+      
+  m_window.clear();
 }

@@ -4,6 +4,7 @@
 #include "NcWrapper.hpp"
 #include "Player.hpp"
 #include "LevelList.hpp"
+#include "ScoreList.hpp"
 
 class Game
 {
@@ -11,6 +12,7 @@ public:
   Game(int numLevels, const char* levelPaths[]);
 
   int play();
+  void enterPlayerName(Nc::Window window, ScoreList scoreboard, int score);
 
 private:
   LevelList  m_levelList;
