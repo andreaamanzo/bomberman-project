@@ -23,7 +23,7 @@ private:
 
   static constexpr int s_titleLines{ 6 };
   static constexpr int s_titleLineLen{ 81 };
-  static constexpr char* s_title[s_titleLines] =
+  static constexpr const char* s_title[s_titleLines] =
   {
     "██████╗  ██████╗ ███╗   ███╗██████╗ ███████╗██████╗ ███╗   ███╗ █████╗ ███╗   ██╗",
     "██╔══██╗██╔═══██╗████╗ ████║██╔══██╗██╔════╝██╔══██╗████╗ ████║██╔══██╗████╗  ██║",
@@ -34,14 +34,14 @@ private:
   };
 
   static constexpr int s_menuSize{ 3 };
-  static constexpr char* s_menuOptions[s_menuSize]{
+  static constexpr const char* s_menuOptions[s_menuSize]{
     "[      New game       ]",
     "[   Show scoreboard   ]",
     "[        Quit         ]"
   };
 
   static constexpr int s_authorsSize{ 3 };
-  static constexpr char* s_authors[s_authorsSize] =
+  static constexpr const char* s_authors[s_authorsSize] =
   {
     "Andrea Manzo",
     "Tommaso Lissandrin",
