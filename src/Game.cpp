@@ -433,24 +433,21 @@ int Game::play()
   return m_player.getPoints();
 }
 
-void Game::enterPlayerName(Nc::Window window, ScoreList scoreboard, int score)
+void Game::enterPlayerName(char* buff, int buffSize)
 {
+  m_mainWindow.clear();
+  m_mainWindow.setTitle("END GAME");
+  
   // chiede nome e aggiorna scoreboard
-  window.setTitle("END GAME");
-
-  window.write("Enter your name:", 1, 1);
-  window.write("> ", 1, 3);
-  window.display();
+  m_mainWindow.write("Enter your name:", 1, 1);
+  m_mainWindow.write("> ", 1, 3);
+  m_mainWindow.display();
 
   // gestione input del giocatore
-  char buffer[15];
   do
   {
-    window.getUserInput(3, 3, buffer, sizeof(buffer));
-  } while (buffer[0] == '\0');
+    m_mainWindow.getUserInput(3, 3, buff, buffSize);
+  } while (buff[0] == '\0');
       
-  scoreboard.pushOrderly(buffer, score);
-  scoreboard.saveToFile("state/scoreboard.txt");
-      
-  window.clear();
+  m_mainWindow.clear();
 }

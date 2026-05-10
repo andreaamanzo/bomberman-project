@@ -22,7 +22,7 @@ int main()
   ScoreList scoreBoard{ "state/scoreboard.txt" };
   
   constexpr int numLevels{ 5 };
-  const char* paths[numLevels]{ 
+  const char* levelPaths[numLevels]{ 
     "levels/level_01.txt", 
     "levels/level_02.txt", 
     "levels/level_03.txt", 
@@ -37,7 +37,7 @@ int main()
   {
     switch (option)
     {
-    case Menu::Option::Close :
+    case Menu::Option::Close:
       running = false;
       break;
     
@@ -47,16 +47,20 @@ int main()
       
     case Menu::Option::Game:
     {
-      Game game{ numLevels, paths };
+      Game game{ numLevels, levelPaths };
+
       int score = game.play();
-      
-      game.enterPlayerName(window, scoreBoard, score);
+      char name[15];
+      game.enterPlayerName(name, sizeof(name));
+
+      scoreBoard.pushOrderly(name, score);
+      scoreBoard.saveToFile("state/scoreboard.txt");
       
       option = Menu::Option::Scoreboard;
       break;
     }
-    case Menu::Option::Scoreboard:
     
+    case Menu::Option::Scoreboard:
       scoreBoard.show();
 
       option = Menu::Option::Menu;

@@ -112,6 +112,10 @@ namespace Nc
     int x{ posX + 1 };
     int y{ posY + 1 };
 
+    // pulisce la regione dove dovrà scrivere
+    for (int i = 0; i < buffLength; i++)
+      mvwaddch(m_window, y, x+i, ' ');
+
     wmove(m_window, y, x);
     wrefresh(m_window);
 

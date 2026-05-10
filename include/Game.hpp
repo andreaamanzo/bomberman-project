@@ -12,7 +12,7 @@ public:
   Game(int numLevels, const char* levelPaths[]);
 
   int play();
-  void enterPlayerName(Nc::Window window, ScoreList scoreboard, int score);
+  void enterPlayerName(char* buff, int buffSize);
 
 private:
   LevelList  m_levelList;

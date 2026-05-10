@@ -150,10 +150,14 @@ void ScoreList::show()
 
   // gestione input del giocatore
   char buffer[64];
-  m_window.getUserInput(3, 3, buffer, sizeof(buffer));
-  int showPlayers = std::atoi(buffer);
+  int showPlayers{};
+  do
+  {
+    m_window.getUserInput(3, 3, buffer, sizeof(buffer));
+    showPlayers = std::atoi(buffer);
+  } while (showPlayers <= 0);
 
-  if(showPlayers > 0) drawScoreboard(showPlayers, m_window);
+  drawScoreboard(showPlayers, m_window);
       
   m_window.clear();
 }
