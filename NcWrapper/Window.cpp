@@ -102,9 +102,9 @@ namespace Nc
     return Point{ m_startX, m_startY };
   }
 
-  void Window::getUserInput(int posX, int posY, char* buff, int buffLength)
+  bool Window::getUserInput(int posX, int posY, char* buff, int buffLength)
   {
-    if (buffLength <= 1) return;
+    if (buffLength <= 1) return false;
 
     nodelay(m_window, FALSE);
     curs_set(1);
@@ -124,6 +124,9 @@ namespace Nc
     while (true)
     {
       int c = wgetch(m_window);
+
+      if (c == 27) // ESC
+        return false;
 
       if (c == KEY_ENTER || c == '\n' || c == 27)
         break;
@@ -152,5 +155,7 @@ namespace Nc
 
     curs_set(0);
     nodelay(m_window, TRUE);
+
+    return true;
   }
 }

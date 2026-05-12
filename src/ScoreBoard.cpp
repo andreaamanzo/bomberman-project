@@ -149,15 +149,16 @@ void ScoreBoard::show()
   m_window.display(); 
 
   // gestione input del giocatore
-  char buffer[64];
+  char buffer[64]{};
   int showPlayers{};
+  bool show{ false };
   do
   {
-    m_window.getUserInput(3, 3, buffer, sizeof(buffer));
+    show = m_window.getUserInput(3, 3, buffer, sizeof(buffer));
     showPlayers = std::atoi(buffer);
-  } while (showPlayers <= 0);
+  } while (show && showPlayers <= 0);
 
-  drawScoreboard(showPlayers, m_window);
+  if (show) drawScoreboard(showPlayers, m_window);
       
   m_window.clear();
 }

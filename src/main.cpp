@@ -43,7 +43,7 @@ int main()
       Game game{ numLevels, levelPaths };
 
       int score = game.play();
-      char name[15];
+      char name[15]{};
       game.enterPlayerName(name, sizeof(name));
 
       scoreBoard.pushOrderly(name, score);

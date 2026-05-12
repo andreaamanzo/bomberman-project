@@ -444,10 +444,11 @@ void Game::enterPlayerName(char* buff, int buffSize)
   m_mainWindow.display();
 
   // gestione input del giocatore
+  bool ok{ true };
   do
   {
-    m_mainWindow.getUserInput(3, 3, buff, buffSize);
-  } while (buff[0] == '\0');
+    ok = m_mainWindow.getUserInput(3, 3, buff, buffSize);
+  } while (buff[0] == '\0' || !ok); // non si può mettere un nome vuoto e non si può uscire senza nome
       
   m_mainWindow.clear();
 }
