@@ -126,7 +126,11 @@ namespace Nc
       int c = wgetch(m_window);
 
       if (c == 27) // ESC
+      {
+        curs_set(0);
+        nodelay(m_window, TRUE);
         return false;
+      }
 
       if (c == KEY_ENTER || c == '\n' || c == 27)
         break;
