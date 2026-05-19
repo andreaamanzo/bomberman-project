@@ -12,6 +12,7 @@ public:
   void drawScoreboard(int numberPlayers, Nc::Window& window);
   void saveToFile(const char* filePath);
   void show();
+  int getSize();
 
 private:
   // constexpr: nota a compile time poichè len di array
@@ -20,15 +21,16 @@ private:
   int w_startx = (Nc::getTerminalWidth()  - Settings::mapWidth) / 2;
   int w_starty = (Nc::getTerminalHeight() - Settings::mapHeight) / 2;
   Nc::Window m_window{ Settings::mapWidth, Settings::mapHeight, w_startx, w_starty };
-
+  
   struct Node
   {
     char playerName[s_maxNameLenght];
     int score{ 0 };
     Node* next{ nullptr };
   };
-
+  
   Node* m_head{ nullptr };
+  int m_size{ 0 };
 };
 
 #endif

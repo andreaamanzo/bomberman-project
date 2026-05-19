@@ -36,6 +36,8 @@ ScoreBoard::ScoreBoard(const char* filePath)
   file.close();
 }
 
+int ScoreBoard::getSize() { return m_size; }
+
 // funzione per rimuovere eventuali spazi bianchi iniziali
 const char* stringPolish(const char* toPolish)
 {
@@ -76,12 +78,14 @@ void ScoreBoard::pushOrderly(const char* playerName, const int score)
     }
     check -> next = foo;
   }
+
+  m_size++;
 }
 
 // mostra la classifica e controlla se l'utente preme esc/Q
 // quando l'utente preme esc/Q funzione termina -> torna al menu
 void ScoreBoard::drawScoreboard(int numberPlayers, Nc::Window& window)
-{ 
+{
   int startX{ (window.getWidth() - 30) / 2 };
   
   int offset{ 0 };
@@ -90,7 +94,7 @@ void ScoreBoard::drawScoreboard(int numberPlayers, Nc::Window& window)
   {
     Nc::Key key = Nc::getKeyPressed();
     if (key == Nc::Key::Q || key == Nc::Key::Escape) running = false;
-    if (key == Nc::Key::Down && offset < numberPlayers - 1) offset++;
+    if (key == Nc::Key::Down && offset < getSize() - 1) offset++;
     if (key == Nc::Key::Up && offset > 0) offset--;
     
     window.clear();
