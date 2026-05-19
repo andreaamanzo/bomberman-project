@@ -53,6 +53,7 @@ void ScoreBoard::pushOrderly(const char* playerName, const int score)
   strncpy(foo -> playerName, stringPolish(playerName), s_maxNameLenght - 1);
   foo -> playerName[s_maxNameLenght - 1] = '\0'; // assicuro che l'ultimo char sia nullchar
   foo -> score = score;
+  m_size++;
   
   if (m_head == nullptr)
   {  
@@ -78,31 +79,30 @@ void ScoreBoard::pushOrderly(const char* playerName, const int score)
     }
     check -> next = foo;
   }
-
-  m_size++;
 }
 
 // mostra la classifica e controlla se l'utente preme esc/Q
 // quando l'utente preme esc/Q funzione termina -> torna al menu
-void ScoreBoard::drawScoreboard(int numberPlayers, Nc::Window& window)
+void ScoreBoard::drawScoreboard(int numberPlayers)
 {
-  int startX{ (window.getWidth() - 30) / 2 };
+  int startX{ (m_window.getWidth() - 30) / 2 };
   
+  if (numberPlayers > getSize()) numberPlayers = getSize();
   int offset{ 0 };
   bool running{ true };
   while (running)
   {
     Nc::Key key = Nc::getKeyPressed();
     if (key == Nc::Key::Q || key == Nc::Key::Escape) running = false;
-    if (key == Nc::Key::Down && offset < getSize() - 1) offset++;
+    if (key == Nc::Key::Down && numberPlayers - offset > s_maxVisiblePlayers) offset++;
     if (key == Nc::Key::Up && offset > 0) offset--;
     
-    window.clear();
+    m_window.clear();
     
     int startY{ 1 };
     char buff[s_maxNameLenght * 3];
     snprintf(buff, sizeof(buff), "%-8s%-17s%s", "[N°]", "[NAME]", "[SCORE]");
-    window.write(buff, startX, startY++);
+    m_window.write(buff, startX, startY++);
     startY++; // stacco dopo i titoli
     
     Node* node = m_head;
@@ -118,13 +118,13 @@ void ScoreBoard::drawScoreboard(int numberPlayers, Nc::Window& window)
       // -17 -> allineamento a sx (copre 17 char)
       snprintf(buff, sizeof(buff), "%-8d%-17s%d", playersShown, node -> playerName, node -> score);
   
-      window.write(buff, startX, startY++);
-      window.write("--------------------------------", startX-1, startY++);
+      m_window.write(buff, startX, startY++);
+      m_window.write("--------------------------------", startX-1, startY++);
   
       node = node -> next;
     }
     
-    window.display();
+    m_window.display();
     Nc::sleepFor(20);
   }
 
@@ -169,7 +169,7 @@ void ScoreBoard::show()
     showPlayers = std::atoi(buffer);
   } while (show && showPlayers <= 0);
 
-  if (show) drawScoreboard(showPlayers, m_window);
+  if (show) drawScoreboard(showPlayers);
 
   m_window.clear();
 }
