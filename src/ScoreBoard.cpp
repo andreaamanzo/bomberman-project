@@ -81,15 +81,17 @@ void ScoreBoard::pushOrderly(const char* playerName, const int score)
 // mostra la classifica e controlla se l'utente preme esc/Q
 // quando l'utente preme esc/Q funzione termina -> torna al menu
 void ScoreBoard::drawScoreboard(int numberPlayers, Nc::Window& window)
-{
-  
+{ 
   int startX{ (window.getWidth() - 30) / 2 };
   
+  int offset{ 0 };
   bool running{ true };
   while (running)
   {
     Nc::Key key = Nc::getKeyPressed();
     if (key == Nc::Key::Q || key == Nc::Key::Escape) running = false;
+    if (key == Nc::Key::Down && offset < numberPlayers - 1) offset++;
+    if (key == Nc::Key::Up && offset > 0) offset--;
     
     window.clear();
     
@@ -98,14 +100,19 @@ void ScoreBoard::drawScoreboard(int numberPlayers, Nc::Window& window)
     snprintf(buff, sizeof(buff), "%-8s%-17s%s", "[N°]", "[NAME]", "[SCORE]");
     window.write(buff, startX, startY++);
     startY++; // stacco dopo i titoli
-
+    
     Node* node = m_head;
-    int num{ 0 };
-    while (num++ < numberPlayers && node != nullptr)
+    for (int i{ 0 }; i < offset; i++) // passo i nodi da non considerare
+    {
+      if (node != nullptr) node = node -> next;
+    }
+
+    int playersShown{ offset };
+    while (playersShown++ < numberPlayers && node != nullptr)
     {
       // -8 -> allineamento a sx
       // -17 -> allineamento a sx (copre 17 char)
-      snprintf(buff, sizeof(buff), "%-8d%-17s%d", num, node -> playerName, node -> score);
+      snprintf(buff, sizeof(buff), "%-8d%-17s%d", playersShown, node -> playerName, node -> score);
   
       window.write(buff, startX, startY++);
       window.write("--------------------------------", startX-1, startY++);
@@ -159,6 +166,6 @@ void ScoreBoard::show()
   } while (show && showPlayers <= 0);
 
   if (show) drawScoreboard(showPlayers, m_window);
-      
+
   m_window.clear();
 }
