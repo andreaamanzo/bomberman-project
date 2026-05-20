@@ -60,16 +60,19 @@ Menu::Option Menu::getMenuOption()
     switch (key)
     {
     case Nc::Key::Down:
+    case Nc::Key::S:
       highlight++;
       if (highlight > 2) highlight = 0;
       break;
 
     case Nc::Key::Up:
+    case Nc::Key::W:
       highlight--;
       if (highlight < 0) highlight = 2;
       break;
 
     case Nc::Key::Enter:
+    case Nc::Key::Space:
       return static_cast<Option>(highlight);
 
     case Nc::Key::Q:
