@@ -335,14 +335,14 @@ void Game::handleCompletedLevel()
 
   m_levelList.removeCurrent();
 
+  drawMessage("LEVEL COMPLETED!");
+
   if (!initCurrentLevel())
   {
     drawMessage("YOU WON!", "Congratulations!");
     m_running = false;
     return;
   }
-
-  drawMessage("LEVEL COMPLETED!");
 
   if (m_levelList.isCurrFirst())
     m_currLevel->removePrevDoor();
