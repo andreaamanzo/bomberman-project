@@ -12,15 +12,13 @@ enum class Direction
 
 inline Direction getOppositeDir(Direction dir)
 {
-  using enum Direction;
-
   switch (dir)
   {
-    case Up:    return Down;
-    case Down:  return Up;
-    case Right: return Left;
-    case Left:  return Right;
-    default:    return None;
+    case Direction::Up:    return Direction::Down;
+    case Direction::Down:  return Direction::Up;
+    case Direction::Right: return Direction::Left;
+    case Direction::Left:  return Direction::Right;
+    default:               return Direction::None;
   }
 }
 

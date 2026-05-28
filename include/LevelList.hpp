@@ -6,17 +6,11 @@
 class LevelList
 {
 public:
-  // constructor di default
+  // constructor
   LevelList(const char* levelPaths[], int numLevels);
-
-  // delete del copy constructor per evitare warning del copilatore
-  LevelList(const LevelList&) = delete;
 
   // distruttore (chiama clear)
   ~LevelList();
-
-  // delete del copy operator per evitare warning del copilatore
-  LevelList& operator=(const LevelList&) = delete;
 
   Level* getLevel();
 

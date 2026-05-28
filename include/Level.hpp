@@ -27,9 +27,9 @@ public:
   bool shouldGoNextLevel() const;
   bool shouldGoPrevLevel() const;
   Nc::Point getDoorPrevPos() const;
-  Nc::Point getDoorNextPos () const;
+  Nc::Point getDoorNextPos() const;
 
-  // restituisce l'item alle coordinate passate, se non c'è nessun item return item nullo
+  // restituisce l'item che collide con l'entity se non c'è nessun item return item nullo
   Item getItem(const Entity& entity);
 
   void moveEnemies();
@@ -48,7 +48,6 @@ public:
   int  getItemsNumber() const;
   void setEnemySurprise(bool set);
 
-  // Funzioni per la gestione del tempo
   void pause(); // mette il livello in pausa
   void start(); // opposto a pause
   void updateTime();
@@ -75,7 +74,7 @@ private:
   inline const static Nc::Sprite2x3 s_doorNextSprite{ "-⌼-", "-⌼-", Nc::Color::Sky, Nc::Color::Black };
   inline const static Nc::Sprite2x3 s_doorPrevSprite{ "-▣-", "-▣-", Nc::Color::Magenta, Nc::Color::Black };
 
-  inline constexpr static int s_maxLengthArrays{ 64 };
+  constexpr static int s_maxLengthArrays{ 64 };
 
   int m_levelNumber{};
   Tile m_map[Settings::mapRows][Settings::mapCols];

@@ -23,7 +23,7 @@ private:
   Nc::Window m_levelMenu;
   Nc::Window m_controlsMenu;
   Player     m_player;
-  bool m_running{ true };
+  bool       m_running{ true };
 
   bool checkLoseConditions();
   void writeTimedItems();

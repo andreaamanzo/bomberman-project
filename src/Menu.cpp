@@ -1,5 +1,5 @@
 #include "Menu.hpp"
-#include "NcFunctions.hpp"
+#include "NcWrapper.hpp"
 #include "NcTypes.hpp"
 #include "Settings.hpp"
 #include <cstring>
@@ -33,7 +33,7 @@ Menu::Option Menu::getMenuOption()
     }
 
     // MENU OPTIONS
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < s_menuSize; i++)
     {
       int posX = (Settings::mapWidth - static_cast<int>(strlen(s_menuOptions[i])))/2;
       int posY = (Settings::mapHeight - menuHeight) / 2 + i * spacing;

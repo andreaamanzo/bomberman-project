@@ -3,7 +3,6 @@
 
 #include "Entity.hpp"
 #include "NcWrapper.hpp"
-
 #include <chrono>
 
 class Item : public Entity
@@ -20,10 +19,9 @@ public:
   };
 
   Item();
-  Item(Type itemType, int x, int y);
+  Item(Type itemType, int x = 0, int y = 0);
 
   Item::Type getType() const;
-  
   void setPowerDuration(int secDuration);
   void activate();
   bool isTimed() const;
@@ -38,11 +36,10 @@ private:
   inline const static Nc::Sprite2x3 s_spriteTypeInvulnerability{ "|⛨|", "|⛨|", Nc::Color::Yellow };
   inline const static Nc::Sprite2x3 s_spriteTypeIce{ "|❅|", "|❅|", Nc::Color::Yellow };
 
-
   using Clock = std::chrono::steady_clock;
+
   Clock::time_point m_expiration{ };
   std::chrono::seconds m_powerDuration{ 10 };
-
   Type m_type{ Type::Null };
 
   static const Nc::Sprite2x3& getSprite(Type type);

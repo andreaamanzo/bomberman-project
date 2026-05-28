@@ -12,7 +12,7 @@ public:
   void drawScoreboard(int numberPlayers);
   void saveToFile(const char* filePath);
   void show();
-  int getSize();
+  int getSize() const;
 
 private:
   // constexpr: nota a compile time poichè len di array

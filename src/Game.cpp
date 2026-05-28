@@ -144,8 +144,8 @@ void Game::update()
 
 void Game::writeTimedItems()
 {
-  const int START = 2;
-  const int SPACING = 3;
+  const int start = 2;
+  const int spacing = 3;
 
   int n = m_player.getItemsListSize();
   const Item* items = m_player.getItemsList();
@@ -172,8 +172,8 @@ void Game::writeTimedItems()
       char str[64];
       snprintf(str, sizeof(str), "%s time: %s", itemStr, timeStr);
 
-      int y = START + SPACING * (4 + offset); // 4 = riga base dopo le info player
-      m_playerMenu.write(str, START, y);
+      int y = start + spacing * (4 + offset); // 4 = riga base dopo le info player
+      m_playerMenu.write(str, start, y);
 
       offset++;
     }
@@ -182,38 +182,38 @@ void Game::writeTimedItems()
 
 void Game::writeOnMenus()
 {
-  const int START = 2;
-  const int SPACING = 3;
-  const int SMALL_SPACING = 2;
+  const int start = 2;
+  const int spacing = 3;
+  const int smallSpacing = 2;
 
   // ===== PLAYER MENU =====
   int row = 0;
 
-  m_playerMenu.write("Lives: ", START, START + SPACING * row);
+  m_playerMenu.write("Lives: ", start, start + spacing * row);
   int lives = m_player.getLives();
 
   for (int i = 0; i < lives; i++)
-    m_playerMenu.write("♥ ", START + 7 + i * 2, START + SPACING * row, Nc::Color::Red);
+    m_playerMenu.write("♥ ", start + 7 + i * 2, start + spacing * row, Nc::Color::Red);
 
   if (lives == m_player.getMaxLives())
-    m_playerMenu.write(" max", START + 7 + lives * 2, START + SPACING * row, Nc::Color::Red);
+    m_playerMenu.write(" max", start + 7 + lives * 2, start + spacing * row, Nc::Color::Red);
 
   row++;
 
-  m_playerMenu.write("Points: ", START, START + SPACING * row);
-  m_playerMenu.writeInt(m_player.getPoints(), START + 8, START + SPACING * row, Nc::Color::Yellow);
+  m_playerMenu.write("Points: ", start, start + spacing * row);
+  m_playerMenu.writeInt(m_player.getPoints(), start + 8, start + spacing * row, Nc::Color::Yellow);
 
   row++;
 
-  m_playerMenu.write("Bombs: ", START, START + SPACING * row);
+  m_playerMenu.write("Bombs: ", start, start + spacing * row);
 
   int maxBombs = m_player.getCurrMaxBombs();
   int availableBombs = maxBombs - m_player.getPlacedBombs();
 
   for (int i = 0; i < maxBombs; i++)
   {
-    int x = START + 7 + i * 2;
-    int yBase = START + SPACING * row;
+    int x = start + 7 + i * 2;
+    int yBase = start + spacing * row;
 
     Nc::Color color = (i < availableBombs) ? Nc::Color::Orange : Nc::Color::White;
 
@@ -222,62 +222,61 @@ void Game::writeOnMenus()
   }
 
   if (maxBombs == m_player.getMaxBombs())
-    m_playerMenu.write(" max", START + 8 + maxBombs * 2, START + SPACING * row, Nc::Color::Orange);
+    m_playerMenu.write(" max", start + 8 + maxBombs * 2, start + spacing * row, Nc::Color::Orange);
 
   row++;
 
-  m_playerMenu.write("Bomb Radius: ", START, START + SPACING * row);
-  m_playerMenu.writeInt(m_player.getBombRadius(), START + 13, START + SPACING * row);
+  m_playerMenu.write("Bomb Radius: ", start, start + spacing * row);
+  m_playerMenu.writeInt(m_player.getBombRadius(), start + 13, start + spacing * row);
 
-  // timed items partono dopo le righe base
   writeTimedItems();
 
   // ===== ITEMS MENU =====
   row = 0;
 
-  m_itemsMenu.write("|+|", START, START + SPACING * row, Nc::Color::Yellow);
-  m_itemsMenu.write("|+|", START, START + SPACING * row + 1, Nc::Color::Yellow);
-  m_itemsMenu.write("+1 Bomb", START + 4, START + SPACING * row);
+  m_itemsMenu.write("|+|", start, start + spacing * row, Nc::Color::Yellow);
+  m_itemsMenu.write("|+|", start, start + spacing * row + 1, Nc::Color::Yellow);
+  m_itemsMenu.write("+1 Bomb", start + 4, start + spacing * row);
 
   row++;
 
-  m_itemsMenu.write("|↑|", START, START + SPACING * row, Nc::Color::Yellow);
-  m_itemsMenu.write("|↓|", START, START + SPACING * row + 1, Nc::Color::Yellow);
-  m_itemsMenu.write("+1 Bomb Radius", START + 4, START + SPACING * row);
+  m_itemsMenu.write("|↑|", start, start + spacing * row, Nc::Color::Yellow);
+  m_itemsMenu.write("|↓|", start, start + spacing * row + 1, Nc::Color::Yellow);
+  m_itemsMenu.write("+1 Bomb Radius", start + 4, start + spacing * row);
 
   row++;
 
-  m_itemsMenu.write("|❤|", START, START + SPACING * row, Nc::Color::Yellow);
-  m_itemsMenu.write("|❤|", START, START + SPACING * row + 1, Nc::Color::Yellow);
-  m_itemsMenu.write("+1 Life", START + 4, START + SPACING * row);
+  m_itemsMenu.write("|❤|", start, start + spacing * row, Nc::Color::Yellow);
+  m_itemsMenu.write("|❤|", start, start + spacing * row + 1, Nc::Color::Yellow);
+  m_itemsMenu.write("+1 Life", start + 4, start + spacing * row);
 
   row++;
 
-  m_itemsMenu.write("|⛨|", START, START + SPACING * row, Nc::Color::Yellow);
-  m_itemsMenu.write("|⛨|", START, START + SPACING * row + 1, Nc::Color::Yellow);
-  m_itemsMenu.write("Shield (10 sec)", START + 4, START + SPACING * row);
+  m_itemsMenu.write("|⛨|", start, start + spacing * row, Nc::Color::Yellow);
+  m_itemsMenu.write("|⛨|", start, start + spacing * row + 1, Nc::Color::Yellow);
+  m_itemsMenu.write("Shield (10 sec)", start + 4, start + spacing * row);
 
   row++;
 
-  m_itemsMenu.write("|❅|", START, START + SPACING * row, Nc::Color::Yellow);
-  m_itemsMenu.write("|❅|", START, START + SPACING * row + 1, Nc::Color::Yellow);
-  m_itemsMenu.write("Freeze enemies (10 sec)", START + 4, START + SPACING * row);
+  m_itemsMenu.write("|❅|", start, start + spacing * row, Nc::Color::Yellow);
+  m_itemsMenu.write("|❅|", start, start + spacing * row + 1, Nc::Color::Yellow);
+  m_itemsMenu.write("Freeze enemies (10 sec)", start + 4, start + spacing * row);
 
   // ===== LEVEL MENU =====
   row = 0;
 
-  m_levelMenu.write("Level: ", START, START + SPACING * row);
-  m_levelMenu.writeInt(m_currLevel->getLevelNumber(), START + 7, START + SPACING * row);
+  m_levelMenu.write("Level: ", start, start + spacing * row);
+  m_levelMenu.writeInt(m_currLevel->getLevelNumber(), start + 7, start + spacing * row);
 
   row++;
 
-  m_levelMenu.write("Enemies: ", START, START + SPACING * row);
-  m_levelMenu.writeInt(m_currLevel->getEnemiesNumber(), START + 9, START + SPACING * row);
+  m_levelMenu.write("Enemies: ", start, start + spacing * row);
+  m_levelMenu.writeInt(m_currLevel->getEnemiesNumber(), start + 9, start + spacing * row);
 
   row++;
 
-  m_levelMenu.write("Items: ", START, START + SPACING * row);
-  m_levelMenu.writeInt(m_currLevel->getItemsNumber(), START + 7, START + SPACING * row);
+  m_levelMenu.write("Items: ", start, start + spacing * row);
+  m_levelMenu.writeInt(m_currLevel->getItemsNumber(), start + 7, start + spacing * row);
 
   row++;
 
@@ -285,18 +284,18 @@ void Game::writeOnMenus()
   int secs = m_currLevel->getTimeLeftSec();
 
   snprintf(timeStr, sizeof(timeStr), "Time Left: %d:%02d", secs / 60, secs % 60);
-  m_levelMenu.write(timeStr, START, START + SPACING * row);
+  m_levelMenu.write(timeStr, start, start + spacing * row);
 
   // ===== CONTROLS MENU =====
   row = 0;
 
-  m_controlsMenu.write("Move Up:     W / ↑", START, START + SMALL_SPACING * row++);
-  m_controlsMenu.write("Move Down:   S / ↓", START, START + SMALL_SPACING * row++);
-  m_controlsMenu.write("Move Left:   A / ←", START, START + SMALL_SPACING * row++);
-  m_controlsMenu.write("Move Right:  D / →", START, START + SMALL_SPACING * row++);
+  m_controlsMenu.write("Move Up:     W / ↑", start, start + smallSpacing * row++);
+  m_controlsMenu.write("Move Down:   S / ↓", start, start + smallSpacing * row++);
+  m_controlsMenu.write("Move Left:   A / ←", start, start + smallSpacing * row++);
+  m_controlsMenu.write("Move Right:  D / →", start, start + smallSpacing * row++);
 
-  m_controlsMenu.write("Place Bomb:  E / Enter", START, START + SPACING * row++);
-  m_controlsMenu.write("Quit:        Q / Esc", START, START + SPACING * row);
+  m_controlsMenu.write("Place Bomb:  E / Enter", start, start + spacing * row++);
+  m_controlsMenu.write("Quit:        Q / Esc", start, start + spacing * row);
 }
 
 void Game::render()

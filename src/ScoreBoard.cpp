@@ -1,6 +1,5 @@
 #include "ScoreBoard.hpp"
 #include "NcWrapper.hpp"
-
 #include <cstring>
 #include <fstream>
 
@@ -36,7 +35,7 @@ ScoreBoard::ScoreBoard(const char* filePath)
   file.close();
 }
 
-int ScoreBoard::getSize() { return m_size; }
+int ScoreBoard::getSize() const { return m_size; }
 
 // funzione per rimuovere eventuali spazi bianchi iniziali
 const char* stringPolish(const char* toPolish)

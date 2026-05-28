@@ -11,12 +11,11 @@ public:
   Movable() = default;
   Movable(const Nc::Sprite2x3& sprite, int x = 0, int y = 0, int delaySpeedMillisecods = 20);
 
-  void move(Direction dir, int velocity);
-  bool shouldMove();
+  void move(Direction dir);
+  bool shouldMove() const;
   void setDelaySpeed(int milliseconds);
-  //std::chrono::milliseconds getSpeed();
 
-private:
+protected:
   using Clock = std::chrono::steady_clock;
   using Milliseconds = std::chrono::milliseconds;
 

@@ -6,7 +6,7 @@ Bomb::Bomb()
 { }
 
 Bomb::Bomb(int x, int y, int radius, Type type)
-  : Entity{ type == Type::Enemy ? s_enemyBombSprite : s_bombSprite, x, y } // '?' se true valuta la prima se no la seconda
+  : Entity{ type == Type::Enemy ? s_enemyBombSprite : s_bombSprite, x, y }
   , m_radius{ radius }
   , m_type{ type }
   , m_status{ Status::Placed }

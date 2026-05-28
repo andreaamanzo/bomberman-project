@@ -7,11 +7,6 @@ Player::Player(int lives, int x, int y)
   , m_lives{ lives }
 { }
 
-void Player::move(Direction dir)
-{
-  Movable::move(dir, 1);
-}
-
 Bomb Player::placeBomb()
 {
   if (m_placedBombs >= m_currMaxBombs) return Bomb{};
@@ -49,7 +44,7 @@ void Player::onHit()
     m_lives--;
     atRespown();
 
-    Item respawnInvulnerability{ Item::Type::Invulnerability, 0, 0};
+    Item respawnInvulnerability{ Item::Type::Invulnerability, 0, 0 };
     respawnInvulnerability.setPowerDuration(3);
     collectItem(respawnInvulnerability);
   }

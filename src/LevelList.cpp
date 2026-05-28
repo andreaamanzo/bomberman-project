@@ -1,5 +1,4 @@
 #include "LevelList.hpp"
-#include <iostream>
 
 LevelList::LevelList(const char* levelPaths[], int numLevels)
 {
@@ -91,7 +90,7 @@ Level* LevelList::getLevel()
 {
   if (m_currentLevel == nullptr)
   {
-    std::cerr << "null ptr\n";
+    // std::cerr << "LevelList::getLevel(): current level is null\n";
     return nullptr;
   }
 

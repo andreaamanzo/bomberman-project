@@ -1,9 +1,9 @@
 #ifndef ENEMY_HPP
 #define ENEMY_HPP
 
+#include "NcWrapper.hpp"
 #include "Direction.hpp"
 #include "Movable.hpp"
-#include "NcWrapper.hpp"
 
 class Enemy : public Movable 
 {
@@ -15,6 +15,7 @@ public:
     Second_Enemy,
     Third_Enemy,
   };
+
   Enemy() = default;
   Enemy(Type enemyType, int x, int y);
 
@@ -29,7 +30,7 @@ public:
   void surprise(bool set);
   bool getSurpriseStatus();
 
-  private:
+private:
   inline const static Nc::Sprite2x3 s_spriteTypeNull{ "   ", "   ", Nc::Color::Default };
   inline const static Nc::Sprite2x3 s_enemy1{"°|°", "/ \\ ", Nc::Color::Red};
   inline const static Nc::Sprite2x3 s_enemy2{"ò_ó", "###", Nc::Color::Red};
@@ -37,11 +38,11 @@ public:
   
   Type m_type{ Type::Null };
   Direction m_direction{ Direction::Left };
-  int m_points;
-  std::chrono::steady_clock::time_point m_lastActionTime;
+  int m_points{ 0 };
+  std::chrono::steady_clock::time_point m_lastActionTime{};
+  std::chrono::steady_clock::time_point m_nextBombCooldown{};
   std::chrono::milliseconds m_actionInterval{ 3000 };
-  std::chrono::steady_clock::time_point m_nextBombCooldown;
-  bool m_isTimerActive;
+  bool m_isTimerActive{ false };
   bool m_surprise{ false };
 
   static const Nc::Sprite2x3& getSprite(Type enemyType);

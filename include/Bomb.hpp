@@ -35,11 +35,11 @@ public:
   void setExplosionCells(const Nc::Point cells[], int count);
   const Nc::Sprite2x3& getExplosionSprite() const;
   
-  inline constexpr static int s_maxExplosionCells{ Settings::mapCols + Settings::mapRows };
-
-protected:
+  
+  protected:
   using Clock = std::chrono::steady_clock;
   
+  constexpr static int s_maxExplosionCells{ Settings::mapCols + Settings::mapRows };
   inline const static Nc::Color s_color1{ Nc::Color::Orange };
   inline const static Nc::Color s_color2{ Nc::Color::Green };
   inline const static Nc::Color s_enemyColor1{ Nc::Color::Pink };

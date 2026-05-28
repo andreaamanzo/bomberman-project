@@ -156,7 +156,7 @@ void Level::removeAllBombs()
 void Level::setExplosionCells(Bomb& bomb) const 
 {
   int count = 0;
-  Nc::Point cells[Bomb::s_maxExplosionCells]{};
+  Nc::Point cells[Settings::mapCols + Settings::mapRows]{};
 
   int r = bomb.getRadius();
   int x = bomb.getX() / Settings::entityWidth;
