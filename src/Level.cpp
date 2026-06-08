@@ -99,12 +99,12 @@ Level::Level(int levelNumber, const char* mapFilePath)
   if (nrow != Settings::mapRows - 1)
     Nc::stopWithError(1, "Invalid map: incorrect number of rows.");
 
-  if (m_levelNumber == 4 || m_levelNumber == 5) {
-    setEnemySurprise(true);
-  }
-  else setEnemySurprise(false);
-
   file.close();
+
+  if (m_levelNumber > 3) 
+    setEnemySurprise(true);
+  else 
+    setEnemySurprise(false);
 }
 
 void Level::drawWalls(Nc::Window& window) const 
@@ -127,9 +127,6 @@ void Level::drawWalls(Nc::Window& window) const
 
       else if (m_map[y][x] == Tile::BreakableWall)
         window.draw(s_breakableWallSprite, drawX, drawY);
-
-      //else if (m_map[x][y] == Tile::Spikes)
-        //window.draw(s_spikesSprite, drawX, drawY);
     }
   }
 }
@@ -490,10 +487,10 @@ void Level::moveEnemies()
         enemy.setDirection(static_cast<Direction>(Random::get(1, 4)));
       } while (enemy.getDirection() == prevDir);
     }
-    if (enemy.getSurpriseStatus()){
-      if (Random::get(0,50) < 10) {
+    if (enemy.getSurpriseStatus())
+    {
+      if (Random::get(0,50) < 10)
         enemy.setDirection(static_cast<Direction>(Random::get(1,4)));
-      }
     }
   }
 }
@@ -551,8 +548,10 @@ bool Level::isCompleted() const
   return m_enemiesSize == 0;
 }
 
-void Level::setEnemySurprise(bool set){
-  for (int i = 0; i < m_enemiesSize; i++){
+void Level::setEnemySurprise(bool set)
+{
+  for (int i = 0; i < m_enemiesSize; i++)
+  {
     if (m_enemies[i].getType() == Enemy::Type::First_Enemy)
       m_enemies[i].surprise(set);
     else
