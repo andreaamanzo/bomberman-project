@@ -81,7 +81,7 @@ sudo apt install texlive-full python3-pygments
 #### Arch Linux
 
 ```bash
-sudo pacman -S texlive-most python-pygments
+sudo pacman -S texlive-meta python-pygments
 ```
 
 #### macOS (Homebrew)
