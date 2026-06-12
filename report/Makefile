@@ -5,5 +5,6 @@ all:
 	xelatex -shell-escape $(MAIN).tex
 
 clean:
-	rm -f *.aux *.log *.out *.toc *.fls *.fdb_latexmk *.synctex.gz
-	rm -rf _minted-*
+	rm -f *.aux *.log *.out *.toc 
+	rm -rf _minted*
+	rm -f *.fls *.fdb_latexmk *.synctex.gz

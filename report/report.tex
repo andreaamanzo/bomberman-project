@@ -3,9 +3,9 @@
 % -------------------------------------------------
 % Packages
 % -------------------------------------------------
-\usepackage[italian]{babel}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
+\usepackage{polyglossia}
+\setmainlanguage{italian}
+\usepackage{fontspec}
 
 \usepackage{geometry}
 \geometry{
@@ -494,7 +494,277 @@ o del funzionamento di determinate librerie, soprattutto quando si trattava di d
 ...
 
 \subsection{Alessandro Godani}
-...
+
+Il mio utilizzo degli LLM durante lo sviluppo del progetto si è articolato in modalità
+diverse a seconda della natura del problema affrontato. In certi casi sono stati
+impiegati come strumenti di apprendimento, per acquisire rapidamente la padronanza
+di una libreria poco familiare o per comprendere pattern progettuali applicabili al
+contesto specifico. In altri casi sono stati utilizzati come interlocutori tecnici,
+utili per discutere scelte architetturali e valutarne le implicazioni prima di
+procedere all'implementazione. In altri ancora, il supporto è stato più operativo,
+orientato alla risoluzione di problemi concreti emersi durante lo sviluppo.
+
+In tutti i casi il codice e le spiegazioni prodotte dal modello sono stati trattati
+come punto di partenza da analizzare e validare criticamente, non come soluzioni
+definitive da applicare direttamente.
+
+\subsubsection{Comprensione della libreria \texttt{ncurses} e struttura del gioco}
+
+Uno dei primi utilizzi degli LLM ha riguardato la comprensione della libreria
+\texttt{ncurses} e la struttura generale di un gioco basato su TUI.
+
+Non avendo esperienza pregressa con la libreria, ho utilizzato il modello come
+strumento di introduzione guidata, chiedendo spiegazioni sulle funzioni principali
+e sul loro utilizzo tipico in un contesto di gioco. 
+
+\subsubsection{Gestione del movimento dei nemici}
+ 
+Una delle problematiche più significative che ho affrontato riguarda la progettazione
+del sistema di movimento dei nemici. La difficoltà principale consisteva nel definire
+un'architettura in cui le entità non dovessero conoscere direttamente la mappa, ma
+il controllo delle collisioni fosse comunque centralizzato.
+ 
+La soluzione adottata, discussa con il modello, è stata quella di delegare l'intera
+logica di spostamento alla funzione \texttt{Level::moveEnemies()}, che ha piena
+visibilità sulla griglia e su tutte le entità presenti. L'entità nemica espone
+solamente operazioni sul proprio stato interno: \texttt{shouldMove()}, \texttt{move()},
+\texttt{getDirection()} e \texttt{setDirection()}.
+ 
+Il metodo \texttt{shouldMove()} verifica se è trascorso il tempo minimo dal frame
+precedente, permettendo a ogni nemico di avere una velocità indipendente:
+ 
+\begin{minted}[fontsize=\small]{cpp}
+bool Movable::shouldMove() const
+{
+    Clock::time_point now = Clock::now();
+    return now - m_lastMoveTime >= m_delaySpeed;
+}
+\end{minted}
+ 
+La funzione \texttt{Enemy::move()} si limita a invocare \texttt{Movable::move()}
+passando la propria direzione corrente, senza sapere nulla della mappa:
+ 
+\begin{minted}[fontsize=\small]{cpp}
+void Enemy::move() { Movable::move(m_direction); }
+\end{minted}
+ 
+Tutta la logica di collisione e cambio di direzione è invece responsabilità di
+\texttt{Level::moveEnemies()}. Dopo aver chiamato \texttt{enemy.move()}, il livello
+verifica se il nemico è finito su una cella proibita (muro o bomba del giocatore).
+In caso affermativo inverte la direzione, riesegue il movimento, e sceglie una nuova
+direzione casuale diversa dalla precedente:
+ 
+\begin{minted}[fontsize=\small]{cpp}
+if (!enemy.shouldMove()) continue;
+ 
+enemy.move();
+ 
+bool bombCollide = false;
+for (int k = 0; k < m_bombsSize && !bombCollide; k++) {
+    Bomb& bomb = m_bombs[k];
+    if (bomb.getType() == Bomb::Type::Enemy) continue;
+    if (bomb.getStatus() == Bomb::Status::Placed && bomb.collide(enemy))
+        bombCollide = true;
+}
+ 
+if (checkWallCollision(enemy) || bombCollide) {
+    Direction prevDir = enemy.getDirection();
+    enemy.setDirection(getOppositeDir(prevDir));
+    enemy.move();
+ 
+    do {
+        enemy.setDirection(static_cast<Direction>(Random::get(1, 4)));
+    } while (enemy.getDirection() == prevDir);
+}
+\end{minted}
+ 
+Si noti che le bombe di tipo \texttt{Bomb::Type::Enemy} vengono escluse dal
+controllo: i nemici non vengono bloccati dalle proprie bombe, ma solo da quelle del
+giocatore. Infine, per i livelli avanzati (dal quarto in poi), i nemici di tipo
+\texttt{First\_Enemy} hanno un comportamento imprevedibile aggiuntivo, attivato tramite
+il flag \texttt{surprise}, che con una certa probabilità causa un cambio di direzione
+casuale ad ogni frame indipendentemente dalle collisioni:
+ 
+\begin{minted}[fontsize=\small]{cpp}
+if (enemy.getSurpriseStatus()) {
+    if (Random::get(0, 50) < 10)
+        enemy.setDirection(static_cast<Direction>(Random::get(1, 4)));
+}
+\end{minted}
+
+
+\subsubsection{Creazione degli sprite dei nemici in UTF-8}
+ 
+Un ulteriore utilizzo degli LLM ha riguardato la creazione degli sprite testuali
+per i nemici. Nel progetto, la rappresentazione grafica delle entità è basata sulla
+classe \texttt{Nc::Sprite2x3}, che descrive un'area di
+\textbf{2 righe per 3 colonne} di caratteri, con associazioni di colore e background.
+Ogni sprite è definito come un piccolo blocco di caratteri testuali che viene
+stampato nel terminale nella posizione corrispondente all'entità.
+ 
+Ogni tipo di nemico ha uno sprite statico dedicato, selezionato al momento della
+costruzione tramite la funzione:
+ 
+\begin{minted}[fontsize=\small]{cpp}
+const Nc::Sprite2x3& Enemy::getSprite(Type enemyType)
+{
+    switch (enemyType) {
+    case Type::First_Enemy:  return s_enemy1;
+    case Type::Second_Enemy: return s_enemy2;
+    case Type::Third_Enemy:  return s_enemy3;
+    default:                 return s_spriteTypeNull;
+    }
+}
+\end{minted}
+ 
+Il problema principale era trovare combinazioni di caratteri Unicode che, nella
+griglia 2$\times$3 (2 righe, 3 colonne) del terminale, producessero una figura
+stilizzata riconoscibile come un personaggio nemico. La scelta dei caratteri giusti
+richiede una certa conoscenza del repertorio Unicode e della loro resa effettiva nel
+terminale, che non è sempre prevedibile senza prova diretta.
+ 
+Ho utilizzato il modello per esplorare le opzioni disponibili, richiedendo caratteri
+adatti a comporre figure stilizzate all'interno del vincolo di soli 6 celle. Il
+processo è stato iterativo: il modello proponeva combinazioni, che venivano testate
+nel terminale e valutate rispetto alla leggibilità visiva e alla coerenza grafica con
+il resto del gioco. Il contributo del modello in questa fase è stato prevalentemente
+esplorativo, permettendo di considerare un repertorio più ampio di simboli Unicode
+rispetto a quanto sarebbe stato possibile ricercando manualmente.
+ 
+\subsubsection{Logica delle bombe del \texttt{ThirdEnemy}}
+ 
+Un utilizzo particolarmente significativo degli LLM ha riguardato la progettazione
+della logica relativa alle bombe del terzo tipo di nemico (\texttt{ThirdEnemy}).
+A differenza dei primi due tipi, questo nemico ha la capacità di piazzare bombe
+autonomamente, il che ha introdotto la necessità di decidere come strutturare questa
+funzionalità in modo coerente con l'architettura esistente.
+ 
+La prima questione riguardava \textit{dove collocare} il codice di piazzamento.
+Il modello ha confermato che la scelta più coerente era inserirlo in
+\texttt{Level::handleEnemies()}, già responsabile di gestire le interazioni tra i
+nemici, il giocatore e gli item, evitando di disperdere logica relativa al livello
+all'interno della classe \texttt{Enemy}:
+ 
+\begin{minted}[fontsize=\small]{cpp}
+if (enemy.getType() == Enemy::Type::Third_Enemy) {
+    if (enemy.checkIfShouldBomb() && !player.hasIce()) {
+        Bomb bomb{ enemy.getX(), enemy.getY(), 2, Bomb::Type::Enemy };
+        addBomb(bomb);
+    }
+}
+\end{minted}
+ 
+La condizione \texttt{!player.hasIce()} garantisce che, se il giocatore ha raccolto
+il potenziamento \textit{Freeze}, i nemici non possano piazzare bombe per la durata
+dell'effetto. La decisione sul \textit{quando} piazzare la bomba è delegata al metodo
+\texttt{checkIfShouldBomb()}, interno al nemico, che gestisce un cooldown di quattro
+secondi tramite un timer basato su \texttt{std::chrono}:
+ 
+\begin{minted}[fontsize=\small]{cpp}
+bool Enemy::checkIfShouldBomb()
+{
+    if (!isTimerActive()) {
+        m_nextBombCooldown = Clock::now() + std::chrono::seconds(4);
+        setBombTimer(true);
+        return false;
+    }
+    if (isTimerActive() && Clock::now() >= m_nextBombCooldown) {
+        setBombTimer(false);
+        return true;
+    }
+    return false;
+}
+\end{minted}
+ 
+La seconda questione riguardava la \textit{distinzione tra le bombe del giocatore e
+quelle dei nemici}. Una bomba del giocatore deve poter danneggiare i nemici; una
+bomba nemica deve invece danneggiare solo il giocatore. Nel codice questa distinzione
+è gestita tramite il tipo enumerato \texttt{Bomb::Type}, verificato in
+\texttt{Level::applyExplosion()}:
+ 
+\begin{minted}[fontsize=\small]{cpp}
+// se è una bomba-nemico non deve collidere con i nemici
+if (bomb.getType() == Bomb::Type::Enemy) continue;
+\end{minted}
+ 
+Il tipo è specificato già al momento della costruzione dell'oggetto \texttt{Bomb},
+con \texttt{Bomb::Type::Enemy} per le bombe dei nemici e \texttt{Bomb::Type::Player}
+per quelle del giocatore, e influenza anche la grafica: il costruttore di \texttt{Bomb}
+seleziona uno sprite diverso in base al tipo, rendendo visivamente distinguibili i
+due casi durante il gioco.
+ 
+\subsubsection{Gestione dei conflitti Git}
+ 
+Un utilizzo degli LLM di natura più operativa ha riguardato la risoluzione di un
+problema ricorrente nella gestione del repository condiviso. Durante lo sviluppo
+collaborativo, si verificavano con frequenza situazioni in cui il comando
+\texttt{git pull} produceva un errore relativo alla presenza di branch divergenti,
+bloccando l'aggiornamento del repository locale:
+ 
+\begin{minted}[fontsize=\small]{bash}
+hint: You have divergent branches and need to specify how to reconcile them.
+hint: You can do so by running one of the following commands sometime before
+hint: your next pull:
+hint:   git config pull.rebase false  # merge
+hint:   git config pull.rebase true   # rebase
+hint:   git config pull.ff only       # fast-forward only
+\end{minted}
+ 
+Il messaggio di errore, pur contenendo in sé il suggerimento alla soluzione, non
+era immediatamente chiaro riguardo alle implicazioni delle diverse opzioni. Ho
+quindi utilizzato il modello per comprendere la differenza tra le tre strategie
+proposte, con particolare attenzione alle conseguenze pratiche nel contesto di
+un progetto collaborativo.
+ 
+Il modello ha spiegato la differenza tra le tre strategie. L'opzione
+\texttt{pull.rebase false} utilizza una strategia di \textit{merge}, creando un
+commit aggiuntivo che unisce le due storie divergenti. L'opzione
+\texttt{pull.rebase true}, invece, applica i propri commit locali \textit{sopra}
+quelli remoti appena scaricati, come se fossero stati scritti partendo già dallo
+stato aggiornato del repository: in questo modo la storia rimane lineare e i propri
+cambiamenti risultano sempre in cima, senza commit di merge intercalati.
+ 
+Ho scelto la strategia di \textit{rebase} proprio per questo motivo: lavorando in
+parallelo su moduli diversi, preferivo che i miei commit apparissero come un blocco
+coerente applicato sulla base aggiornata del lavoro degli altri, evitando la
+situazione in cui nella history si alternassero commit di più persone mescolati tra
+loro.
+ 
+\begin{minted}[fontsize=\small]{bash}
+git config pull.rebase true
+\end{minted}
+ 
+Questa configurazione, impostata una volta sola a livello locale, risolve
+definitivamente il problema rendendo il comportamento di \texttt{git pull}
+esplicito e prevedibile per tutte le operazioni successive.
+ 
+Nei casi in cui il rebase automatico non era possibile a causa di modifiche
+conflittuali sullo stesso file, il modello a suggerito tramite editor di testo
+di modificare a mano i conflitti generati.
+ 
+
+\subsubsection{Considerazioni finali}
+ 
+L'utilizzo degli LLM nel mio percorso di sviluppo si è rivelato più efficace nelle
+fasi in cui era necessario acquisire rapidamente una comprensione di aspetti tecnici
+non familiari, come il funzionamento di \texttt{ncurses} o le strategie di gestione
+di Git in un contesto collaborativo. In questi casi il modello ha sostituito
+efficacemente la lettura di documentazione estesa, fornendo spiegazioni
+contestualizzate e orientate al caso specifico.
+ 
+Altrettanto utile è stato il suo impiego come interlocutore per la progettazione
+architetturale, in particolare nella fase di definizione della logica delle bombe
+del \texttt{ThirdEnemy} e del sistema di movimento dei nemici. Avere la possibilità
+di discutere le implicazioni di una scelta prima di implementarla ha contribuito a
+evitare soluzioni che avrebbero introdotto ridondanza o incoerenze con l'architettura
+già presente.
+ 
+Ho invece riscontrato i limiti del modello nelle situazioni in cui il problema era
+strettamente legato ai dettagli dell'implementazione esistente: in questi casi le
+proposte richiedevano un adattamento significativo per essere compatibili con le
+scelte già effettuate, e il valore aggiunto rispetto a un ragionamento autonomo
+risultava più limitato.
+
 
 
 
