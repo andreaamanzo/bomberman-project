@@ -59,6 +59,7 @@
   breaklines
 }
 
+\setlength{\headheight}{14pt}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{6pt}
 
@@ -493,7 +494,7 @@ o del funzionamento di determinate librerie, soprattutto quando si trattava di d
 \subsection{Tommaso Lissandrin}
 
 Durante lo sviluppo del progetto ho utilizzato i modelli di linguaggio in diversi contesti, considerandoli sempre come uno strumento integrativo, utile specialmente per la possibilità di riassumere rapidamente più fonti di ricerca.
-\subsection{Approfondimento del linguaggio C++}
+\subsubsection{Approfondimento del linguaggio C++}
 
 I casi più significativi di utilizzo dei modelli di linguaggio riguardano l'apprendimento, o l'approfondimento, di nuovi costrutti del linguaggio C++ e di alcune librerie.
 
@@ -518,13 +519,14 @@ ScoreBoard::ScoreBoard(const char* filePath)
 \end{minted}
 
 Ho trovato che lo studio della libreria fosse più conveniente ed approcciabile in questo modo, per via della possibilità di fare domande e chiedere ulteriori esempi qualora non trovassi chiaro il funzionamento delle funzioni.
-\subsection{Ottimizzazione e correzione del codice}
+\subsubsection{Ottimizzazione e correzione del codice}
 
 Un utilizzo minore dei modelli di linguaggio è stato fatto per svolgere controlli più accurati su funzioni da me implementate, specialmente per la gestione di strutture dinamiche, così da evitare casi di memory leak difficili da individuare.
 
 La seguente funzione, utilizzata per inserire ordinatamente i giocatori nella classifica (gestita come una lista), è stata controllata anche da un modello di linguaggio:
 \begin{minted}[fontsize=\small]{cpp}
-void ScoreBoard::pushOrderly(const char* playerName, const int score) // push di un elemento in ordine decrescente di punteggio
+// push di un elemento in ordine decrescente di punteggio
+void ScoreBoard::pushOrderly(const char* playerName, const int score) 
 {
   Node* foo = new Node;
   strncpy(foo -> playerName, stringPolish(playerName), s_maxNameLenght - 1);
@@ -561,7 +563,7 @@ void ScoreBoard::pushOrderly(const char* playerName, const int score) // push di
 
 Tuttavia ho cercato sempre di limitare questa pratica, in quanto credo che la comprensione ed il collaudo di ciò che si implementi sia una una capacità essenziale per ogni sviluppatore. 
 
-\subsection{Tecniche comuni di approccio a problemi noti}
+\subsubsection{Tecniche comuni di approccio a problemi noti}
 
 I modelli di linguaggio sono stati utili anche nel suggerire tecniche di approccio comuni in determinati contesti.
 
@@ -578,6 +580,7 @@ bool Entity::collide(const Entity& other) const
 \end{minted}
 L'algoritmo utilizzato è noto come AABB Collision Detection (Axis-Alligned Bounding Box), mi è stato suggerito dai modelli di linguaggio poiché comune nello sviluppo 2D e molto leggero.
 Si basa sull'assunzione che le entità possano essere racchiuse in rettangoli immaginari, di cui si vada a controllare la possibile sovrapposizione tramite la condizione di ritorno.
+
 \subsection{Alessandro Godani}
 
 Il mio utilizzo degli LLM durante lo sviluppo del progetto si è articolato in modalità
@@ -852,10 +855,23 @@ risultava più limitato.
 
 
 
-
-
 \section{Conclusioni}
 
-Qualcosa?
+Lo sviluppo di questo progetto è stato un'occasione per mettere in pratica non solo le conoscenze tecniche 
+acquisite durante il corso, ma anche un modo di lavorare più vicino a quello richiesto nella realizzazione 
+di un vero progetto software.
+
+La scelta di sviluppare un videogioco, pur partendo da un'idea semplice e conosciuta come Bomberman, 
+ha mostrato come anche sistemi apparentemente immediati possano nascondere numerose problematiche progettuali 
+e richiedere attenzione nella definizione delle strutture, delle responsabilità e delle interazioni tra le diverse componenti.
+
+Il lavoro di gruppo è stato un elemento centrale nello sviluppo: il confronto tra le diverse soluzioni e 
+la collaborazione nelle fasi più critiche hanno permesso di superare gli ostacoli incontrati e di ottenere 
+un risultato più completo rispetto a un approccio individuale.
+
+Al termine del progetto rimane quindi non solo un programma funzionante, ma anche l'esperienza di aver affrontato 
+un processo di sviluppo completo, dalla progettazione iniziale fino all'integrazione delle varie parti, 
+imparando quanto sia importante trovare un equilibrio tra funzionalità, organizzazione del codice e capacità 
+di adattarsi ai problemi che emergono durante il percorso.
 
 \end{document}

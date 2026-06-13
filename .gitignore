@@ -36,7 +36,7 @@ Testing/
 *.fdb_latexmk
 *.synctex.gz
 *.pdf
-_minted-*/
+_minted*/
 
 # misc
 state/scoreboard.txt
