@@ -5,7 +5,7 @@
 
 ScoreBoard::ScoreBoard(const char* filePath)
 {
-  // leggo dal file state/scoreboard.txt
+  // tentativo di lettura dal file state/scoreboard.txt
   std::ifstream file{ filePath };
 
   if (!file)
