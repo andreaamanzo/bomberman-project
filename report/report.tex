@@ -491,8 +491,93 @@ Infine, li ho utilizzati anche in un'ottica di apprendimento personale, per appr
 o del funzionamento di determinate librerie, soprattutto quando si trattava di dettagli tecnici o difficili da interpretare in modo autonomo.
 
 \subsection{Tommaso Lissandrin}
-...
 
+Durante lo sviluppo del progetto ho utilizzato i modelli di linguaggio in diversi contesti, considerandoli sempre come uno strumento integrativo, utile specialmente per la possibilità di riassumere rapidamente più fonti di ricerca.
+\subsection{Approfondimento del linguaggio C++}
+
+I casi più significativi di utilizzo dei modelli di linguaggio riguardano l'apprendimento, o l'approfondimento, di nuovi costrutti del linguaggio C++ e di alcune librerie.
+
+Tra questi, per la gestione della ScoreBoard, ho usufruito di diverse funzioni presenti nella libreria fstream, a me totalmente estranea.
+I modelli di linguaggio mi hanno fornito una panoramica generale sulle funzioni principali della libreria, includendo sintassi corretta e gestione di possibili eccezioni per ognuna di esse.
+
+La seguente porzione di codice fa parte del costruttore della ScoreBoard:
+\begin{minted}[fontsize=\small]{cpp}
+ScoreBoard::ScoreBoard(const char* filePath)
+{
+  // tentativo di lettura dal file state/scoreboard.txt
+  std::ifstream file{ filePath };
+
+  if (!file) // qualora il file non esistesse, verrebbe creato all'interno del corpo dell'if
+  {
+    std::ofstream create(filePath); // crea file vuoto
+    create.close();
+
+    file.open(filePath); // riapre in lettura
+  }
+  ...
+\end{minted}
+
+Ho trovato che lo studio della libreria fosse più conveniente ed approcciabile in questo modo, per via della possibilità di fare domande e chiedere ulteriori esempi qualora non trovassi chiaro il funzionamento delle funzioni.
+\subsection{Ottimizzazione e correzione del codice}
+
+Un utilizzo minore dei modelli di linguaggio è stato fatto per svolgere controlli più accurati su funzioni da me implementate, specialmente per la gestione di strutture dinamiche, così da evitare casi di memory leak difficili da individuare.
+
+La seguente funzione, utilizzata per inserire ordinatamente i giocatori nella classifica (gestita come una lista), è stata controllata anche da un modello di linguaggio:
+\begin{minted}[fontsize=\small]{cpp}
+void ScoreBoard::pushOrderly(const char* playerName, const int score) // push di un elemento in ordine decrescente di punteggio
+{
+  Node* foo = new Node;
+  strncpy(foo -> playerName, stringPolish(playerName), s_maxNameLenght - 1);
+  foo -> playerName[s_maxNameLenght - 1] = '\0'; // assicuro che l'ultimo char sia nullchar
+  foo -> score = score;
+  m_size++;
+  
+  if (m_head == nullptr)
+  {  
+    m_head = foo;
+  }
+  else if (m_head -> score < score)
+  {
+    foo -> next = m_head;
+    m_head = foo;
+  }
+  else
+  {
+    Node* check = m_head;
+    while (check -> next != nullptr)
+    {
+      if ((check -> next) -> score < score)
+      {
+        foo -> next = check -> next;
+        check -> next = foo;
+        return;
+      }
+      check = check -> next;
+    }
+    check -> next = foo;
+  }
+}
+\end{minted}
+
+Tuttavia ho cercato sempre di limitare questa pratica, in quanto credo che la comprensione ed il collaudo di ciò che si implementi sia una una capacità essenziale per ogni sviluppatore. 
+
+\subsection{Tecniche comuni di approccio a problemi noti}
+
+I modelli di linguaggio sono stati utili anche nel suggerire tecniche di approccio comuni in determinati contesti.
+
+Un esempio di ciò si ha nella funzione di controllo delle collisioni tra entità contenuta nella classe Entity:
+\begin{minted}[fontsize=\small]{cpp}
+bool Entity::collide(const Entity& other) const
+{
+  int width{ Settings::entityWidth };
+  int height{ Settings::entityHeight };
+  
+  return m_x + width > other.m_x && m_y + height > other.m_y &&
+         m_x < other.m_x + width && m_y < other.m_y + height;
+}
+\end{minted}
+L'algoritmo utilizzato è noto come AABB Collision Detection (Axis-Alligned Bounding Box), mi è stato suggerito dai modelli di linguaggio poiché comune nello sviluppo 2D e molto leggero.
+Si basa sull'assunzione che le entità possano essere racchiuse in rettangoli immaginari, di cui si vada a controllare la possibile sovrapposizione tramite la condizione di ritorno.
 \subsection{Alessandro Godani}
 
 Il mio utilizzo degli LLM durante lo sviluppo del progetto si è articolato in modalità

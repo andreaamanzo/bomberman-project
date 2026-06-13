@@ -1,0 +1,5 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{void}\PYG{+w}{ }\PYG{n+nf}{Game::writeOnMenus}\PYG{p}{();}
+
+\PYG{k+kt}{void}\PYG{+w}{ }\PYG{n+nf}{Game::writeTimedItems}\PYG{p}{();}
+\end{MintedVerbatim}

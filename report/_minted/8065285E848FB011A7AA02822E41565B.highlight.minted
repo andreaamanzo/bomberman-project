@@ -1,0 +1,7 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{n}{init\PYGZus{}color}\PYG{p}{(}\PYG{l+m+mi}{8}\PYG{p}{,}\PYG{+w}{  }\PYG{l+m+mi}{1000}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{450}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{);}\PYG{+w}{   }\PYG{c+c1}{// Orange}
+\PYG{n}{init\PYGZus{}color}\PYG{p}{(}\PYG{l+m+mi}{11}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{1000}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{400}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{700}\PYG{p}{);}\PYG{+w}{ }\PYG{c+c1}{// Pink}
+\PYG{n}{init\PYGZus{}color}\PYG{p}{(}\PYG{l+m+mi}{13}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{400}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{700}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{1000}\PYG{p}{);}\PYG{+w}{ }\PYG{c+c1}{// Sky}
+\PYG{n}{init\PYGZus{}color}\PYG{p}{(}\PYG{l+m+mi}{15}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{1000}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{800}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{200}\PYG{p}{);}\PYG{+w}{ }\PYG{c+c1}{// Gold}
+\PYG{n}{init\PYGZus{}color}\PYG{p}{(}\PYG{l+m+mi}{18}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{650}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{300}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{150}\PYG{p}{);}\PYG{+w}{  }\PYG{c+c1}{// Brick}
+\end{MintedVerbatim}
