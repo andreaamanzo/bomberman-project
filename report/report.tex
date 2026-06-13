@@ -516,6 +516,7 @@ ScoreBoard::ScoreBoard(const char* filePath)
     file.open(filePath); // riapre in lettura
   }
   ...
+}
 \end{minted}
 
 Ho trovato che lo studio della libreria fosse più conveniente ed approcciabile in questo modo, per via della possibilità di fare domande e chiedere ulteriori esempi qualora non trovassi chiaro il funzionamento delle funzioni.
@@ -580,6 +581,11 @@ bool Entity::collide(const Entity& other) const
 \end{minted}
 L'algoritmo utilizzato è noto come AABB Collision Detection (Axis-Alligned Bounding Box), mi è stato suggerito dai modelli di linguaggio poiché comune nello sviluppo 2D e molto leggero.
 Si basa sull'assunzione che le entità possano essere racchiuse in rettangoli immaginari, di cui si vada a controllare la possibile sovrapposizione tramite la condizione di ritorno.
+
+\subsection{Considerazioni finali}
+
+Ritengo che i grandi modelli di linguaggio siano stati uno strumento utile per integrare e velocizzare il lavoro.
+Sono stati molto efficaci quando fosse necessario fare considerazioni generali, riguardanti strutture dati note e problemi comuni, ma si sono rivelati limitati nelle situazioni in cui il codice a loro fornito fosse profondamente legato all'architettura del progetto.
 
 \subsection{Alessandro Godani}
 
