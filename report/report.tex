@@ -586,11 +586,10 @@ Si basa sull'assunzione che le entità possano essere racchiuse in rettangoli im
 Il mio utilizzo degli LLM durante lo sviluppo del progetto si è articolato in modalità
 diverse a seconda della natura del problema affrontato. In certi casi sono stati
 impiegati come strumenti di apprendimento, per acquisire rapidamente la padronanza
-di una libreria poco familiare o per comprendere pattern progettuali applicabili al
-contesto specifico. In altri casi sono stati utilizzati come interlocutori tecnici,
-utili per discutere scelte architetturali e valutarne le implicazioni prima di
-procedere all'implementazione. In altri ancora, il supporto è stato più operativo,
-orientato alla risoluzione di problemi concreti emersi durante lo sviluppo.
+di una libreria poco familiare o come interlocutori tecnici,utili per discutere
+scelte architetturali e valutarne le implicazioni prima di procedere all'implementazione. 
+In altri ancora, il supporto è stato più operativo, orientato alla risoluzione di 
+problemi concreti emersi durante lo sviluppo.
 
 In tutti i casi il codice e le spiegazioni prodotte dal modello sono stati trattati
 come punto di partenza da analizzare e validare criticamente, non come soluzioni
@@ -617,17 +616,6 @@ logica di spostamento alla funzione \texttt{Level::moveEnemies()}, che ha piena
 visibilità sulla griglia e su tutte le entità presenti. L'entità nemica espone
 solamente operazioni sul proprio stato interno: \texttt{shouldMove()}, \texttt{move()},
 \texttt{getDirection()} e \texttt{setDirection()}.
- 
-Il metodo \texttt{shouldMove()} verifica se è trascorso il tempo minimo dal frame
-precedente, permettendo a ogni nemico di avere una velocità indipendente:
- 
-\begin{minted}[fontsize=\small]{cpp}
-bool Movable::shouldMove() const
-{
-    Clock::time_point now = Clock::now();
-    return now - m_lastMoveTime >= m_delaySpeed;
-}
-\end{minted}
  
 La funzione \texttt{Enemy::move()} si limita a invocare \texttt{Movable::move()}
 passando la propria direzione corrente, senza sapere nulla della mappa:
@@ -687,29 +675,14 @@ Un ulteriore utilizzo degli LLM ha riguardato la creazione degli sprite testuali
 per i nemici. Nel progetto, la rappresentazione grafica delle entità è basata sulla
 classe \texttt{Nc::Sprite2x3}, che descrive un'area di
 \textbf{2 righe per 3 colonne} di caratteri, con associazioni di colore e background.
-Ogni sprite è definito come un piccolo blocco di caratteri testuali che viene
+Ogni sprite è definito da un piccolo blocco di caratteri testuali che viene
 stampato nel terminale nella posizione corrispondente all'entità.
  
-Ogni tipo di nemico ha uno sprite statico dedicato, selezionato al momento della
-costruzione tramite la funzione:
- 
-\begin{minted}[fontsize=\small]{cpp}
-const Nc::Sprite2x3& Enemy::getSprite(Type enemyType)
-{
-    switch (enemyType) {
-    case Type::First_Enemy:  return s_enemy1;
-    case Type::Second_Enemy: return s_enemy2;
-    case Type::Third_Enemy:  return s_enemy3;
-    default:                 return s_spriteTypeNull;
-    }
-}
-\end{minted}
- 
 Il problema principale era trovare combinazioni di caratteri Unicode che, nella
-griglia 2$\times$3 (2 righe, 3 colonne) del terminale, producessero una figura
-stilizzata riconoscibile come un personaggio nemico. La scelta dei caratteri giusti
+griglia 2$\times$3 del terminale, producessero una figura
+riconoscibile come un personaggio nemico. La scelta dei caratteri giusti
 richiede una certa conoscenza del repertorio Unicode e della loro resa effettiva nel
-terminale, che non è sempre prevedibile senza prova diretta.
+terminale.
  
 Ho utilizzato il modello per esplorare le opzioni disponibili, richiedendo caratteri
 adatti a comporre figure stilizzate all'interno del vincolo di soli 6 celle. Il
@@ -746,23 +719,7 @@ La condizione \texttt{!player.hasIce()} garantisce che, se il giocatore ha racco
 il potenziamento \textit{Freeze}, i nemici non possano piazzare bombe per la durata
 dell'effetto. La decisione sul \textit{quando} piazzare la bomba è delegata al metodo
 \texttt{checkIfShouldBomb()}, interno al nemico, che gestisce un cooldown di quattro
-secondi tramite un timer basato su \texttt{std::chrono}:
- 
-\begin{minted}[fontsize=\small]{cpp}
-bool Enemy::checkIfShouldBomb()
-{
-    if (!isTimerActive()) {
-        m_nextBombCooldown = Clock::now() + std::chrono::seconds(4);
-        setBombTimer(true);
-        return false;
-    }
-    if (isTimerActive() && Clock::now() >= m_nextBombCooldown) {
-        setBombTimer(false);
-        return true;
-    }
-    return false;
-}
-\end{minted}
+secondi tramite un timer basato su \texttt{std::chrono}.
  
 La seconda questione riguardava la \textit{distinzione tra le bombe del giocatore e
 quelle dei nemici}. Una bomba del giocatore deve poter danneggiare i nemici; una
@@ -775,11 +732,9 @@ bomba nemica deve invece danneggiare solo il giocatore. Nel codice questa distin
 if (bomb.getType() == Bomb::Type::Enemy) continue;
 \end{minted}
  
-Il tipo è specificato già al momento della costruzione dell'oggetto \texttt{Bomb},
+Il tipo è specificato al momento della costruzione dell'oggetto \texttt{Bomb},
 con \texttt{Bomb::Type::Enemy} per le bombe dei nemici e \texttt{Bomb::Type::Player}
-per quelle del giocatore, e influenza anche la grafica: il costruttore di \texttt{Bomb}
-seleziona uno sprite diverso in base al tipo, rendendo visivamente distinguibili i
-due casi durante il gioco.
+per quelle del giocatore.
  
 \subsubsection{Gestione dei conflitti Git}
  
@@ -787,49 +742,21 @@ Un utilizzo degli LLM di natura più operativa ha riguardato la risoluzione di u
 problema ricorrente nella gestione del repository condiviso. Durante lo sviluppo
 collaborativo, si verificavano con frequenza situazioni in cui il comando
 \texttt{git pull} produceva un errore relativo alla presenza di branch divergenti,
-bloccando l'aggiornamento del repository locale:
- 
-\begin{minted}[fontsize=\small]{bash}
-hint: You have divergent branches and need to specify how to reconcile them.
-hint: You can do so by running one of the following commands sometime before
-hint: your next pull:
-hint:   git config pull.rebase false  # merge
-hint:   git config pull.rebase true   # rebase
-hint:   git config pull.ff only       # fast-forward only
-\end{minted}
- 
-Il messaggio di errore, pur contenendo in sé il suggerimento alla soluzione, non
-era immediatamente chiaro riguardo alle implicazioni delle diverse opzioni. Ho
-quindi utilizzato il modello per comprendere la differenza tra le tre strategie
-proposte, con particolare attenzione alle conseguenze pratiche nel contesto di
-un progetto collaborativo.
+mostrando diversi tipi di risoluzione come \texttt{rebase} o \texttt{merge},
+bloccando l'aggiornamento del repository locale.
  
 Il modello ha spiegato la differenza tra le tre strategie. L'opzione
-\texttt{pull.rebase false} utilizza una strategia di \textit{merge}, creando un
-commit aggiuntivo che unisce le due storie divergenti. L'opzione
-\texttt{pull.rebase true}, invece, applica i propri commit locali \textit{sopra}
+di \texttt{merge}, crea un commit aggiuntivo che unisce i due codici divergenti. L'opzione
+\texttt{rebase}, invece, applica i propri commit locali \textit{sopra}
 quelli remoti appena scaricati, come se fossero stati scritti partendo già dallo
-stato aggiornato del repository: in questo modo la storia rimane lineare e i propri
+stato aggiornato del repository: in questo modo il codice rimane lineare e i propri
 cambiamenti risultano sempre in cima, senza commit di merge intercalati.
  
-Ho scelto la strategia di \textit{rebase} proprio per questo motivo: lavorando in
+Ho scelto la strategia di \texttt{rebase} proprio per questo motivo: lavorando in
 parallelo su moduli diversi, preferivo che i miei commit apparissero come un blocco
 coerente applicato sulla base aggiornata del lavoro degli altri, evitando la
 situazione in cui nella history si alternassero commit di più persone mescolati tra
-loro.
- 
-\begin{minted}[fontsize=\small]{bash}
-git config pull.rebase true
-\end{minted}
- 
-Questa configurazione, impostata una volta sola a livello locale, risolve
-definitivamente il problema rendendo il comportamento di \texttt{git pull}
-esplicito e prevedibile per tutte le operazioni successive.
- 
-Nei casi in cui il rebase automatico non era possibile a causa di modifiche
-conflittuali sullo stesso file, il modello a suggerito tramite editor di testo
-di modificare a mano i conflitti generati.
- 
+loro. 
 
 \subsubsection{Considerazioni finali}
  
