@@ -33,9 +33,9 @@ Testing/
 *.out
 *.toc
 *.fls
+*.pyg
 *.fdb_latexmk
 *.synctex.gz
-*.pdf
 _minted*/
 
 # misc

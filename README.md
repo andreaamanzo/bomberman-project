@@ -10,6 +10,17 @@ The game also includes an **initial main menu** that allows the player to start 
 
 In addition, the project implements a **permanent scoreboard system**, which stores and displays the best scores of different players across sessions.
 
+Here is an example of the main gameplay screen:
+
+> ![Game Screenshot](report/esempio_schermata.png)
+
+## Demo
+
+A short gameplay demo is available here:
+
+- https://www.youtube.com/watch?v=ie1Yo_5zqFQ
+
+
 ## Requirements
 
 - C++ compatible compiler (GCC / Clang)
@@ -58,48 +69,6 @@ cmake --build build
 ./build/Bomberman
 ```
 
-## Report Compilation
-
-The project documentation is written in LaTeX and can be compiled using `xelatex`.
-
-A simple Makefile is provided to automate the compilation process.
-
-### Requirements
-
-- TeX Live distribution (or equivalent LaTeX installation)
-- xelatex
-- minted package (requires `-shell-escape`)
-- Pygments (for syntax highlighting)
-
-#### Ubuntu / Debian
-
-```bash
-sudo apt update
-sudo apt install texlive-full python3-pygments
-```
-
-#### Arch Linux
-
-```bash
-sudo pacman -S texlive-meta python-pygments
-```
-
-#### macOS (Homebrew)
-
-```bash
-brew install --cask mactex
-pip3 install pygments
-```
-
-### Build Report
-
-From the `report/` directory:
-
-```bash
-make
-```
-
-This will generate `report.pdf`
 
 ## Project Structure
 
@@ -110,11 +79,17 @@ This will generate `report.pdf`
 ├── NcWrapper/       # ncurses wrapper and rendering utilities
 ├── src/             # Main game source code
 ├── state/           # Persistent game data (scoreboard)
-├── report/          # LaTeX project report
+├── report/          # LaTeX project report source 
 ├── CMakeLists.txt   # Build configuration
-└── README.md
+├── README.md
+└── report.pdf       # Project report
 ```
 
+## Report
+
+The full project report is available in PDF format:
+
+- `report.pdf`
 
 
 ## Authors
