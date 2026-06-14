@@ -1,34 +1,33 @@
 # Bomberman Project
 
-University project implementing a terminal-based **Bomberman** game in **C++** using the **ncurses** library.
+Progetto universitario che implementa un gioco **Bomberman** basato su terminale in **C++** utilizzando la libreria **ncurses**.
 
-## Project Overview
+## Panoramica del progetto
 
-The goal of the project is to recreate the core mechanics of the **classic Bomberman game** in a text-based terminal environment. The game features player movement, bomb placement, explosions, destructible obstacles, and enemy interactions.
+L’obiettivo del progetto è ricreare le meccaniche principali del **classico gioco Bomberman** in un ambiente terminale testuale. Il gioco include movimento del giocatore, posizionamento delle bombe, esplosioni, ostacoli distruttibili e interazione con i nemici.
 
-The game also includes an **initial main menu** that allows the player to start a new game, view the scoreboard, or exit the application.
+Il gioco include anche un **menu iniziale** che permette al giocatore di avviare una nuova partita, visualizzare la classifica o uscire dall’applicazione.
 
-In addition, the project implements a **permanent scoreboard system**, which stores and displays the best scores of different players across sessions.
+Inoltre, il progetto implementa un **sistema di classifica permanente**, che memorizza e mostra i migliori punteggi dei diversi giocatori tra una sessione e l’altra.
 
-Here is an example of the main gameplay screen:
+Ecco un esempio della schermata di gioco principale:
 
-> ![Game Screenshot](report/esempio_schermata.png)
+> ![Screenshot del gioco](report/esempio_schermata.png)
 
 ## Demo
 
-A short gameplay demo is available here:
+Una breve demo del gameplay è disponibile qui:
 
 - https://www.youtube.com/watch?v=ie1Yo_5zqFQ
 
+## Requisiti
 
-## Requirements
-
-- C++ compatible compiler (GCC / Clang)
+- Compilatore C++ compatibile (GCC / Clang)
 - CMake
 - ncurses
 - git
 
-### Install dependencies (if missing)
+### Installazione dipendenze (se mancanti)
 
 #### Ubuntu / Debian
 
@@ -69,31 +68,34 @@ cmake --build build
 ./build/Bomberman
 ```
 
-
-## Project Structure
+## Struttura del progetto
 
 ```text
 .
-├── include/         # Header files
-├── levels/          # Game level maps
-├── NcWrapper/       # ncurses wrapper and rendering utilities
-├── src/             # Main game source code
-├── state/           # Persistent game data (scoreboard)
-├── report/          # LaTeX project report source 
-├── CMakeLists.txt   # Build configuration
+├── include/         # File header
+├── levels/          # Mappe dei livelli di gioco
+├── NcWrapper/       # Wrapper ncurses e utility di rendering
+├── src/             # Codice sorgente principale del gioco
+├── state/           # Dati persistenti del gioco (classifica)
+├── report/          # Sorgenti del report LaTeX del progetto 
+├── CMakeLists.txt   # Configurazione di build
 ├── README.md
-└── report.pdf       # Project report
+└── report.pdf       # Report del progetto
 ```
 
 ## Report
 
-The full project report is available in PDF format:
+Il report completo del progetto è disponibile in formato PDF:
 
 - `report.pdf`
 
+## Contatti
 
-## Authors
+- Andrea Amanzo  
+  Email: andrea.manzo4@studio.unibo.it  
 
-- Andrea Amanzo
-- Tommaso Lissandrin
-- Alessandro Godani
+- Tommaso Lissandrin  
+  Email: tommaso.lissandrin@studio.unibo.it  
+
+- Alessandro Godani  
+  Email: alessandro.godani@studio.unibo.it   
