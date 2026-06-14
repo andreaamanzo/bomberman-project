@@ -91,11 +91,11 @@ Il report completo del progetto è disponibile in formato PDF:
 
 ## Contatti
 
-- Andrea Amanzo  
+- Andrea Manzo  
   Email: andrea.manzo4@studio.unibo.it  
 
 - Tommaso Lissandrin  
-  Email: tommaso.lissandrin@studio.unibo.it  
+  Email: tommaso.lissandrin@studio.unibo.it 
 
 - Alessandro Godani  
-  Email: alessandro.godani@studio.unibo.it   
+  Email: alessandro.godani@studio.unibo.it
